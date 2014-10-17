@@ -1,0 +1,20 @@
+<div class="row">
+  <content class="col-md-9" role="main">
+    <h1 class="page-header">
+      <%= @title %>
+    </h1>
+    <% if @result %>
+      <% if @result[:error] %>
+        <p>
+          Try again... - <a href="<%= request.referer %>">Back</a>
+        </p>
+      <% else %>
+        <ul>
+          <% @result[:responses].each do |response|%>
+            <li><%= response[:node] %> - <%= response[:status] %></li>
+          <% end %>
+        </ul>
+      <% end %>
+    <% end %>
+  </content>
+</div>

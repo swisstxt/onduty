@@ -1,0 +1,15 @@
+<div class="row">
+  <content class="col-md-9" role="main">
+    <h1 class="page-header" id="top">
+      <%= @headline || @title %>
+    </h1>
+    <%= @help_content %>
+  </content>
+  <sidebar class="col-md-3">
+    <menu class="help hidden-print affix" role="complementary">
+      <h3>Content</h3>
+      <ul class="list-group"></ul>
+      <a class="back-to-top" href="#top">Back to top</a>
+    </menu>
+  </sidebar>
+</div>
