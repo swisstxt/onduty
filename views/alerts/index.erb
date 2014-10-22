@@ -6,9 +6,9 @@
   <thead>
     <tr>
       <th>ID</th>
-      <th>Acknowledged At</th>
-      <th>Message</th>
       <th>Created At</th>
+      <th>Message</th>
+      <th>Acknowledged At</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -16,12 +16,11 @@
 <% @alerts.each do |alert| %>
     <tr>
       <td><b><a href="/alerts/<%= alert.id %>"><%= alert.id %></a></b></td>
-      <td><%= alert.acknowledged_at %></td>
+      <td><b><a href="/alerts/<%= alert.id %>"><%= alert.created_at %></a></b></td>
       <td><%= alert.message %></td>
-      <td><%= alert.created_at %></td>
+      <td><%= alert.acknowledged_at %></td>
       <td>
         <a href="/alerts/<%= alert.id %>" class="btn btn-sm btn-primary">Show</a>
-        <a href="/alerts/<%= alert.id %>/delete" class="btn btn-sm btn-danger">Delete</a>
       </td>
     </tr>
 <% end %>

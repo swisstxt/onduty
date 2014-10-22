@@ -3,11 +3,14 @@ require 'sinatra'
 require 'sinatra/contrib'
 require 'sqlite3'
 
-set :environment, :development #(ENV["RACK_ENV"] || :development).to_sym
-set :bind, '0.0.0.0'
-
 require "sinatra/activerecord"
 require "sinatra/config_file"
+require "./lib/onduty/models/alert"
+require "./lib/onduty/models/contact"
+require "./lib/onduty/twilio_api"
+
+set :environment, :development #(ENV["RACK_ENV"] || :development).to_sym
+set :bind, '0.0.0.0'
 
 c_file = nil
 %w(/etc/onduty.yml /etc/onduty/onduty.yml ./config/onduty.yml ./config/onduty.example.yml).each do |config|
@@ -22,11 +25,6 @@ else
   puts "Error: No configuration file found. Exit."
   exit 1
 end
-
-require "./lib/onduty/models/alert"
-require "./lib/onduty/models/contact"
-require "./lib/onduty/twilio_api"
-
 
 helpers do
   def status_badge(status)
