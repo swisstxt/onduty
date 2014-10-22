@@ -102,7 +102,7 @@ post '/alerts/:id/alert' do
 
   twilio = TwilioApi.new(settings.account_sid, settings.auth_token, settings.from_number)
   twilio.sms(@contact.phone, @alert.message)
-  twilio.call(@contact.phone, settings.base_url + "/alerts/#{@alert.id}")
+  twilio.call(@contact.phone, URI::join(settings.base_url, "/alerts/#{@alert.id}"))
 
   @alert.last_alert_at = Time.now
   @alert.save
