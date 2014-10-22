@@ -12,6 +12,7 @@ c_file = nil
 %w(/etc/onduty.yml /etc/onduty/onduty.yml ./config/onduty.yml ./config/onduty.example.yml).each do |config|
   if File.exists?(config)
     c_file = config
+    break
   end
 end
 if c_file
@@ -100,9 +101,8 @@ post '/alerts/:id/alert' do
   @contact = Contact.where(status: 1).first
 
   twilio = TwilioApi.new(settings.account_sid, settings.auth_token, settings.from_number)
-
   twilio.sms(@contact.phone, @alert.message)
-  twilio.call(@contact.phone, settings.base_url + "alerts/#{@alert.id}")
+  twilio.call(@contact.phone, settings.base_url + "/alerts/#{@alert.id}")
 
   @alert.last_alert_at = Time.now
   @alert.save
