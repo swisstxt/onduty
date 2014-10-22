@@ -4,6 +4,7 @@ class CreateAlerts < ActiveRecord::Migration
       t.string  :uid
       t.string  :message
       t.time    :created_at
+      t.time    :last_alert_at
       t.time    :acknowledged_at
     end
   end

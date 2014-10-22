@@ -30,14 +30,12 @@
           </div>
         </form>
       </td>
-      <td><%= contact.name %></td>
+      <td><b><a href="/contacts/<%= contact.id %>"><%= contact.name %></a></b></td>
       <td><%= contact.phone %></td>
       <td>
+        <a href="/contacts/<%= contact.id %>" class="btn btn-sm btn-primary">Show</a>
         <a href="/contacts/<%= contact.id %>/edit" class="btn btn-sm btn-success">Edit</a>
-        <form action="/contacts/delete/<%= contact.id %>" method="post" style="display: inline-block">
-          <input name="_method" type="hidden" value="delete" />
-          <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-        </form>
+        <a href="/contacts/<%= contact.id %>/delete" class="btn btn-sm btn-danger">Delete</a>
       </td>
     </tr>
 <% end %>

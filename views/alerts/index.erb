@@ -1,0 +1,35 @@
+<div class="page-header">
+  <h1>Alerts</h1>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Acknowledged At</th>
+      <th>Message</th>
+      <th>Created At</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+<% @alerts.each do |alert| %>
+    <tr>
+      <td><b><a href="/alerts/<%= alert.id %>"><%= alert.id %></a></b></td>
+      <td><%= alert.acknowledged_at %></td>
+      <td><%= alert.message %></td>
+      <td><%= alert.created_at %></td>
+      <td>
+        <a href="/alerts/<%= alert.id %>" class="btn btn-sm btn-primary">Show</a>
+        <a href="/alerts/<%= alert.id %>/delete" class="btn btn-sm btn-danger">Delete</a>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<p>
+  <a type="button" class="btn btn-success" href="/alerts/new">
+    New Alert
+  </a>
+</p>

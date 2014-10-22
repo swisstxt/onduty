@@ -17,14 +17,19 @@ ActiveRecord::Schema.define(version: 20141017091511) do
     t.string "uid"
     t.string "message"
     t.time   "created_at"
+    t.time   "last_alert_at"
     t.time   "acknowledged_at"
   end
 
   create_table "contacts", force: true do |t|
     t.string  "name"
     t.string  "phone"
+    t.string  "email"
     t.time    "created_at"
-    t.integer "status"
+    t.integer "status",         default: 0
+    t.integer "alert_by_email", default: 1
+    t.integer "alert_by_sms",   default: 1
+    t.integer "alert_by_phone", default: 1
   end
 
 end

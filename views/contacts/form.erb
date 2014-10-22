@@ -17,13 +17,45 @@
       </div>
 
       <div class="form-group">
+        <label for="email" class="col-sm-2 control-label">Email</label>
+        <div class="col-sm-10">
+          <input name="contact[email]" id="email" placeholder="Email" class="form-control" value="<%= @contact.email if @contact %>">
+        </div>
+      </div>
+
+      <div class="form-group">
         <label for="status" class="col-sm-2 control-label">Status</label>
         <div class="col-sm-10">
-          <select name="contact[status]" id="status" class="form-control" value="<%= @contact.status if @contact %>">
-            <option value='0'>-</option>
-            <option value='1'>on-duty</option>
-            <option value='2'>escalation</option>
+          <select name="contact[status]" id="status" class="form-control">
+            <option value='0' <%= 'selected="true"' if @contact.status == 0 %>>off-duty</option>
+            <option value='1' <%= 'selected="true"' if @contact.status == 1 %>>on-duty</option>
+            <option value='2' <%= 'selected="true"' if @contact.status == 2 %>>escalation</option>
           </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="status" class="col-sm-2 control-label">Alerts</label>
+        <div class="col-sm-offset-2 col-sm-10">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="contact[alert_by_sms]" value="1" checked="<%= 'true' if @contact.alert_by_sms == 1 %>"> Alert by SMS
+            </label>
+          </div>
+        </div>
+        <div class="col-sm-offset-2 col-sm-10">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="contact[alert_by_phone]" value="1" checked="<%= 'true' if @contact.alert_by_phone == 1 %>"> Alert by Phone
+            </label>
+          </div>
+        </div>
+        <div class="col-sm-offset-2 col-sm-10">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="contact[alert_by_email]" value="1" checked="<%= 'true ' if @contact.alert_by_email == 1 %>"> Alert by Email
+            </label>
+          </div>
         </div>
       </div>
 

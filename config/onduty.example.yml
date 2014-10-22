@@ -1,0 +1,7 @@
+
+base_url: 'http://localhost:3000/'
+
+# To find these visit https://www.twilio.com/user/account
+account_sid: "12677267267267267627676276276276"
+auth_token:  "32324323424242424242424242424242"
+from_number: "+12345678910"

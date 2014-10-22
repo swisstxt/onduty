@@ -1,0 +1,30 @@
+<div class="page-header">
+  <h1>Alert <%= @alert.id %></h1>
+</div>
+
+<table class="table table-striped" style="width: 30%;">
+  <tr>
+    <th>UID</th>
+    <td><%= @alert.uid %></td>
+  </tr>
+  <tr>
+    <th>Message</th>
+    <td><%= @alert.message %></td>
+  </tr>
+  <tr>
+    <th>Created at</th>
+    <td><%= @alert.created_at %></td>
+  </tr>
+  <tr>
+    <th>Acknowdledged at</th>
+    <td><%= @alert.acknowledged_at %></td>
+  </tr>
+  <tr>
+    <th>Last alterted at</th>
+    <td><%= @alert.last_alert_at %></td>
+  </tr>
+</table>
+
+<hr>
+<a href="/alerts" class="btn btn-sm btn-default">Cancel</a>
+<a href="/alerts/<%= @alert.id %>/delete" class="btn btn-sm btn-danger">Delete</a>
