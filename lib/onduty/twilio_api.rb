@@ -12,8 +12,7 @@ class TwilioApi
     client.account.calls.create(
       from: @from_number,
       to:   number,
-      url:  twiml_url,
-      method: 'GET'
+      url:  twiml_url
     )
   end
 

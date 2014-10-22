@@ -73,6 +73,25 @@ get '/alerts/:id' do
   erb :"alerts/show"
 end
 
+delete '/alerts/:id/delete' do
+  alert = Alert.find(params[:id])
+  if params[:confirm_delete]
+    if alert.destroy
+      redirect '/alerts'
+    else
+      "Error"
+    end
+  else
+    redirect "/alerts/#{alert.id}/delete"
+  end
+end
+
+get '/alerts/:id/delete' do
+  @alert = Alert.find(params[:id])
+  @title = "Delete Alert"
+  erb :"alerts/delete"
+end
+
 post '/alerts/:id/acknowledge' do
   @alert = Alert.find(params[:id])
   @alert.acknowledged_at = Time.now
