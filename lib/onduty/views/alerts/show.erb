@@ -2,7 +2,7 @@
   <h1>Alert <%= @alert.id %></h1>
 </div>
 
-<table class="table table-striped" style="width: 30%;">
+<table class="table table-striped" style="width: 50%;">
   <tr>
     <th>Message</th>
     <td><%= @alert.message %></td>
@@ -26,14 +26,14 @@
 </table>
 
 <hr>
-<a href="/alerts" class="btn btn-sm btn-default">Back</a>
+<a href="/alerts" class="btn btn-default">Back</a>
 <% if @alert.acknowledged_at %>
 <a href="/alerts/<%= @alert.id %>/delete" class="btn btn-sm btn-danger">Delete</a>
 <% else %>
   <form action="/alerts/<%= @alert.id %>/alert" method="post" style="display: inline-block">
-    <button type="submit" class="btn btn-sm btn-danger">Alert</button>
+    <button type="submit" class="btn btn-danger">Alert</button>
   </form>
   <form action="/alerts/<%= @alert.id %>/acknowledge" method="post" style="display: inline-block">
-    <button type="submit" class="btn btn-sm btn-primary">Acknowledge</button>
+    <button type="submit" class="btn btn-primary">Acknowledge</button>
   </form>
 <% end %>
