@@ -1,5 +1,16 @@
+# require models
+require_relative "../models/alert"
+require_relative "../models/contact"
+
+# require helpers
+require_relative "../helpers/application"
+
+# require conrollers
+require_relative "contacts"
+require_relative "alerts"
+
 set :environment, :development #(ENV["RACK_ENV"] || :development).to_sym
-set :root, File.join(File.dirname(__FILE__), '..')
+set :root, File.join(File.dirname(__FILE__), '..', '..')
 set :bind, '0.0.0.0'
 
 c_file = nil
