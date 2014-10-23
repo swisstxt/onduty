@@ -1,0 +1,39 @@
+<div class="page-header">
+  <h1>Alert <%= @alert.id %></h1>
+</div>
+
+<table class="table table-striped" style="width: 50%;">
+  <tr>
+    <th>Message</th>
+    <td><%= @alert.message %></td>
+  </tr>
+  <tr>
+    <th>UID</th>
+    <td><%= @alert.uid %></td>
+  </tr>
+  <tr>
+    <th>Created at</th>
+    <td><%= @alert.created_at %></td>
+  </tr>
+  <tr>
+    <th>Acknowdledged at</th>
+    <td><%= @alert.acknowledged_at %></td>
+  </tr>
+  <tr>
+    <th>Last alerted at</th>
+    <td><%= @alert.last_alert_at %></td>
+  </tr>
+</table>
+
+<hr>
+<a href="/alerts" class="btn btn-default">Back</a>
+<% if @alert.acknowledged_at %>
+  <a href="/alerts/<%= @alert.id %>/delete" class="btn btn-danger">Delete</a>
+<% else %>
+  <form action="/alerts/<%= @alert.id %>/acknowledge" method="post" style="display: inline-block">
+    <button type="submit" class="btn btn-primary">Acknowledge</button>
+  </form>
+  <form action="/alerts/<%= @alert.id %>/alert" method="post" style="display: inline-block">
+    <button type="submit" class="btn btn-danger">Alert</button>
+  </form>
+<% end %>

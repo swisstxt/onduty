@@ -1,0 +1,68 @@
+<div class="row">
+  <content class="col-md-9" role="main">
+    <div class="page-header">
+      <h1>On Duty Contacts</h1>
+    </div>
+
+    <% if @contacts.size == 0 %>
+      <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <strong>Boring!</strong> No contacts yes.
+        <a href="/contacts/new" class="alert-link">Create on!</a>
+      </div>
+    <% else %>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+      <% @contacts.each do |contact| %>
+          <tr>
+            <td>
+              <form action="/contacts/<%= contact.id %>/status" method="post" style="display: inline-block">
+                <div class="btn-group">
+                  <% if contact.status && contact.status == 1 %>
+                    <button type="button" class="btn btn-sm btn-danger" class="btn btn-sm btn-danger">OnDuty</button>
+                  <% else %>
+                    <button type="submit" class="btn btn-sm btn-default" name="status" value='1'>OnDuty</button>
+                  <% end %>
+                  <% if contact.status && contact.status == 2 %>
+                    <button type="button" class="btn btn-sm btn-primary">Escalation</button>
+                  <% else %>
+                    <button type="submit" class="btn btn-sm btn-default" name="status" value='2'>Escalation</button>
+                  <% end %>
+                </div>
+              </form>
+            </td>
+            <td><b><a href="/contacts/<%= contact.id %>"><%= contact.name %></a></b></td>
+            <td><%= contact.phone %></td>
+            <td>
+              <a href="/contacts/<%= contact.id %>" class="btn btn-sm btn-primary">Show</a>
+              <a href="/contacts/<%= contact.id %>/edit" class="btn btn-sm btn-success">Edit</a>
+              <a href="/contacts/<%= contact.id %>/delete" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+          </tr>
+      <% end %>
+        </tbody>
+      </table>
+    <% end %>
+
+    <p>
+      <a type="button" class="btn btn-success" href="/contacts/new">
+        New Contact
+      </a>
+    </p>
+  </content>
+
+  <sidebar class="col-md-3">
+
+  </sidebar>
+</div>
