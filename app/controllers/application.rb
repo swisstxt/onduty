@@ -10,7 +10,7 @@ require_relative "contacts"
 require_relative "alerts"
 
 set :environment, :development #(ENV["RACK_ENV"] || :development).to_sym
-set :root, File.join(File.dirname(__FILE__), '..', '..')
+set :root, File.join(File.dirname(__FILE__), '..')
 set :bind, '0.0.0.0'
 
 c_file = nil
