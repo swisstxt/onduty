@@ -56,9 +56,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord (~> 4.1.6)
   rake
-  sinatra
-  sinatra-activerecord
-  sinatra-contrib
+  sinatra (~> 1.4.5)
+  sinatra-activerecord (~> 2.0.2)
+  sinatra-contrib (~> 1.4.2)
   sqlite3
-  twilio-ruby
+  twilio-ruby (~> 3.13.1)

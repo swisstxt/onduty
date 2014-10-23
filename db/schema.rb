@@ -14,22 +14,23 @@
 ActiveRecord::Schema.define(version: 20141017091511) do
 
   create_table "alerts", force: true do |t|
-    t.string "uid"
-    t.string "message"
-    t.time   "created_at"
-    t.time   "last_alert_at"
-    t.time   "acknowledged_at"
+    t.string   "uid"
+    t.string   "message"
+    t.datetime "created_at"
+    t.datetime "last_alert_at"
+    t.datetime "acknowledged_at"
   end
 
   create_table "contacts", force: true do |t|
-    t.string  "name"
-    t.string  "phone"
-    t.string  "email"
-    t.time    "created_at"
-    t.integer "status",         default: 0
-    t.integer "alert_by_email", default: 1
-    t.integer "alert_by_sms",   default: 1
-    t.integer "alert_by_phone", default: 1
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "phone"
+    t.string   "email"
+    t.datetime "created_at"
+    t.integer  "status",         default: 0
+    t.integer  "alert_by_email", default: 1
+    t.integer  "alert_by_sms",   default: 1
+    t.integer  "alert_by_phone", default: 1
   end
 
 end

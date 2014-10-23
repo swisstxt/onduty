@@ -1,15 +1,7 @@
-require 'twilio-ruby'
-require 'sinatra'
-require 'sinatra/contrib'
-require 'sqlite3'
-
-require "sinatra/activerecord"
-require "sinatra/config_file"
-require "./lib/onduty/models/alert"
-require "./lib/onduty/models/contact"
-require "./lib/onduty/twilio_api"
+require "./lib/onduty"
 
 set :environment, :development #(ENV["RACK_ENV"] || :development).to_sym
+set :root, File.dirname(__FILE__)
 set :bind, '0.0.0.0'
 
 c_file = nil
@@ -34,6 +26,14 @@ helpers do
       else 'default'
     end
   end
+
+  def h_time(time)
+    time.strftime("%d.%m.%Y %T") rescue time
+  end
+
+  def days_ago(x)
+    Time.now - x.to_i * 3600 * 24
+  end
 end
 
 get '/' do
@@ -46,7 +46,19 @@ end
 
 get '/alerts' do
   @title = "Alerts"
-  @alerts = Alert.all
+  @alerts = case params[:days]
+  when nil || ''
+    Alert.created_after(days_ago(2))
+  when 'all'
+    Alert.all
+  else
+    Alert.created_after(days_ago(params[:days]))
+  end
+
+  @alerts = @alerts.acknowledged if params[:acknowledged] == 'true'
+  @alerts = @alerts.unacknowledged if params[:acknowledged] == 'false'
+
+  @alerts = @alerts.order(created_at: :desc)
   erb :"alerts/index"
 end
 
@@ -91,27 +103,35 @@ get '/alerts/:id/delete' do
   erb :"alerts/delete"
 end
 
-post '/alerts/:id/acknowledge' do
+post '/alerts/:id/acknowledge.?:format?' do
   @alert = Alert.find(params[:id])
   @alert.acknowledged_at = Time.now
   @alert.save
 
-  content_type 'text/xml'
-  Twilio::TwiML::Response.new do |r|
-    r.Say "The alert with ID #{@alert.id} has been acknowledged. Thank you and Goodbye!", voice: "woman"
-  end.text
+  if params[:format] =~ /^(twiml|xml)$/
+    content_type 'text/xml'
+    Twilio::TwiML::Response.new do |r|
+      r.Say "The alert with ID #{@alert.id} has been acknowledged. Thank you and Goodbye!", voice: "woman"
+    end.text
+  else
+    redirect "/alerts/#{@alert.id}"
+  end
 end
 
-post '/alerts/:id' do
-  content_type 'text/xml'
+post '/alerts/:id.:format' do
   @alert = Alert.find(params[:id])
-  Twilio::TwiML::Response.new do |r|
-    r.Say @alert.message, voice: "woman"
-    r.Gather(numDigits: 1, action: "/alerts/#{@alert.id}/acknowledge") do |g|
-      g.Say "Please enter any key to acknowledge the message.", voice: "woman"
-    end
-    r.Say "We didn't receive any input. We will call you again. Goodbye!", voice: "woman"
-  end.text
+  if params[:format] =~ /^(twiml|xml)$/
+    content_type 'text/xml'
+    Twilio::TwiML::Response.new do |r|
+      r.Say @alert.message, voice: "woman"
+      r.Gather(numDigits: 1, action: "/alerts/#{@alert.id}/acknowledge") do |g|
+        g.Say "Please enter any key to acknowledge the message.", voice: "woman"
+      end
+      r.Say "We didn't receive any input. We will call you again. Goodbye!", voice: "woman"
+    end.text
+  else
+    redirect "/alerts/#{@alert.id}"
+  end
 end
 
 post '/alerts/:id/alert' do
@@ -120,7 +140,7 @@ post '/alerts/:id/alert' do
 
   twilio = TwilioApi.new(settings.account_sid, settings.auth_token, settings.from_number)
   twilio.sms(@contact.phone, @alert.message)
-  twilio.call(@contact.phone, URI::join(settings.base_url, "/alerts/#{@alert.id}"))
+  twilio.call(@contact.phone, URI::join(settings.base_url, "/alerts/#{@alert.id}.twiml"))
 
   @alert.last_alert_at = Time.now
   @alert.save
@@ -198,5 +218,9 @@ end
 post '/contacts/:id/status' do
   Contact.where(status: params[:status]).update_all(status: 0)
   Contact.find(params[:id]).update(status: params[:status])
-  redirect '/contacts'
+  redirect back
+end
+
+post '/contacts/onduty' do
+  redirect "/contacts/#{params[:id]}/status?status=1", 307
 end
