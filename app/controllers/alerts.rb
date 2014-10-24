@@ -97,7 +97,7 @@ end
 
 post '/alerts/:id/alert' do
   @alert = Alert.find(params[:id])
-  @contact = Contact.where(status: 1).first
+  @contact = Duty.find(1).contact
 
   twilio = TwilioApi.new(settings.account_sid, settings.auth_token, settings.from_number)
   twilio.sms(@contact.phone, @alert.message)

@@ -17,40 +17,33 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Status</th>
             <th>Name</th>
+            <th>Status</th>
             <th>Phone</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-      <% @contacts.each do |contact| %>
-          <tr>
-            <td>
-              <form action="/contacts/<%= contact.id %>/status" method="post" style="display: inline-block">
+          <% @contacts.each do |contact| %>
+            <tr>
+              <td><b><a href="/contacts/<%= contact.id %>"><%= contact.name %></a></b></td>
+              <td>
                 <div class="btn-group">
-                  <% if contact.status && contact.status == 1 %>
-                    <button type="button" class="btn btn-sm btn-danger" class="btn btn-sm btn-danger">OnDuty</button>
-                  <% else %>
-                    <button type="submit" class="btn btn-sm btn-default" name="status" value='1'>OnDuty</button>
-                  <% end %>
-                  <% if contact.status && contact.status == 2 %>
-                    <button type="button" class="btn btn-sm btn-primary">Escalation</button>
-                  <% else %>
-                    <button type="submit" class="btn btn-sm btn-default" name="status" value='2'>Escalation</button>
+                  <% @duties.each do |duty| %>
+                    <% if contact.id == duty.contact_id %>
+                      <span class="label label-<%= status_badge(duty.id) %>"><%= duty.name %></span>
+                    <% end %>
                   <% end %>
                 </div>
-              </form>
-            </td>
-            <td><b><a href="/contacts/<%= contact.id %>"><%= contact.name %></a></b></td>
-            <td><%= contact.phone %></td>
-            <td>
-              <a href="/contacts/<%= contact.id %>" class="btn btn-sm btn-primary">Show</a>
-              <a href="/contacts/<%= contact.id %>/edit" class="btn btn-sm btn-success">Edit</a>
-              <a href="/contacts/<%= contact.id %>/delete" class="btn btn-sm btn-danger">Delete</a>
-            </td>
-          </tr>
-      <% end %>
+              </td>
+              <td><%= contact.phone %></td>
+              <td>
+                <a href="/contacts/<%= contact.id %>" class="btn btn-sm btn-primary">Show</a>
+                <a href="/contacts/<%= contact.id %>/edit" class="btn btn-sm btn-success">Edit</a>
+                <a href="/contacts/<%= contact.id %>/delete" class="btn btn-sm btn-danger">Delete</a>
+              </td>
+            </tr>
+          <% end %>
         </tbody>
       </table>
     <% end %>
@@ -63,6 +56,23 @@
   </content>
 
   <sidebar class="col-md-3">
-
+    <div class="page-header">
+      <h3>Manage Duties</h3>
+    </div>
+    <% @duties.each do |duty| %>
+      <h4><%= duty.name %></h4>
+      <form action="/duties/<%= duty.id %>/" method="post">
+        <select name="contact_id" onchange="this.form.submit()" class="selectpicker" data-style="btn-<%= status_badge(duty.id) %>">
+            <option>-</option>
+          <% @contacts.each do |contact| %>
+            <% unless contact.id == duty.contact_id %>
+              <option value="<%= contact.id %>"><%= contact.name %></option>
+            <% else %>
+              <option value="<%= contact.id %>" selected><%= contact.name %></option>
+            <% end %>
+          <% end %>
+        </select>
+      </form>
+    <% end %>
   </sidebar>
 </div>

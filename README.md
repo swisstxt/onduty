@@ -17,8 +17,8 @@ bundle install
 ### Initialize the database
 
 ```bash
-rake db:create
-rake db:migrate
+bundle exec rake db:create
+bundle exec rake db:migrate
 ```
 
 ### Create your own configuration

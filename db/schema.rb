@@ -11,14 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141017091511) do
+ActiveRecord::Schema.define(version: 20141024114638) do
 
   create_table "alerts", force: true do |t|
     t.string   "uid"
     t.string   "message"
-    t.datetime "created_at"
     t.datetime "last_alert_at"
     t.datetime "acknowledged_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "contacts", force: true do |t|
@@ -26,11 +27,17 @@ ActiveRecord::Schema.define(version: 20141017091511) do
     t.string   "last_name"
     t.string   "phone"
     t.string   "email"
-    t.datetime "created_at"
-    t.integer  "status",         default: 0
     t.integer  "alert_by_email", default: 1
     t.integer  "alert_by_sms",   default: 1
-    t.integer  "alert_by_phone", default: 1
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "duties", force: true do |t|
+    t.string   "name"
+    t.integer  "contact_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

@@ -5,11 +5,9 @@ class CreateContacts < ActiveRecord::Migration
       t.string    :last_name
       t.string    :phone
       t.string    :email
-      t.datetime  :created_at
-      t.integer   :status, default: 0
       t.integer   :alert_by_email, default: 1
       t.integer   :alert_by_sms, default: 1
-      t.integer   :alert_by_phone, default: 1
+      t.timestamps
     end
   end
 end

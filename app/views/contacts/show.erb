@@ -21,13 +21,13 @@
       <ul>
         <li>Email: <%= @contact.alert_by_email == 1 ? 'yes' : 'no' %></li>
         <li>SMS: <%= @contact.alert_by_sms == 1 ? 'yes' : 'no' %></li>
-        <li>Phone: <%= @contact.alert_by_phone == 1 ? 'yes' : 'no' %></li>
       </ul>
     </td>
   </tr>
   <tr>
     <th>Status</th>
     <td>
+      <% if false %>
       <form action="/contacts/<%= @contact.id %>/status" method="post" style="display: inline-block">
         <div class="btn-group">
           <% if @contact.status && @contact.status == 1 %>
@@ -42,6 +42,7 @@
           <% end %>
         </div>
       </form>
+      <% end %>
     </td>
   </tr>
 </table>

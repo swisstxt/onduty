@@ -4,7 +4,8 @@
 
 get '/contacts' do
   @title = "Contacts"
-  @contacts = Contact.all
+  @contacts = Contact.all.order(:last_name)
+  @duties = Duty.all
   erb :"contacts/index"
 end
 
@@ -63,14 +64,4 @@ get '/contacts/:id/delete' do
   @contact = Contact.find(params[:id])
   @title = "Delete Contact"
   erb :"contacts/delete"
-end
-
-post '/contacts/:id/status' do
-  Contact.where(status: params[:status]).update_all(status: 0)
-  Contact.find(params[:id]).update(status: params[:status])
-  redirect back
-end
-
-post '/contacts/onduty' do
-  redirect "/contacts/#{params[:id]}/status?status=1", 307
 end
