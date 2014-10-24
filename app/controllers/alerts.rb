@@ -100,8 +100,8 @@ post '/alerts/:id/alert' do
   @contact = Duty.find(1).contact
 
   twilio = TwilioApi.new(settings.account_sid, settings.auth_token, settings.from_number)
-  twilio.sms(@contact.phone, @alert.message)
   twilio.call(@contact.phone, URI::join(settings.base_url, "/alerts/#{@alert.id}.twiml?uid=#{@alert.uid}"))
+  twilio.sms(@contact.phone, @alert.message) if @contact.alert_by_sms == 1
 
   @alert.last_alert_at = Time.now
   @alert.save

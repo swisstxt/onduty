@@ -17,8 +17,7 @@ bundle install
 ### Initialize the database
 
 ```bash
-bundle exec rake db:create
-bundle exec rake db:migrate
+bundle exec rake db:setup
 ```
 
 ### Create your own configuration
@@ -43,5 +42,4 @@ This is an alpha release - still a lot to do:
     * alert creation
     * triggering alerts and escalation
   * mail alerts
-  * respect contact alert settings
   * authentication
