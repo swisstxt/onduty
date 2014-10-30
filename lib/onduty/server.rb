@@ -1,8 +1,9 @@
 require 'onduty/server_base'
 
-set :environment, :development #(ENV["RACK_ENV"] || :development).to_sym
+set :environment, (ENV["RACK_ENV"] || :development).to_sym
 set :root, File.join(File.dirname(__FILE__), '../../', 'app')
 set :bind, '0.0.0.0'
+set :server, :puma
 
 if c_file = Onduty::Config.file
   config_file c_file

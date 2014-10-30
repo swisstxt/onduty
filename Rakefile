@@ -2,8 +2,11 @@ require "sinatra/activerecord/rake"
 
 # resolve path, ignoring symlinks
 require "pathname"
-$:.unshift File.expand_path("../lib", Pathname.new(__FILE__).realpath)
-$:.unshift File.expand_path("../app", Pathname.new(__FILE__).realpath)
+%w(../lib ../app).each do |path|
+  $:.unshift File.expand_path(
+    path, Pathname.new(__FILE__).realpath
+  )
+end
 
 namespace :db do
   task :load_config do
