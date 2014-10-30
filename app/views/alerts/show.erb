@@ -4,6 +4,14 @@
 
 <table class="table table-striped" style="width: 50%;">
   <tr>
+    <th>Host</th>
+    <td><%= @alert.host %></td>
+  </tr>
+  <tr>
+    <th>Service</th>
+    <td><%= @alert.service %></td>
+  </tr>
+  <tr>
     <th>Message</th>
     <td><%= @alert.message %></td>
   </tr>
@@ -30,7 +38,7 @@
 <% if @alert.acknowledged_at %>
   <a href="/alerts/<%= @alert.id %>/delete" class="btn btn-danger">Delete</a>
 <% else %>
-  <form action="/alerts/<%= @alert.id %>/acknowledge" method="post" style="display: inline-block">
+  <form action="/alerts/<%= @alert.id %>/acknowledge?uid=<%= @alert.uid %>" method="post" style="display: inline-block">
     <button type="submit" class="btn btn-primary">Acknowledge</button>
   </form>
   <form action="/alerts/<%= @alert.id %>/alert" method="post" style="display: inline-block">

@@ -4,18 +4,13 @@
 
 get '/alerts' do
   @title = "Alerts"
-  @alerts = case params[:days]
-  when nil || ''
-    Alert.created_after(days_ago(2))
-  when 'all'
-    Alert.all
-  else
+  @alerts = if params[:days].to_i > 0
     Alert.created_after(days_ago(params[:days]))
+  else
+    Alert.created_after(days_ago(2))
   end
-
   @alerts = @alerts.acknowledged if params[:acknowledged] == 'true'
   @alerts = @alerts.unacknowledged if params[:acknowledged] == 'false'
-
   @alerts = @alerts.order(created_at: :desc)
   erb :"alerts/index"
 end
@@ -99,12 +94,13 @@ post '/alerts/:id/alert' do
   @alert = Alert.find(params[:id])
   @contact = Duty.find(1).contact
 
+  # Send API calls to twilio
   twilio = TwilioApi.new(settings.account_sid, settings.auth_token, settings.from_number)
   twilio.call(@contact.phone, URI::join(settings.base_url, "/alerts/#{@alert.id}.twiml?uid=#{@alert.uid}"))
   twilio.sms(@contact.phone, @alert.message) if @contact.alert_by_sms == 1
 
+  # Update last alerted info
   @alert.last_alert_at = Time.now
   @alert.save
-
   redirect "/alerts/#{@alert.id}"
 end

@@ -1,12 +1,4 @@
-require 'sqlite3'
-require 'sinatra'
-require 'sinatra/contrib'
-require "sinatra/activerecord"
-require "sinatra/config_file"
-
-require "onduty/version"
-require "onduty/config"
-require "onduty/twilio_api"
+require 'onduty/server_base'
 
 set :environment, :development #(ENV["RACK_ENV"] || :development).to_sym
 set :root, File.join(File.dirname(__FILE__), '../../', 'app')

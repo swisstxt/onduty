@@ -19,7 +19,8 @@
           <tr>
             <th>ID</th>
             <th>Created At</th>
-            <th>Message</th>
+            <th>Host</th>
+            <th>Service</th>
             <th>Acknowledged At</th>
             <th>Actions</th>
           </tr>
@@ -29,7 +30,8 @@
           <tr>
             <td><b><a href="/alerts/<%= alert.id %>"><%= alert.id %></a></b></td>
             <td><b><a href="/alerts/<%= alert.id %>"><%= h_time(alert.created_at) %></a></b></td>
-            <td><%= alert.message %></td>
+            <td><%= alert.host %></td>
+            <td><%= alert.service %></td>
             <td><%= h_time(alert.acknowledged_at) %></td>
             <td>
               <a href="/alerts/<%= alert.id %>" class="btn btn-sm btn-primary">Show</a>

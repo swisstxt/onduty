@@ -16,6 +16,8 @@ ActiveRecord::Schema.define(version: 20141024114638) do
   create_table "alerts", force: true do |t|
     t.string   "uid"
     t.string   "message"
+    t.string   "host"
+    t.string   "service"
     t.datetime "last_alert_at"
     t.datetime "acknowledged_at"
     t.datetime "created_at"

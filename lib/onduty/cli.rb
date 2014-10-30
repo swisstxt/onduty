@@ -78,7 +78,7 @@ module Onduty
       enum: %w(all ack nak)
     def alerts
       connect_to_db
-      table = [%w(ID UID Message Created Acknowledged)]
+      table = [%w(ID Host Service Created Acknowledged)]
       alerts =::Alert.created_after(days_ago(options[:days_ago]))
       case options[:status]
       when 'ack'
@@ -89,8 +89,8 @@ module Onduty
       alerts.order(created_at: :desc).each do |alert|
         table << [
           alert.id,
-          alert.uid,
-          alert.message,
+          alert.host,
+          alert.service,
           alert.created_at,
           alert.acknowledged_at
         ]
@@ -98,15 +98,43 @@ module Onduty
       print_table table
     end
 
-
     desc "create_alert MESSAGE", "create a new alert"
-    def create_alert(message)
+    option :message,
+      desc: "alert message",
+      aliases: '-m',
+      required: true
+    option :host,
+      desc: "host",
+      aliases: '-H',
+      required: true
+    option :service,
+      desc: "service",
+      aliases: '-s',
+      required: true
+    def create_alert
       connect_to_db
-      if ::Alert.create(message: message)
-        say "Ok."
+      alert = ::Alert.new(
+        message: options[:message],
+        host:    options[:host],
+        service: options[:service]
+      )
+      if alert.save
+        say "Created alert:"
+        invoke "show_alert", [alert.id], {}
       else
         say "Error creating alert."
       end
+    end
+
+    desc "show_alert [ID]", "show a given alert"
+    def show_alert(id)
+      connect_to_db
+      alert = ::Alert.find(id)
+      table = %w(id uid host service message
+      created_at acknowledged_at last_alerted_at).map do |attr|
+        [attr, alert[attr.to_sym] ? alert[attr.to_sym].to_s : '-']
+      end
+      print_table table
     end
 
     no_commands do
@@ -117,6 +145,9 @@ module Onduty
         ActiveRecord::Base.establish_connection(
           db_settings[env]
         )
+      rescue
+        say "Error: Can't connect to the database.", :red
+        exit 1
       end
 
       def days_ago(x)
