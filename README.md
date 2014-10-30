@@ -1,4 +1,4 @@
-# OnDuty
+# Onduty
 
 Manage onduty contacts and alarming.
 
