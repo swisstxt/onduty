@@ -41,7 +41,7 @@ See `bundle exec bin/onduty-cli` for a cli help.
 
 ## TODO
 
-This is an beta - some polishing todo:
+This is a beta release - lots of polishing todo...
   * cli
     * triggering alerts and escalation
   * authentication
