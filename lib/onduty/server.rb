@@ -12,10 +12,14 @@ else
   exit 1
 end
 
-# require models, helpers and controllers
-%w(models helpers controllers).each do |type|
-  files = Dir["./app/#{type}/*.rb"]
-  files.each do |file|
-    require file
+module Onduty
+  class Server < Sinatra::Base
+    # require models, helpers and controllers
+    %w(models helpers controllers).each do |type|
+      files = Dir["./app/#{type}/*.rb"]
+      files.each do |file|
+        require file
+      end
+    end
   end
 end

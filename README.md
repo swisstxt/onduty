@@ -35,11 +35,13 @@ cp config/onduty.example.yml config/onduty.yml
 vi config/onduty.yml
 ```
 
+## CLI
+
+See `bundle exec bin/onduty-cli` for a cli help.
+
 ## TODO
 
-This is an alpha release - still a lot to do:
+This is an beta - some polishing todo:
   * cli
-    * alert creation
     * triggering alerts and escalation
-  * mail alerts
   * authentication

@@ -10,6 +10,6 @@ end
 
 namespace :db do
   task :load_config do
-    require "onduty/server_base"
+    require "onduty/server"
   end
 end

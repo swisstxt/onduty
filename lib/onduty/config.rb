@@ -18,8 +18,9 @@ module Onduty
       config_file = [ '/etc/onduty.yml',
         '/etc/onduty/onduty.yml',
         File.join(base_path, 'config/onduty.yml'),
-        File.join(base_path, 'config/onduty.example.yml')].find {
-          |config| File.exists? config
+        File.join(base_path, 'config/onduty.example.yml')
+      ].find {
+        |config| File.exists? config
       }
     end
 

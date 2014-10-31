@@ -1,10 +1,11 @@
 require "sqlite3"
 require "active_record"
 require "thor"
+require "ostruct"
 
 require "onduty/version"
 require "onduty/config"
-require "onduty/twilio_api"
+require "onduty/twilio_alert"
 
 #set :environment, :development #(ENV["RACK_ENV"] || :development).to_sym
 
@@ -41,7 +42,7 @@ module Onduty
     def contacts
       connect_to_db
       table = [%w(Name Phone Email Duty)]
-      ::Contact.all.order(:last_name).each do |contact|
+      Onduty::Contact.all.order(:last_name).each do |contact|
         table << [
           contact.name,
           contact.phone,
@@ -56,7 +57,7 @@ module Onduty
     def duties
       connect_to_db
       table = [%w(Name Contact)]
-      ::Duty.all.each do |duty|
+      Onduty::Duty.all.each do |duty|
         table << [
           duty.name,
           duty.contact ? duty.contact.name : "-"
@@ -79,7 +80,7 @@ module Onduty
     def alerts
       connect_to_db
       table = [%w(ID Host Service Created Acknowledged)]
-      alerts =::Alert.created_after(days_ago(options[:days_ago]))
+      alerts = Onduty::Alert.created_after(days_ago(options[:days_ago]))
       case options[:status]
       when 'ack'
         alerts = alerts.acknowledged
@@ -111,9 +112,13 @@ module Onduty
       desc: "service",
       aliases: '-s',
       required: true
+    option :alert,
+      desc: "alert?",
+      aliases: '-A',
+      type: :boolean
     def create_alert
       connect_to_db
-      alert = ::Alert.new(
+      alert = Onduty::Alert.new(
         message: options[:message],
         host:    options[:host],
         service: options[:service]
@@ -126,10 +131,16 @@ module Onduty
       end
     end
 
+    desc "trigger_alert [ID]", "trigger a given alert"
+    def trigger_alert(id)
+      connect_to_db
+      Onduty::TwilioAlert.trigger(id, html: true)
+    end
+
     desc "show_alert [ID]", "show a given alert"
     def show_alert(id)
       connect_to_db
-      alert = ::Alert.find(id)
+      alert = Onduty::Alert.find(id)
       table = %w(id uid host service message
       created_at acknowledged_at last_alerted_at).map do |attr|
         [attr, alert[attr.to_sym] ? alert[attr.to_sym].to_s : '-']
