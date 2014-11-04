@@ -4,6 +4,7 @@ gem 'twilio-ruby', '~> 3.13.1'
 gem 'activerecord', '~> 4.1.6'
 gem 'sqlite3'
 gem 'pony'
+gem 'erubis', '~> 2.7.0'
 
 group :server do
   gem 'puma'

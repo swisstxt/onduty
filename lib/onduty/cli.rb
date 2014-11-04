@@ -2,6 +2,7 @@ require "sqlite3"
 require "active_record"
 require "thor"
 require "ostruct"
+require "erubis"
 
 require "onduty/version"
 require "onduty/config"
