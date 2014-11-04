@@ -5,7 +5,7 @@ require "ostruct"
 
 require "onduty/version"
 require "onduty/config"
-require "onduty/twilio_alert"
+require "onduty/notification"
 
 #set :environment, :development #(ENV["RACK_ENV"] || :development).to_sym
 
@@ -34,7 +34,7 @@ module Onduty
 
     desc "version", "print cloudstack-cli version number"
     def version
-      say "onduty-cli v#{Onduty::VERSION}"
+      say "onduty-cli v#{VERSION}"
     end
     map %w(-v --version) => :version
 
@@ -42,7 +42,7 @@ module Onduty
     def contacts
       connect_to_db
       table = [%w(Name Phone Email Duty)]
-      Onduty::Contact.all.order(:last_name).each do |contact|
+      Contact.all.order(:last_name).each do |contact|
         table << [
           contact.name,
           contact.phone,
@@ -57,7 +57,7 @@ module Onduty
     def duties
       connect_to_db
       table = [%w(Name Contact)]
-      Onduty::Duty.all.each do |duty|
+      Duty.all.each do |duty|
         table << [
           duty.name,
           duty.contact ? duty.contact.name : "-"
@@ -80,7 +80,7 @@ module Onduty
     def alerts
       connect_to_db
       table = [%w(ID Host Service Created Acknowledged)]
-      alerts = Onduty::Alert.created_after(days_ago(options[:days_ago]))
+      alerts = Alert.created_after(days_ago(options[:days_ago]))
       case options[:status]
       when 'ack'
         alerts = alerts.acknowledged
@@ -118,7 +118,7 @@ module Onduty
       type: :boolean
     def create_alert
       connect_to_db
-      alert = Onduty::Alert.new(
+      alert = Alert.new(
         message: options[:message],
         host:    options[:host],
         service: options[:service]
@@ -134,13 +134,13 @@ module Onduty
     desc "trigger_alert [ID]", "trigger a given alert"
     def trigger_alert(id)
       connect_to_db
-      Onduty::TwilioAlert.trigger(id, html: true)
+      Notification.new(id, html: true).notify
     end
 
     desc "show_alert [ID]", "show a given alert"
     def show_alert(id)
       connect_to_db
-      alert = Onduty::Alert.find(id)
+      alert = Alert.find(id)
       table = %w(id uid host service message
       created_at acknowledged_at last_alerted_at).map do |attr|
         [attr, alert[attr.to_sym] ? alert[attr.to_sym].to_s : '-']

@@ -35,6 +35,22 @@ cp config/onduty.example.yml config/onduty.yml
 vi config/onduty.yml
 ```
 
+## Run the server
+
+Onduty is a Sinatra Webapp and can be started using any Rack compatible webserver.
+
+From the application base directory:
+
+```bash
+rackup config.ru
+```
+
+...or run it directly with Puma:
+
+```bash
+puma config.ru -p 80
+```
+
 ## CLI
 
 See `bundle exec bin/onduty-cli` for a cli help.

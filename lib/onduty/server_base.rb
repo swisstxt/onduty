@@ -7,4 +7,4 @@ require 'rack-flash'
 
 require "onduty/version"
 require "onduty/config"
-require "onduty/twilio_api"
+require "onduty/notification"

@@ -13,12 +13,16 @@ module Onduty
       )
     end
 
-    def self.file
+    def self.base_path
       base_path = File.expand_path("../../../", __FILE__)
-      config_file = [ '/etc/onduty.yml',
+    end
+
+    def self.file
+      config_file = [
+        '/etc/onduty.yml',
         '/etc/onduty/onduty.yml',
-        File.join(base_path, 'config/onduty.yml'),
-        File.join(base_path, 'config/onduty.example.yml')
+        File.join(Config.base_path, 'config/onduty.yml'),
+        File.join(Config.base_path, 'config/onduty.example.yml')
       ].find {
         |config| File.exists? config
       }

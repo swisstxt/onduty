@@ -2,7 +2,9 @@
 
 get '/alerts' do
   @title = "Alerts"
-  @alerts = if params[:days].to_i > 0
+  @alerts = if params[:days] == 'all'
+    Onduty::Alert.all
+  elsif params[:days].to_i > 0
     Onduty::Alert.created_after(days_ago(params[:days]))
   else
     Onduty::Alert.created_after(days_ago(2))
@@ -92,7 +94,7 @@ end
 
 post '/alerts/:id/alert' do
   @alert = Onduty::Alert.find(params[:id])
-  Onduty::TwilioAlert.trigger(@alert.id)
+  Onduty::Notification.new(@alert.id).notify
   flash[:success] = "Successfuly alerted."
   redirect "/alerts/#{@alert.id}"
 end
