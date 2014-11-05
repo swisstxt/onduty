@@ -40,6 +40,14 @@ At the moment the application just provides basic auth, when you configure "admi
 
 The alert acknowledge and twiml methods are protected by alert UID.
 
+### Icinga/Nagios acknowledge
+
+Set the 'icinga_cmd_path' variable in your configuration in order to acknowledge alerts in Icinga or Nagios.
+
+```bash
+icinga_cmd_path: /var/icinga/rw/icinga.cmd
+```
+
 ### Plugins
 
 The following plugins are available:

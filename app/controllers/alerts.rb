@@ -69,10 +69,13 @@ end
 route :get, :post, '/alerts/:id/acknowledge.?:format?' do
   @alert = Onduty::Alert.find(params[:id])
   halt 403 unless @alert.uid = params[:uid]
-
-  @alert.acknowledged_at = Time.now
+  icinga_cmd = if settings.responds_to(:icinga_cmd_path)
+    settings.icinga_cmd_path
+  else
+    nil
+  end
+  @alert.acknowledge(icinga_cmd)
   @alert.save
-
   if params[:format] =~ /^(twiml|xml)$/
     content_type 'text/xml'
     Twilio::TwiML::Response.new do |r|

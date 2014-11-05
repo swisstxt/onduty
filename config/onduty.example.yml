@@ -14,4 +14,6 @@ notification_plugins:
   - MailNotification
 
 smtp_options:
-  :address: 'mail.example.com'
+  :address: mail.example.com
+
+icinga_cmd_path: /var/icinga/rw/icinga.cmd
