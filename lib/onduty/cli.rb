@@ -133,9 +133,14 @@ module Onduty
     end
 
     desc "trigger_alert [ID]", "trigger a given alert"
+    option :escalate,
+      desc: "escalate",
+      type: :boolean
     def trigger_alert(id)
       connect_to_db
-      Notification.new(id, html: true).notify
+      options = { html: true }
+      options[:duty_type] = 2 if options[:escalate]
+      Notification.new(id, options).notify
     end
 
     desc "show_alert [ID]", "show a given alert"
@@ -147,6 +152,22 @@ module Onduty
         [attr, alert[attr.to_sym] ? alert[attr.to_sym].to_s : '-']
       end
       print_table table
+    rescue
+      say "Alert not found.", :red
+    end
+
+    desc "plugins", "show active plugins and their state"
+    def plugins
+      connect_to_db
+      table = [%w(name status)]
+      notification = Notification.new(Alert.first)
+      notification.plugins.each do |plugin_name|
+        plugin = Onduty.const_get(plugin_name).new(notification.alert_id, notification.options)
+        table << [plugin.name, plugin.valid_configuration? ? "OK" : "Missing Options"]
+      end
+      print_table table
+    rescue
+      say "A valid alert and onduty contact is required.", :red
     end
 
     no_commands do

@@ -5,6 +5,11 @@ module Onduty
       "Onduty Voice Notification"
     end
 
+    def valid_configuration?
+      @contact.phone && @settings.account_sid &&
+        @settings.auth_token && @settings.from_number
+    end
+
     def trigger
       twilio = TwilioApi.new(@settings.account_sid, @settings.auth_token, @settings.from_number)
       print "alert_#{@alert_id}: Initiating call to #{@contact.name}..."

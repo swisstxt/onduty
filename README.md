@@ -35,6 +35,35 @@ cp config/onduty.example.yml config/onduty.yml
 vi config/onduty.yml
 ```
 
+### Security
+At the moment the application just provides basic auth, when you configure "admin_user" and "admin_password" in your configuration file.
+
+The alert acknowledge and twiml methods are protected by alert UID.
+
+### Plugins
+
+The following plugins are available:
+  - VoiceNotification (Twilio)
+  - SmsNotification (Twilio)
+  - MailNotification
+
+Plugins can be enabled/disables using the configuration file.
+
+This is the default configuration:
+
+```bash
+notification_plugins:
+  - VoiceNotification
+  - SmsNotification
+  - MailNotification
+```
+
+Check the plugins state using the onduty-cli:
+
+```bash
+bundle exec bin/onduty-cli plugins
+```
+
 ## Run the server
 
 Onduty is a Sinatra Webapp and can be started using any Rack compatible webserver.
@@ -57,7 +86,5 @@ See `bundle exec bin/onduty-cli` for a cli help.
 
 ## TODO
 
-This is a beta release - lots of polishing todo...
-  * cli
-    * triggering alerts and escalation
-  * authentication
+ * cli
+    * triggering all outstanding alerts and escalations at once

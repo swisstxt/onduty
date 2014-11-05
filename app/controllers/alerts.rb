@@ -1,6 +1,7 @@
 # Alerts Controller
 
 get '/alerts' do
+  protected!
   @title = "Alerts"
   @alerts = if params[:days] == 'all'
     Onduty::Alert.all
@@ -16,6 +17,7 @@ get '/alerts' do
 end
 
 get '/alerts/new' do
+  protected!
   @method = 'new'
   @title = "Create Alert"
   @alert = Onduty::Alert.new
@@ -23,6 +25,7 @@ get '/alerts/new' do
 end
 
 post '/alerts/new' do
+  protected!
   alert = Onduty::Alert.new(params[:alert])
   if alert.save
     flash[:success] = "Successfuly created alert."
@@ -34,12 +37,14 @@ post '/alerts/new' do
 end
 
 get '/alerts/:id' do
+  protected!
   @alert = Onduty::Alert.find(params[:id])
   @title = @alert.id
   erb :"alerts/show"
 end
 
 delete '/alerts/:id/delete' do
+  protected!
   alert = Onduty::Alert.find(params[:id])
   if params[:confirm_delete]
     if alert.destroy
@@ -55,6 +60,7 @@ delete '/alerts/:id/delete' do
 end
 
 get '/alerts/:id/delete' do
+  protected!
   @alert = Onduty::Alert.find(params[:id])
   @title = "Delete Alert"
   erb :"alerts/delete"
@@ -92,9 +98,14 @@ post '/alerts/:id.twiml' do
   end.text
 end
 
-post '/alerts/:id/alert' do
+post '/alerts/:id/alert/?:duty_type?' do
+  protected!
   @alert = Onduty::Alert.find(params[:id])
-  Onduty::Notification.new(@alert.id).notify
-  flash[:success] = "Successfuly alerted."
+  options = params[:duty_type] ? {duty_type: params[:duty_type].to_i} : {}
+  if Onduty::Notification.new(@alert.id, options).notify
+    flash[:success] = "Successfuly alerted."
+  else
+    flash[:danger] = "There was a problem notifying onduty contacts."
+  end
   redirect "/alerts/#{@alert.id}"
 end

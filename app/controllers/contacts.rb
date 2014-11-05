@@ -1,6 +1,7 @@
 # Contacts Controller
 
 get '/contacts' do
+  protected!
   @title = "Contacts"
   @contacts = Onduty::Contact.all.order(:last_name)
   @duties = Onduty::Duty.all
@@ -8,6 +9,7 @@ get '/contacts' do
 end
 
 get '/contacts/new' do
+  protected!
   @method = 'new'
   @title = "Create Contact"
   @contact = Onduty::Contact.new
@@ -15,6 +17,7 @@ get '/contacts/new' do
 end
 
 post '/contacts/new' do
+  protected!
   contact = Onduty::Contact.new(params[:contact])
   if contact.save
     flash[:success] = "Successfuly created contact."
@@ -26,12 +29,14 @@ post '/contacts/new' do
 end
 
 get '/contacts/:id' do
+  protected!
   @contact = Onduty::Contact.find(params[:id])
   @title = @contact.name
   erb :"contacts/show"
 end
 
 get '/contacts/:id/edit' do
+  protected!
   @method = "#{params[:id]}/edit"
   @contact = Onduty::Contact.find(params[:id])
   @title = "Edit Contact"
@@ -39,6 +44,7 @@ get '/contacts/:id/edit' do
 end
 
 post '/contacts/:id/edit' do
+  protected!
   @contact = Onduty::Contact.find(params[:id])
   if @contact.update(params[:contact])
     flash[:success] = "Successfuly edited contact."
@@ -50,6 +56,7 @@ post '/contacts/:id/edit' do
 end
 
 delete '/contacts/:id/delete' do
+  protected!
   contact = Onduty::Contact.find(params[:id])
   if params[:confirm_delete]
     if contact.destroy
@@ -65,6 +72,7 @@ delete '/contacts/:id/delete' do
 end
 
 get '/contacts/:id/delete' do
+  protected!
   @contact = Onduty::Contact.find(params[:id])
   @title = "Delete Contact"
   erb :"contacts/delete"

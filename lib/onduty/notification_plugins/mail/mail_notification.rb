@@ -7,6 +7,10 @@ module Onduty
       "Onduty Mail Notification"
     end
 
+    def valid_configuration?
+      @contact.email && @settings.smtp_options
+    end
+
     def trigger
       if @contact.email && @contact.alert_by_email == 1
         print "alert_#{@alert_id}: Sending alert email to #{@contact.name}..."

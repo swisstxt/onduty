@@ -6,6 +6,7 @@ class CreateAlerts < ActiveRecord::Migration
       t.string   :host
       t.string   :service
       t.datetime :last_alert_at
+      t.datetime :escalated_at
       t.datetime :acknowledged_at
       t.timestamps
     end
