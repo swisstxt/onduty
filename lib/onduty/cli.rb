@@ -163,11 +163,17 @@ module Onduty
       notification = Notification.new(Alert.first)
       notification.plugins.each do |plugin_name|
         plugin = Onduty.const_get(plugin_name).new(notification.alert_id, notification.options)
-        table << [plugin.name, plugin.valid_configuration? ? "OK" : "Missing Options"]
+        row = [plugin.name]
+        row << if plugin.valid_configuration?
+          set_color("OK", :green)
+        else
+          set_color("Missing Options", :red)
+        end
+        table << row
       end
       print_table table
-    rescue
-      say "A valid alert and onduty contact is required.", :red
+    #rescue
+    #  say "A valid alert and onduty contact is required.", :red
     end
 
     no_commands do

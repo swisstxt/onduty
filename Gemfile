@@ -5,6 +5,7 @@ gem 'activerecord', '~> 4.1.6'
 gem 'sqlite3'
 gem 'pony'
 gem 'erubis', '~> 2.7.0'
+gem 'zendesk_api'
 
 group :server do
   gem 'puma'
