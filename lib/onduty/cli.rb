@@ -172,8 +172,8 @@ module Onduty
         table << row
       end
       print_table table
-    #rescue
-    #  say "A valid alert and onduty contact is required.", :red
+    rescue
+      say "A valid alert and onduty contact is required.", :red
     end
 
     no_commands do
