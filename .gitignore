@@ -1,2 +1,5 @@
 config/onduty.yml
 db/*.sqlite3
+cache
+log/*
+tmp/*

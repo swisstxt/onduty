@@ -4,6 +4,8 @@ require 'sinatra/contrib'
 require 'sinatra/activerecord'
 require 'sinatra/config_file'
 require 'rack-flash'
+require 'rack/cache'
+require 'rack/contrib'
 require 'erubis'
 
 require 'onduty/version'
