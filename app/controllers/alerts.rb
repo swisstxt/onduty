@@ -69,7 +69,7 @@ end
 route :get, :post, '/alerts/:id/acknowledge.?:format?' do
   @alert = Onduty::Alert.find(params[:id])
   halt 403 unless @alert.uid = params[:uid]
-  icinga_cmd = if settings.responds_to(:icinga_cmd_path)
+  icinga_cmd = if settings.respond_to?(:icinga_cmd_path)
     settings.icinga_cmd_path
   else
     nil
