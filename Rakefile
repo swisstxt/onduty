@@ -16,3 +16,12 @@ namespace :db do
     require "onduty/server"
   end
 end
+
+desc "Push a tag with the current version to git"
+task :tag do
+  require 'onduty/version'
+  puts "Creating a tag for v#{Onduty::VERSION}..."
+  %x[git tag v#{Onduty::VERSION}]
+  %x[git push --tags]
+  puts "Finished!"
+end
