@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'rake'
+gem 'thor'
 gem 'twilio-ruby', '~> 3.13.1'
 gem 'activerecord', '~> 4.1.6'
 gem 'sqlite3'
@@ -17,9 +19,4 @@ group :server do
   gem 'rack-contrib'
 end
 
-group :development do
-  gem 'rake'
-  gem 'shotgun'
-end
-
-gem 'thor', group: :cli
+gem 'shotgun', group: :development

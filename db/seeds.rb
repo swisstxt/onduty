@@ -7,7 +7,7 @@ require './app/models/duty'
   {id: 1, name: 'onduty'},
   {id: 2, name: 'escalation'}
 ].each do |duty|
-  Duty.new do |d|
+  Onduty::Duty.new do |d|
     d.id = duty[:id]
     d.name = duty[:name]
     d.save
