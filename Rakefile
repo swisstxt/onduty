@@ -1,3 +1,6 @@
+require 'bundler'
+Bundler.require
+
 require "sinatra/activerecord/rake"
 
 # resolve path, ignoring symlinks
