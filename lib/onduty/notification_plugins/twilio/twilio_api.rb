@@ -13,7 +13,8 @@ module Onduty
       client.account.calls.create(
         from: @from_number,
         to:   number,
-        url:  twiml_url
+        url:  twiml_url,
+        method: 'POST'
       )
     end
 

@@ -1,5 +1,52 @@
 # Alerts Controller
 
+route :get, :post, '/alerts/:id/acknowledge.?:format?' do
+  @alert = Onduty::Alert.find(params[:id])
+  halt 403 unless @alert.uid = params[:uid]
+  icinga_cmd = if settings.respond_to?(:icinga_cmd_path)
+    settings.icinga_cmd_path
+  else
+    nil
+  end
+  @alert.acknowledge(icinga_cmd)
+  @alert.save
+  if params[:format] =~ /^(twiml|xml)$/
+    content_type 'text/xml'
+    Twilio::TwiML::Response.new do |r|
+      r.Say "The alert with ID #{@alert.id} has been acknowledged. Thank you and Goodbye!", voice: "woman"
+    end.text
+  else
+    flash[:success] = "Successfuly acknowledeged alert."
+    redirect "/alerts/#{@alert.id}"
+  end
+end
+
+# Access the alert and respond with twiml format
+post, '/alerts/:id.twiml' do
+  @alert = Onduty::Alert.find(params[:id])
+  halt 403 unless @alert.uid = params[:uid]
+  content_type 'text/xml'
+  Twilio::TwiML::Response.new do |r|
+    r.Say @alert.message, voice: "woman"
+    r.Gather(numDigits: 1, action: "/alerts/#{@alert.id}/acknowledge.twiml?uid=#{@alert.uid}") do |g|
+      g.Say "Please enter any key to acknowledge the message.", voice: "woman"
+    end
+    r.Say "We didn't receive any input. We will call you again. Goodbye!", voice: "woman"
+  end.text
+end
+
+post '/alerts/:id/alert/?:duty_type?' do
+  protected!
+  @alert = Onduty::Alert.find(params[:id])
+  options = params[:duty_type] ? {duty_type: params[:duty_type].to_i} : {}
+  if Onduty::Notification.new(@alert.id, options).notify
+    flash[:success] = "Successfuly alerted."
+  else
+    flash[:danger] = "There was a problem notifying onduty contacts."
+  end
+  redirect "/alerts/#{@alert.id}"
+end
+
 get '/alerts' do
   protected!
   @title = "Alerts"
@@ -64,51 +111,4 @@ get '/alerts/:id/delete' do
   @alert = Onduty::Alert.find(params[:id])
   @title = "Delete Alert"
   erb :"alerts/delete"
-end
-
-route :get, :post, '/alerts/:id/acknowledge.?:format?' do
-  @alert = Onduty::Alert.find(params[:id])
-  halt 403 unless @alert.uid = params[:uid]
-  icinga_cmd = if settings.respond_to?(:icinga_cmd_path)
-    settings.icinga_cmd_path
-  else
-    nil
-  end
-  @alert.acknowledge(icinga_cmd)
-  @alert.save
-  if params[:format] =~ /^(twiml|xml)$/
-    content_type 'text/xml'
-    Twilio::TwiML::Response.new do |r|
-      r.Say "The alert with ID #{@alert.id} has been acknowledged. Thank you and Goodbye!", voice: "woman"
-    end.text
-  else
-    flash[:success] = "Successfuly acknowledeged alert."
-    redirect "/alerts/#{@alert.id}"
-  end
-end
-
-# Access the alert and respond with twiml format
-route :get, :post, '/alerts/:id.twiml' do
-  @alert = Onduty::Alert.find(params[:id])
-  halt 403 unless @alert.uid = params[:uid]
-  content_type 'text/xml'
-  Twilio::TwiML::Response.new do |r|
-    r.Say @alert.message, voice: "woman"
-    r.Gather(numDigits: 1, action: "/alerts/#{@alert.id}/acknowledge.twiml?uid=#{@alert.uid}") do |g|
-      g.Say "Please enter any key to acknowledge the message.", voice: "woman"
-    end
-    r.Say "We didn't receive any input. We will call you again. Goodbye!", voice: "woman"
-  end.text
-end
-
-post '/alerts/:id/alert/?:duty_type?' do
-  protected!
-  @alert = Onduty::Alert.find(params[:id])
-  options = params[:duty_type] ? {duty_type: params[:duty_type].to_i} : {}
-  if Onduty::Notification.new(@alert.id, options).notify
-    flash[:success] = "Successfuly alerted."
-  else
-    flash[:danger] = "There was a problem notifying onduty contacts."
-  end
-  redirect "/alerts/#{@alert.id}"
 end
