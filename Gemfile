@@ -15,7 +15,6 @@ group :server do
   gem 'sinatra-contrib', '~> 1.4.2'
   gem 'sinatra-activerecord', '~> 2.0.2'
   gem 'rack-flash3'
-  gem 'rack-cache'
   gem 'rack-contrib'
 end
 
