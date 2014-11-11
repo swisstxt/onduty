@@ -1,5 +1,11 @@
 
+
+# Secure onduty with simple auth
+# admin_user:     admin
+# admin_password: mySEcrtetPW
+
 base_url:       'http://localhost:3000/'
+
 # session_secret: 'your?random!secret$'
 # email_sender:   'alert@onduty'
 
