@@ -1,7 +1,7 @@
 module Onduty
   class MailNotification < Notification
     require 'pony'
-    require "uri"
+    require 'uri'
 
     def name
       "Onduty Mail Notification"
@@ -18,11 +18,12 @@ module Onduty
           @settings.base_url,
           "/alerts/#{@alert.id}/acknowledge#{ '.twiml' unless @options[:html] }?uid=#{@alert.uid}"
         ).to_s
+        from = @settings.email_sender ? @settings.email_sender : 'onduty@onduty'
         body = Erubis::Eruby.new(
           File.read(File.join(File.dirname(__FILE__), 'mail_notification.erb'))
         ).result(alert: @alert, contact: @contact, acknowledge_url: @acknowledge_url)
         Pony.mail({
-          from:    "onduty@#{ @settings.email_sender ? @settings.email_sender : 'onduty'}",
+          from:    from,
           to:      @contact.email,
           subject: "[Alert #{@alert_id}] Alert from onduty" ,
           body:    body,

@@ -15,8 +15,8 @@ module Onduty
     def acknowledge(icinga_cmd_path)
       if icinga_cmd_path
         now = Time.now.to_i
-        %x[[#{now}] ACKNOWLEDGE_SVC_PROBLEM;;#{self.host};#{self.service};1 \
- ;0;1;onduty;Acknowledged from Onduty #{now} > #{icinga_cmd_path}]
+        %x['[#{now}] ACKNOWLEDGE_SVC_PROBLEM;#{self.host};#{self.service};1 \
+ ;0;1;onduty;Acknowledged from Onduty #{now}' > #{icinga_cmd_path}]
       end
       self.acknowledged_at = Time.now
     end

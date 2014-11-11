@@ -22,7 +22,7 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
 end
 
 # Access the alert and respond with twiml format
-post, '/alerts/:id.twiml' do
+post '/alerts/:id.twiml' do
   @alert = Onduty::Alert.find(params[:id])
   halt 403 unless @alert.uid = params[:uid]
   content_type 'text/xml'

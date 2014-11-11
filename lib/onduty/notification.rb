@@ -33,7 +33,7 @@ module Onduty
        if notification_plugin.valid_configuration?
          notification_plugin.trigger
        else
-         puts "#{notification_plugin} can't be used because of missing configuration options."
+         puts "#{notification_plugin.name} can't be used because of missing configuration options."
        end
       end
       @alert.last_alert_at = Time.now
