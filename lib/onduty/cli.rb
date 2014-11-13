@@ -8,8 +8,6 @@ require "onduty/version"
 require "onduty/config"
 require "onduty/notification"
 
-#set :environment, :development #(ENV["RACK_ENV"] || :development).to_sym
-
 Dir["./app/models/*.rb"].each { |file| require file }
 
 module Onduty
@@ -26,7 +24,7 @@ module Onduty
     class_option :env,
       aliases: '-e',
       desc: 'environment to use',
-      default: 'development'
+      default: ENV['ONDUTY_ENV'] || 'production'
 
     # exit with return code 1 in case of a error
     def self.exit_on_failure?
@@ -157,7 +155,7 @@ module Onduty
       alert = Alert.find(id)
       notification_opts = { html: true }
       unless alert.acknowledged_at
-        if (Time.now - alert.created_at) > (options[:escalate_delay] * 60)
+        if (Time.now - alert.created_at) > (options[:escalation_delay] * 60)
           say "Escalating alert.", :red
           notification_opts[:duty_type] = 2
         end
