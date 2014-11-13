@@ -86,7 +86,7 @@ end
 get '/alerts/:id' do
   protected!
   @alert = Onduty::Alert.find(params[:id])
-  @title = @alert.id
+  @title = "Alert #{@alert.id}"
   erb :"alerts/show"
 end
 

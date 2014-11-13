@@ -2,6 +2,8 @@ module Onduty
   class Notification
 
     require 'logger'
+    require 'uri'
+
     Dir[File.expand_path('../notification_plugins/**/*.rb', __FILE__)].each { |f| require f }
 
     attr_reader :alert_id, :options, :logger
@@ -15,6 +17,13 @@ module Onduty
       )
       @options = options
       @logger = initialize_logger
+    end
+
+    def acknowledge_url
+      URI::join(
+        @settings.base_url,
+        "/alerts/#{@alert.id}/acknowledge#{ '.twiml' unless @options[:html] }?uid=#{@alert.uid}"
+      ).to_s
     end
 
     def name
@@ -43,11 +52,11 @@ module Onduty
        if notification_plugin.valid_configuration?
          notification_plugin.trigger
        else
-         logger.warn "#{notification_plugin.name} can't be used because of missing configuration options."
+         notification_plugin.logger.error "Plugin can't be used because of missing configuration options."
        end
       end
       @alert.last_alert_at = Time.now
-      @alert.save
+      @alert.save!
     rescue => e
       logger.error "Error triggering alert with ID #{@alert_id}: #{e.message}"
       false

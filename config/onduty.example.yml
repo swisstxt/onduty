@@ -23,3 +23,7 @@ smtp_options:
   :address: mail.example.com
 
 icinga_cmd_path: /var/icinga/rw/icinga.cmd
+
+# zendesk_url: https://yoursubdomain.zendesk.com/api/v2
+# zendesk_username: you@yourdomain.com
+# zendesk_token: you-zendesk-token

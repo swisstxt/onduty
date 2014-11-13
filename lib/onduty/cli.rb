@@ -33,7 +33,7 @@ module Onduty
       true
     end
 
-    desc "version", "print cloudstack-cli version number"
+    desc "version", "print onduty version number"
     def version
       say "onduty-cli v#{VERSION}"
     end
@@ -117,30 +117,54 @@ module Onduty
       desc: "alert?",
       aliases: '-A',
       type: :boolean
+    option :suspend_for,
+      desc: "minutes of time to suspend alerts for given host/service",
+      type: :numeric,
+      default: 60
     def create_alert
       connect_to_db
-      alert = Alert.new(
-        message: options[:message],
+      alert = Alert.find_or_create_by(
         host:    options[:host],
-        service: options[:service]
-      )
+        service: options[:service],
+        acknowledged_at: nil
+      ) do |a|
+        a.message = options[:message]
+      end
+
       if alert.save
-        say "Created alert:"
+        if options[:alert]
+          if alert.last_alert_at == nil ||
+            (options[:suspend_for] * 60) < (Time.now - alert.last_alert_at)
+            say "Alerting...", :yellow
+            invoke("trigger_alert", [alert.id], {})
+          else
+            say "Not sending alerts, still suspended...", :yellow
+          end
+        end
         invoke "show_alert", [alert.id], {}
       else
-        say "Error creating alert."
+        say "Error creating alert.", :red
       end
     end
 
     desc "trigger_alert [ID]", "trigger a given alert"
-    option :escalate,
-      desc: "escalate",
-      type: :boolean
+    option :escalation_delay,
+      desc: "escalation delay in minutes for an alert which is unacknowledged for a certain amount of time",
+      type: :numeric,
+      default: 120
     def trigger_alert(id)
       connect_to_db
+      alert = Alert.find(id)
       options = { html: true }
-      options[:duty_type] = 2 if options[:escalate]
-      Notification.new(id, options).notify
+      unless alert.acknowledged_at
+        if (Time.now - alert.created_at) > (options[:escalate_delay] * 60)
+          say "Escalating alert.", :red
+          options[:duty_type] = 2
+        end
+        Notification.new(alert.id, options).notify
+      else
+        say "Alert already acknowledged.", :cyan
+      end
     end
 
     desc "show_alert [ID]", "show a given alert"
@@ -148,7 +172,7 @@ module Onduty
       connect_to_db
       alert = Alert.find(id)
       table = %w(id uid host service message
-      created_at acknowledged_at last_alerted_at).map do |attr|
+      created_at acknowledged_at last_alert_at).map do |attr|
         [attr, alert[attr.to_sym] ? alert[attr.to_sym].to_s : '-']
       end
       print_table table
