@@ -18,12 +18,16 @@ end
 
 post '/contacts/new' do
   protected!
-  contact = Onduty::Contact.new(params[:contact])
-  if contact.save
+  @contact = Onduty::Contact.new(params[:contact])
+  if @contact.save
     flash[:success] = "Successfuly created contact."
     redirect "/contacts/#{contact.id}"
   else
-    flash[:danger] = "Error during contact creation. Please submit all required values."
+    message = "Error during contact creation. Please submit all required values."
+    @contact.errors.full_messages.each do |msg|
+      message += "<br> -#{msg}"
+    end
+    flash[:danger] = message
     redirect '/contacts/new'
   end
 end
