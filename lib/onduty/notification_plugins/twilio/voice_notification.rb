@@ -12,12 +12,11 @@ module Onduty
 
     def trigger
       twilio = TwilioApi.new(@settings.account_sid, @settings.auth_token, @settings.from_number)
-      print "alert_#{@alert_id}: Initiating call to #{@contact.name}..."
+      logger.info "Initiating call for alert with ID #{@alert_id} to #{@contact.name}."
       twilio.call(
         @contact.phone,
         URI::join(@settings.base_url, "/alerts/#{@alert.id}.twiml?uid=#{@alert.uid}")
       )
-      puts "\t\t[OK]"
     end
   end
 end

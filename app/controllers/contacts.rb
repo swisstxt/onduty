@@ -31,6 +31,7 @@ end
 get '/contacts/:id' do
   protected!
   @contact = Onduty::Contact.find(params[:id])
+  @duty = Onduty::Duty.where(contact_id: params[:id]).first
   @title = @contact.name
   erb :"contacts/show"
 end

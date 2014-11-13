@@ -12,9 +12,8 @@ module Onduty
     def trigger
       if @contact.phone && @contact.alert_by_sms == 1
         twilio = TwilioApi.new(@settings.account_sid, @settings.auth_token, @settings.from_number)
-        print "alert_#{@alert_id}: Sending alert SMS to #{@contact.name}..."
+        logger.info "Sending alert SMS with ID #{@alert_id} to #{@contact.name}."
         twilio.sms(@contact.phone, @alert.message)
-        puts "\t\t[OK]"
       end
     end
   end

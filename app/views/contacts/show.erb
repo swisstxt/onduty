@@ -27,21 +27,10 @@
   <tr>
     <th>Status</th>
     <td>
-      <% if false %>
-      <form action="/contacts/<%= @contact.id %>/status" method="post" style="display: inline-block">
-        <div class="btn-group">
-          <% if @contact.status && @contact.status == 1 %>
-            <button type="button" class="btn btn-sm btn-danger">Onduty</button>
-          <% else %>
-            <button type="submit" class="btn btn-sm btn-default" name="status" value='1'>Onduty</button>
-          <% end %>
-          <% if @contact.status && @contact.status == 2 %>
-            <button type="button" class="btn btn-sm btn-primary">Escalation</button>
-          <% else %>
-            <button type="submit" class="btn btn-sm btn-default" name="status" value='2'>Escalation</button>
-          <% end %>
-        </div>
-      </form>
+      <% if @duty %>
+        <span class="label label-<%= status_badge(@duty.id) %>"><%= @duty.name %></span>
+      <% else %>
+        <span class="label label-default %>">Off Duty</span>
       <% end %>
     </td>
   </tr>

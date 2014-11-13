@@ -1,9 +1,10 @@
 module Onduty
   class Notification
 
+    require 'logger'
     Dir[File.expand_path('../notification_plugins/**/*.rb', __FILE__)].each { |f| require f }
 
-    attr_reader :alert_id, :options
+    attr_reader :alert_id, :options, :logger
 
     def initialize(alert_id, options = {})
       @alert_id = alert_id
@@ -13,10 +14,19 @@ module Onduty
         YAML::load(File.open(Onduty::Config.file))
       )
       @options = options
+      @logger = initialize_logger
     end
 
     def name
       "Onduty Generic Notification"
+    end
+
+    def initialize_logger
+      @logger = Logger.new(STDOUT).tap do |log|
+        STDOUT.sync = true
+        log.progname = self.name
+        log.level = Logger::INFO
+      end
     end
 
     def valid_configuration?
@@ -33,14 +43,13 @@ module Onduty
        if notification_plugin.valid_configuration?
          notification_plugin.trigger
        else
-         puts "#{notification_plugin.name} can't be used because of missing configuration options."
+         logger.warn "#{notification_plugin.name} can't be used because of missing configuration options."
        end
       end
       @alert.last_alert_at = Time.now
       @alert.save
     rescue => e
-      puts
-      puts "Error triggering alert with ID #{@alert_id}: #{e.message}"
+      logger.error "Error triggering alert with ID #{@alert_id}: #{e.message}"
       false
     end
   end

@@ -13,15 +13,12 @@ module Onduty
     def trigger
       # only trigger at first alert
       unless @alert.last_alert_at
-        print "alert_#{@alert_id}: Creating Zendesk ticket..."
+        logger.info "Creating Zendesk ticket for alert with ID #{@alert_id}."
         client = ZendeskAPI::Client.new do |config|
           config.url      = @settings.zendesk_url
           config.username = @settings.zendesk_username
           config.token    = @settings.zendesk_token
-          # Logger prints to STDERR by default, to e.g. print to stdout:
-          require 'logger'
-          config.logger = Logger.new(STDOUT)
-
+          config.logger = logger
           # Changes Faraday adapter
           # config.adapter = :patron
 
@@ -36,7 +33,6 @@ module Onduty
           :comment => { :value => "This is a test" },
           :submitter_id => client.current_user.id, :priority => "urgent"
         )
-        puts "\t\t[OK]"
       end
     end
   end

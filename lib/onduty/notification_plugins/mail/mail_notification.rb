@@ -13,7 +13,7 @@ module Onduty
 
     def trigger
       if @contact.email && @contact.alert_by_email == 1
-        print "alert_#{@alert_id}: Sending alert email to #{@contact.name}..."
+        logger.info "Sending alert email with ID #{@alert_id} to #{@contact.name}"
         @acknowledge_url = URI::join(
           @settings.base_url,
           "/alerts/#{@alert.id}/acknowledge#{ '.twiml' unless @options[:html] }?uid=#{@alert.uid}"
@@ -30,7 +30,6 @@ module Onduty
           via:     :smtp,
           via_options: @settings.smtp_options
         })
-        puts "\t[OK]"
       end
     end
   end
