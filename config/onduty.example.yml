@@ -7,7 +7,6 @@
 base_url:       'http://localhost:3000/'
 
 # session_secret: 'your?random!secret$'
-# email_sender:   'alert@onduty'
 
 # To find these visit https://www.twilio.com/user/account
 account_sid: "12677267267267267627676276276276"
@@ -19,6 +18,7 @@ notification_plugins:
   - SmsNotification
   - MailNotification
 
+# email_sender:   'alert@onduty'
 smtp_options:
   :address: mail.example.com
 

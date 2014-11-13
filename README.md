@@ -48,30 +48,6 @@ Set the 'icinga_cmd_path' variable in your configuration in order to acknowledge
 icinga_cmd_path: /var/icinga/rw/icinga.cmd
 ```
 
-### Plugins
-
-The following plugins are available:
-  - VoiceNotification (Twilio)
-  - SmsNotification (Twilio)
-  - MailNotification
-
-Plugins can be enabled/disables using the configuration file.
-
-This is the default configuration:
-
-```bash
-notification_plugins:
-  - VoiceNotification
-  - SmsNotification
-  - MailNotification
-```
-
-Check the plugins state using the onduty-cli:
-
-```bash
-bundle exec bin/onduty-cli plugins
-```
-
 ## Run the server
 
 Onduty is a Sinatra Webapp and can be started using any Rack compatible webserver.
@@ -92,7 +68,56 @@ puma config.ru -p 80
 
 See `bundle exec bin/onduty-cli` for a cli help.
 
-## TODO
+## Plugins
 
- * cli
-    * triggering all outstanding alerts and escalations at once
+The following plugins are available:
+  - VoiceNotification (using Twilio)
+  - SmsNotification (using Twilio)
+  - MailNotification
+  - ZendeskNotification
+
+Plugins can be enabled/disables using the configuration file.
+
+This is the default configuration:
+
+```bash
+notification_plugins:
+  - VoiceNotification
+  - SmsNotification
+  - MailNotification
+```
+
+Check the plugins state using the onduty-cli:
+
+```bash
+bundle exec bin/onduty-cli plugins
+```
+
+### Plugin Configuration Parameters
+
+#### VoiceNotification and SmsNotification
+
+In order to use the VoiceNotification and SmsNotification plugins you have to configure the following twilio account parameters:
+
+```yaml
+# To find these visit https://www.twilio.com/user/account
+account_sid: "12677267267267267627676276276276"
+auth_token:  "32324323424242424242424242424242"
+from_number: "+12345678910"
+```
+
+#### MailNotification
+
+```yaml
+email_sender: 'alert@onduty'
+smtp_options:
+  :address: mail.example.com
+```
+
+#### ZendeskNotification
+
+```yaml
+zendesk_url: https://yoursubdomain.zendesk.com/api/v2
+zendesk_username: you@yourdomain.com
+zendesk_token: you-zendesk-token
+```
