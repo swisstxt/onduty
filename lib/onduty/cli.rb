@@ -155,15 +155,15 @@ module Onduty
     def trigger_alert(id)
       connect_to_db
       alert = Alert.find(id)
-      options = { html: true }
+      notification_opts = { html: true }
       unless alert.acknowledged_at
         if (Time.now - alert.created_at) > (options[:escalate_delay] * 60)
           say "Escalating alert.", :red
-          options[:duty_type] = 2
+          notification_opts[:duty_type] = 2
         end
-        Notification.new(alert.id, options).notify
+        Notification.new(alert.id, notification_opts).notify
       else
-        say "Alert already acknowledged.", :cyan
+        say "Alert already acknowledged.", :yellow
       end
     end
 
