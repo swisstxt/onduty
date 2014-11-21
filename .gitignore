@@ -1,5 +1,5 @@
 config/onduty.yml
-db/*.sqlite3
+config/mongoid.yml
 cache
 log/*
 tmp/*

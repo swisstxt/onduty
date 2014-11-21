@@ -1,5 +1,5 @@
 <div class="page-header">
-  <h1>Alert <%= @alert.id %></h1>
+  <h1>Alert details</h1>
 </div>
 
 <table class="table table-striped" style="width: 50%;">
@@ -14,6 +14,10 @@
   <tr>
     <th>Message</th>
     <td><%= @alert.message %></td>
+  </tr>
+  <tr>
+    <th>ID</th>
+    <td><%= @alert.id %></td>
   </tr>
   <tr>
     <th>UID</th>

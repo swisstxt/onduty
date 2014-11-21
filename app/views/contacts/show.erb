@@ -27,8 +27,8 @@
   <tr>
     <th>Status</th>
     <td>
-      <% if @duty %>
-        <span class="label label-<%= status_badge(@duty.id) %>"><%= @duty.name %></span>
+      <% if @contact.duty %>
+        <span class="label label-<%= status_badge(@contact.duty) %>"><%= Onduty::Duty.types[@contact.duty] %></span>
       <% else %>
         <span class="label label-default %>">Off Duty</span>
       <% end %>

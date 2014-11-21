@@ -1,5 +1,4 @@
-require "sqlite3"
-require "active_record"
+require "mongoid"
 require "thor"
 require "ostruct"
 require "erubis"
@@ -41,25 +40,12 @@ module Onduty
     def contacts
       connect_to_db
       table = [%w(Name Phone Email Duty)]
-      Contact.all.order(:last_name).each do |contact|
+      Contact.all.asc(:last_name).each do |contact|
         table << [
           contact.name,
           contact.phone,
           contact.email,
-          contact.duty ? contact.duty.name : '-'
-        ]
-      end
-      print_table table
-    end
-
-    desc "duties", "list duties"
-    def duties
-      connect_to_db
-      table = [%w(Name Contact)]
-      Duty.all.each do |duty|
-        table << [
-          duty.name,
-          duty.contact ? duty.contact.name : "-"
+          contact.duty ? Onduty::Duty.types[contact.duty]: '-'
         ]
       end
       print_table table
@@ -200,14 +186,9 @@ module Onduty
 
     no_commands do
       def connect_to_db(env = options[:env])
-        db_settings = YAML::load(
-          File.open('config/database.yml')
-        )
-        ActiveRecord::Base.establish_connection(
-          db_settings[env]
-        )
-      rescue
-        say "Error: Can't connect to the database.", :red
+        Mongoid.load!("config/mongoid.yml", env)
+      rescue => e
+        say "Error: Can't connect to the database: #{e.message}", :red
         exit 1
       end
 

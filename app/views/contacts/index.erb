@@ -28,13 +28,12 @@
             <tr>
               <td><b><a href="/contacts/<%= contact.id %>"><%= contact.name %></a></b></td>
               <td>
+                <% if contact.duty %>
                 <div class="btn-group">
-                  <% @duties.each do |duty| %>
-                    <% if contact.id == duty.contact_id %>
-                      <span class="label label-<%= status_badge(duty.id) %>"><%= duty.name %></span>
-                    <% end %>
-                  <% end %>
+                  <span class="label label-<%= status_badge(contact.duty) %>">
+                    <%= Onduty::Duty.types[contact.duty] %></span>
                 </div>
+                <% end %>
               </td>
               <td><%= contact.phone %></td>
               <td>
@@ -59,13 +58,13 @@
     <div class="page-header">
       <h3>Manage Duties</h3>
     </div>
-    <% @duties.each do |duty| %>
-      <h4><%= duty.name %></h4>
-      <form action="/duties/<%= duty.id %>/" method="post">
-        <select name="contact_id" onchange="this.form.submit()" class="selectpicker" data-style="btn-<%= status_badge(duty.id) %>">
+    <% Onduty::Duty.types.reject{|id, name| id == 0}.each do |id, name| %>
+      <h4><%= name %></h4>
+      <form action="/duties/<%= id %>/" method="post">
+        <select name="contact_id" onchange="this.form.submit()" class="selectpicker" data-style="btn-<%= status_badge(id) %>">
             <option>-</option>
           <% @contacts.each do |contact| %>
-            <% unless contact.id == duty.contact_id %>
+            <% unless contact.duty == id %>
               <option value="<%= contact.id %>"><%= contact.name %></option>
             <% else %>
               <option value="<%= contact.id %>" selected><%= contact.name %></option>

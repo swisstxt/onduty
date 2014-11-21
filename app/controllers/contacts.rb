@@ -3,8 +3,7 @@
 get '/contacts' do
   protected!
   @title = "Contacts"
-  @contacts = Onduty::Contact.all.order(:last_name)
-  @duties = Onduty::Duty.all
+  @contacts = Onduty::Contact.all.asc(:last_name)
   erb :"contacts/index"
 end
 
@@ -21,7 +20,7 @@ post '/contacts/new' do
   @contact = Onduty::Contact.new(params[:contact])
   if @contact.save
     flash[:success] = "Successfuly created contact."
-    redirect "/contacts/#{contact.id}"
+    redirect "/contacts/#{@contact.id}"
   else
     message = "Error during contact creation. Please submit all required values."
     @contact.errors.full_messages.each do |msg|
@@ -35,7 +34,6 @@ end
 get '/contacts/:id' do
   protected!
   @contact = Onduty::Contact.find(params[:id])
-  @duty = Onduty::Duty.where(contact_id: params[:id]).first
   @title = @contact.name
   erb :"contacts/show"
 end

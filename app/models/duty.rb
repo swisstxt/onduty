@@ -1,5 +1,7 @@
 module Onduty
-  class Duty < ActiveRecord::Base
-     belongs_to :contact
+  class Duty
+    def self.types
+      {0 => 'off-duty', 1 => 'on-duty', 2 => 'escalation'}
+    end
   end
 end

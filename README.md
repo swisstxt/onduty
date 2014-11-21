@@ -14,11 +14,10 @@ Dependencies are managed using bundler (install the bundler gem if you don't hav
 bundle install
 ```
 
-### Initialize the database
+### Configure the database connection
 
-```bash
-bundle exec rake db:setup
-```
+Onduty uses MongoDB as backend.
+Creat a configuration file named config/mongoid.yml. See config/mongoid.example.yml for inspiration.
 
 ### Create your own configuration
 

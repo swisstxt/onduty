@@ -1,16 +1,27 @@
 module Onduty
   require 'securerandom'
 
-  class Alert < ActiveRecord::Base
+  class Alert
+    include Mongoid::Document
+    include Mongoid::Timestamps
+
+    field :uid, type: String
+    field :message, type: String
+    field :host, type: String
+    field :service, type: String
+    field :last_alert_at, type: Time
+    field :escalated_at, type: Time
+    field :acknowledged_at, type: Time
+
     validates_presence_of :message
     validates_presence_of :host
     validates_presence_of :service
 
     before_create :create_uid
 
-    scope :created_after, ->(time) { where("created_at > ?", time.utc) }
-    scope :acknowledged, -> { where.not(acknowledged_at: nil) }
-    scope :unacknowledged, -> { where(acknowledged_at: nil) }
+    scope :created_after, ->(time) { where(:created_at.gt => time) }
+    scope :acknowledged, ->{ where(:acknowledged_at.ne => nil) }
+    scope :unacknowledged, ->{ where(acknowledged_at: nil) }
 
     def acknowledge(icinga_cmd_path)
       if icinga_cmd_path
@@ -24,7 +35,7 @@ module Onduty
     private
 
     def create_uid
-     self.uid = SecureRandom.uuid
+     self.uid = SecureRandom.urlsafe_base64(8)
     end
   end
 end
