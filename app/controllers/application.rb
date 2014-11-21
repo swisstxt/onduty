@@ -5,8 +5,7 @@ configure do
   set :session_secret, settings.session_secret || SecureRandom.uuid
   use Rack::Flash, sweep: true
   register Sinatra::MultiRoute
-  puts "load mongoid"
-  puts Mongoid.load!("config/mongoid.yml")
+  Mongoid.load!(Onduty::Config.new.mongoid_config)
 end
 
 get '/' do

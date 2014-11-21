@@ -186,7 +186,7 @@ module Onduty
 
     no_commands do
       def connect_to_db(env = options[:env])
-        Mongoid.load!("config/mongoid.yml", env)
+        Mongoid.load!(Onduty::Config.new.mongoid_config, env)
       rescue => e
         say "Error: Can't connect to the database: #{e.message}", :red
         exit 1

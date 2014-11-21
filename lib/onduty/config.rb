@@ -13,6 +13,14 @@ module Onduty
       )
     end
 
+    def mongoid_config
+      if settings.respond_to?(:mongoid_config)
+        settings.mongoid_config
+      else
+        "config/mongoid.yml"
+      end
+    end
+
     def self.base_path
       base_path = File.expand_path("../../../", __FILE__)
     end
