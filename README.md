@@ -17,7 +17,7 @@ bundle install
 ### Configure the database connection
 
 Onduty uses MongoDB as backend.
-Creat a configuration file named config/mongoid.yml. See config/mongoid.example.yml for inspiration.
+Create a configuration file named config/mongoid.yml (see config/mongoid.example.yml).
 
 ### Create your own configuration
 
