@@ -1,8 +1,13 @@
-
+############################
+# Onduty Configuration File
+#
 
 # Secure onduty with simple auth
 # admin_user:     admin
 # admin_password: mySEcrtetPW
+
+# Specify a mongoid.yml location (default is config/mongoid.yml)
+# mongoid_config: /etc/onduty/mongoid.yml
 
 base_url:       'http://localhost:3000/'
 
