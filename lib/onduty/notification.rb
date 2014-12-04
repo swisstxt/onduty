@@ -11,7 +11,7 @@ module Onduty
     def initialize(alert_id, options = {})
       @alert_id = alert_id
       @alert = Onduty::Alert.find(alert_id)
-      @contact = Onduty::Duty.find(options[:duty_type] || 1).contact
+      @contact = Onduty::Contact.where(duty: options[:duty_type] || 1).first
       @settings = OpenStruct.new(
         YAML::load(File.open(Onduty::Config.file))
       )
