@@ -20,8 +20,11 @@ module Onduty
         end
         comment = Erubis::Eruby.new(
           File.read(File.join(File.dirname(__FILE__), 'zendesk_notification.erb'))
-        ).result(alert: @alert, contact: @contact, acknowledge_url: acknowledge_url)
-
+        ).result(
+          alert: @alert,
+          contact: @contact,
+          acknowledge_url: acknowledge_url(html_link: true)
+        )
         ZendeskAPI::Ticket.create(
           client, subject: "[Alert #{@alert_id}] Alert from onduty",
           comment: { value: comment },

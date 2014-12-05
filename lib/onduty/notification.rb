@@ -19,10 +19,10 @@ module Onduty
       @logger = initialize_logger
     end
 
-    def acknowledge_url
+    def acknowledge_url(opts = {})
       URI::join(
         @settings.base_url,
-        "/alerts/#{@alert.id}/acknowledge#{ '.twiml' unless @options[:html] }?uid=#{@alert.uid}"
+        "/alerts/#{@alert.id}/acknowledge#{ '.twiml' unless opts[:html_link] }?uid=#{@alert.uid}"
       ).to_s
     end
 

@@ -15,7 +15,11 @@ module Onduty
         from = @settings.email_sender ? @settings.email_sender : 'onduty@onduty'
         body = Erubis::Eruby.new(
           File.read(File.join(File.dirname(__FILE__), 'mail_notification.erb'))
-        ).result(alert: @alert, contact: @contact, acknowledge_url: acknowledge_url)
+        ).result(
+          alert: @alert,
+          contact: @contact,
+          acknowledge_url: acknowledge_url(html_link: true)
+        )
         Pony.mail({
           from:    from,
           to:      @contact.email,
