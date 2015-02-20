@@ -84,7 +84,7 @@ module Onduty
       print_table table
     end
 
-    desc "create_alert MESSAGE", "create a new alert"
+    desc "create_alert", "create a new alert"
     option :message,
       desc: "alert message",
       aliases: '-m',
