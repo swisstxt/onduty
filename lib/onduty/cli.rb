@@ -85,10 +85,6 @@ module Onduty
     end
 
     desc "create_alert", "create a new alert"
-    option :message,
-      desc: "alert message",
-      aliases: '-m',
-      required: true
     option :host,
       desc: "host",
       aliases: '-H',
@@ -96,6 +92,14 @@ module Onduty
     option :service,
       desc: "service",
       aliases: '-s',
+      required: true
+    option :notification_type,
+      desc: "notification type",
+      aliases: '-t',
+      required: true
+    option :service_state,
+      desc: "service state",
+      aliases: '-S',
       required: true
     option :alert,
       desc: "alert?",
@@ -112,7 +116,8 @@ module Onduty
         service: options[:service],
         acknowledged_at: nil
       ) do |a|
-        a.message = options[:message]
+        a.notification_type = options[:notification_type]
+        a.service_state       = options[:service_state]
       end
 
       if alert.save
@@ -155,7 +160,7 @@ module Onduty
     def show_alert(id)
       connect_to_db
       alert = Alert.find(id)
-      table = %w(id uid host service message
+      table = %w(id uid host service
       created_at acknowledged_at last_alert_at).map do |attr|
         [attr, alert[attr.to_sym] ? alert[attr.to_sym].to_s : '-']
       end

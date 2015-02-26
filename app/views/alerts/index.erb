@@ -17,10 +17,10 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>UID</th>
             <th>Created At</th>
-            <th>Host</th>
             <th>Service</th>
+            <th>Type</th>
+            <th>State</th>
             <th>Acknowledged At</th>
             <th>Actions</th>
           </tr>
@@ -28,10 +28,14 @@
         <tbody>
       <% @alerts.each do |alert| %>
           <tr>
-            <td><b><a href="/alerts/<%= alert.id %>"><%= alert.uid %></a></b></td>
-            <td><b><a href="/alerts/<%= alert.id %>"><%= h_time(alert.created_at) %></a></b></td>
-            <td><%= alert.host %></td>
-            <td><%= alert.service %></td>
+            <td><%= h_time(alert.created_at) %></td>
+            <td>
+              <b>
+                <a href="/alerts/<%= alert.id %>"><%= alert.service %></a>
+              </b>
+            </td>
+            <td><%= alert.notification_type %></td>
+            <td><%= alert.service_state %></td>
             <td><%= h_time(alert.acknowledged_at) %></td>
             <td>
               <a href="/alerts/<%= alert.id %>" class="btn btn-sm btn-primary">Show</a>
