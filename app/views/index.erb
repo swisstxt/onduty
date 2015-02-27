@@ -1,0 +1,20 @@
+<div class="row">
+  <content class="col-md-9" role="main">
+    <div class="page-header">
+      <h1>OnDuty</h1>
+    </div>
+
+    <div class="col-md-5">
+      <a href="/contacts" class="btn btn-primary btn-lg btn-block" role="button">
+        Contacts
+        <span class="badge"><%= @contacts_count %></span>
+      </a>
+
+      <a href="/alerts?acknowledged=false&days=all" class="btn btn-danger btn-lg btn-block" role="button">
+        Unacknowledged Alerts
+        <span class="badge"><%= @open_alerts %></span>
+      </a>
+    </div>
+
+  </content>
+</div>

@@ -24,6 +24,11 @@ helpers do
     end
   end
 
+  def merge_query_string(args)
+    query = params.merge(args.keys[0].to_s => args.values[0])
+    query.map{|k,v| "#{k}=#{v}"}.join('&')
+  end
+
   def h_time(time)
     time.strftime("%d.%m.%Y %T") rescue time
   end

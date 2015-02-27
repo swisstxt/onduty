@@ -9,7 +9,9 @@ configure do
 end
 
 get '/' do
-  redirect '/contacts'
+  @contacts_count = Onduty::Contact.all.size
+  @open_alerts    = Onduty::Alert.in(acknowledged_at: nil).all.size
+  erb :index
 end
 
 not_found do

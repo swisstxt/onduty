@@ -20,9 +20,10 @@ module Onduty
     end
 
     def acknowledge_url(opts = {})
+      ext = opts[:html_link] ? 'html' : 'twiml'
       URI::join(
         @settings.base_url,
-        "/alerts/#{@alert.id}/acknowledge#{ '.twiml' unless opts[:html_link] }?uid=#{@alert.uid}"
+        "/alerts/#{@alert.id}/acknowledge.#{ext}?uid=#{@alert.uid}"
       ).to_s
     end
 

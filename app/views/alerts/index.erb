@@ -17,26 +17,30 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Created At</th>
             <th>Service</th>
+            <th>Created At</th>
             <th>Type</th>
             <th>State</th>
-            <th>Acknowledged At</th>
+            <th>Acknowledged</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
       <% @alerts.each do |alert| %>
           <tr>
-            <td><%= h_time(alert.created_at) %></td>
             <td>
               <b>
                 <a href="/alerts/<%= alert.id %>"><%= alert.service %></a>
               </b>
             </td>
+            <td><%= h_time(alert.created_at) %></td>
             <td><%= alert.notification_type %></td>
             <td><%= alert.service_state %></td>
-            <td><%= h_time(alert.acknowledged_at) %></td>
+            <td>
+              <% if alert.acknowledged_at -%>
+                <span class="glyphicon glyphicon-ok">
+              <% end -%>
+            </td>
             <td>
               <a href="/alerts/<%= alert.id %>" class="btn btn-sm btn-primary">Show</a>
             </td>
@@ -61,25 +65,25 @@
       <h4>Time Filter</h4>
       <ul class="nav nav-pills nav-stacked">
         <li <% if params[:days] == '2' || params[:days] == nil %>class="active"<% end %>>
-          <a href="/alerts">Last 2 days</a>
+          <a href="/alerts?<%= merge_query_string(days: "2") %>">Last 2 days</a>
         </li>
         <li <% if params[:days] == '30' %>class="active"<% end %>>
-          <a href="/alerts?days=30">Last 30 days</a>
+          <a href="/alerts?<%= merge_query_string(days: "30") %>">Last 30 days</a>
         </li>
         <li <% if params[:days] == 'all' %>class="active"<% end %>>
-          <a href="/alerts?days=all">All</a>
+          <a href="/alerts?<%= merge_query_string(days: "all") %>">All</a>
         </li>
       </ul>
       <h4>Acknowledged Filter</h4>
       <ul class="nav nav-pills nav-stacked">
         <li <% if params[:acknowledged] == 'false' %>class="active"<% end %>>
-          <a href="/alerts?acknowledged=false">Unacknowledged</a>
+          <a href="/alerts?<%= merge_query_string(acknowledged: "false") %>">Unacknowledged</a>
         </li>
         <li <% if params[:acknowledged] == 'true' %>class="active"<% end %>>
-          <a href="/alerts?acknowledged=true">Acknowledged</a>
+          <a href="/alerts?<%= merge_query_string(acknowledged: "true") %>">Acknowledged</a>
         </li>
         <li <% if params[:acknowledged] == 'all' || params[:acknowledged] == nil  %>class="active"<% end %>>
-          <a href="/alerts?days=<%= %>&acknowledged=all">All</a>
+          <a href="/alerts?<%= merge_query_string(acknowledged: "all") %>">All</a>
         </li>
       </ul>
     </menu>

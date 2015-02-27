@@ -58,7 +58,7 @@
     <div class="page-header">
       <h3>Manage Duties</h3>
     </div>
-    <% Onduty::Duty.types.reject{|id, name| id == 0}.each do |id, name| %>
+    <% Onduty::Duty.types.reject{|id, name| id == 0 }.each do |id, name| %>
       <h4><%= name %></h4>
       <form action="/duties/<%= id %>/" method="post">
         <select name="contact_id" onchange="this.form.submit()" class="selectpicker" data-style="btn-<%= status_badge(id) %>">

@@ -8,13 +8,15 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
   else
     nil
   end
-  @alert.acknowledge(icinga_cmd)
-  @alert.save
+  @alert.acknowledge!(icinga_cmd)
   if params[:format] =~ /^(twiml|xml)$/
     content_type 'text/xml'
     Twilio::TwiML::Response.new do |r|
       r.Say "The alert with ID #{@alert.id} has been acknowledged. Thank you and Goodbye!", voice: "woman"
     end.text
+  elsif params[:format] == "html"
+    content_type 'text/html'
+    return "OK - alert has been acknowledged"
   else
     flash[:success] = "Successfuly acknowledeged alert."
     redirect "/alerts/#{@alert.id}"
@@ -86,7 +88,7 @@ end
 get '/alerts/:id' do
   protected!
   @alert = Onduty::Alert.find(params[:id])
-  @title = "Alert #{@alert.id}"
+  @title = "Alert #{@alert.service}"
   erb :"alerts/show"
 end
 
