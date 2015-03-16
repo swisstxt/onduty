@@ -173,20 +173,24 @@ module Onduty
     def plugins
       connect_to_db
       table = [%w(name status)]
-      notification = Notification.new(Alert.first)
-      notification.plugins.each do |plugin_name|
-        plugin = Onduty.const_get(plugin_name).new(notification.alert_id, notification.options)
+      settings = Onduty::Config.new.settings
+      Notification::PLUGINS.each do |plugin_name|
+        plugin = Onduty.const_get(plugin_name).new(1)
         row = [plugin.name]
-        row << if plugin.valid_configuration?
-          set_color("OK", :green)
+        if settings['notification_plugins'].include? plugin_name
+          row << if plugin.valid_configuration?
+            set_color("OK", :green)
+          else
+            set_color("Missing Options", :red)
+          end
         else
-          set_color("Missing Options", :red)
+          row << "disabled"
         end
         table << row
       end
       print_table table
-    rescue
-      say "A valid alert and onduty contact is required.", :red
+    #rescue
+    #  say "A valid alert and onduty contact is required.", :red
     end
 
     no_commands do

@@ -4,14 +4,18 @@ module Onduty
     require 'logger'
     require 'uri'
 
-    Dir[File.expand_path('../notification_plugins/**/*.rb', __FILE__)].each { |f| require f }
+    PLUGINS = Dir[File.expand_path('../notification_plugins/**/*.rb', __FILE__)].map do |f|
+      require f
+      class_name = File.basename(f, '.rb').split('_').map{|f| f.capitalize}.join
+      class_name =~ /.*Notification/ ? class_name : nil
+    end.compact
+    DEFAULT_PLUGINS = %w(VoiceNotification SmsNotification MailNotification)
 
     attr_reader :alert_id, :options, :logger
 
     def initialize(alert_id, options = {})
       @alert_id = alert_id
-      @alert = Onduty::Alert.find(alert_id)
-      @contact = Onduty::Contact.where(duty: options[:duty_type] || 1).first
+      @contact = Onduty::Contact.where(duty: options[:duty_type] || 1).first || Contact.new(first_name: "Jon", last_name: "Doe", phone: "+412223344")
       @settings = OpenStruct.new(
         YAML::load(File.open(Onduty::Config.file))
       )
@@ -19,11 +23,15 @@ module Onduty
       @logger = initialize_logger
     end
 
+    def alert
+      @alert ||= Onduty::Alert.find(@alert_id)
+    end
+
     def acknowledge_url(opts = {})
       ext = opts[:html_link] ? 'html' : 'twiml'
       URI::join(
         @settings.base_url,
-        "/alerts/#{@alert.id}/acknowledge.#{ext}?uid=#{@alert.uid}"
+        "/alerts/#{alert.id}/acknowledge.#{ext}?uid=#{alert.uid}"
       ).to_s
     end
 
@@ -44,7 +52,7 @@ module Onduty
     end
 
     def plugins
-      @settings.notification_plugins || %w(VoiceNotification SmsNotification MailNotification)
+      @settings.notification_plugins || DEFAULT_PLUGINS
     end
 
     def notify

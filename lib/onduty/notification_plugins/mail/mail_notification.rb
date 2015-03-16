@@ -16,7 +16,7 @@ module Onduty
         body = Erubis::Eruby.new(
           File.read(File.join(File.dirname(__FILE__), 'mail_notification.erb'))
         ).result(
-          alert: @alert,
+          alert: alert,
           contact: @contact,
           acknowledge_url: acknowledge_url(html_link: true)
         )

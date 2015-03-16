@@ -3,10 +3,14 @@ require 'twilio-ruby'
 module Onduty
   class TwilioApi
 
-    def initialize(account_sid, auth_token, from_number)
-      @account_sid = account_sid
-      @auth_token  = auth_token
-      @from_number = from_number
+    def initialize(options = {})
+      @account_sid = options[:account_sid]
+      @auth_token  = options[:auth_token]
+      @from_number = options[:from_number]
+    end
+
+    def valid_credentials?
+      @account_sid && @auth_token && @from_number
     end
 
     def call(number, twiml_url)

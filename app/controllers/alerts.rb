@@ -12,7 +12,7 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
   if params[:format] =~ /^(twiml|xml)$/
     content_type 'text/xml'
     Twilio::TwiML::Response.new do |r|
-      r.Say "The alert with ID #{@alert.id} has been acknowledged. Thank you and Goodbye!", voice: "woman"
+      r.Say "The alert has been acknowledged. Thank you and Goodbye!", voice: "woman"
     end.text
   elsif params[:format] == "html"
     content_type 'text/html'
