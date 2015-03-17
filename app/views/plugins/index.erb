@@ -1,34 +1,36 @@
 <div class="row">
-  <content class="col-md-6" role="main">
+  <content class="col-md-9" role="main">
     <div class="page-header">
       <h1>Plugins</h1>
     </div>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @plugins.each do |plugin_name| -%>
-          <% plugin = Onduty.const_get(plugin_name).new(1) -%>
+    <div class="col-md-6">
+      <table class="table table-striped">
+        <thead>
           <tr>
-            <th><b><%= plugin_name %></b></th>
-            <td>
-              <% if settings.notification_plugins.include? plugin_name %>
-                <% if plugin.valid_configuration? -%>
-                  <span class="label label-success">Ready</span>
-                <% else -%>
-                  <span class="label label-danger">Missing Options</span>
-                <% end -%>
-              <% else %>
-              <span class="label label-default">Disabled</span>
-              <% end %>
-            </td>
+            <th>Name</th>
+            <th>Status</th>
           </tr>
-        <% end -%>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% @plugins.each do |plugin_name| -%>
+            <% plugin = Onduty.const_get(plugin_name).new(1) -%>
+            <tr>
+              <th><b><%= plugin_name %></b></th>
+              <td>
+                <% if settings.notification_plugins.include? plugin_name %>
+                  <% if plugin.valid_configuration? -%>
+                    <span class="label label-success">Ready</span>
+                  <% else -%>
+                    <span class="label label-danger">Missing Options</span>
+                  <% end -%>
+                <% else %>
+                <span class="label label-default">Disabled</span>
+                <% end %>
+              </td>
+            </tr>
+          <% end -%>
+        </tbody>
+      </table>
+    </div>
   </content>
 </div>

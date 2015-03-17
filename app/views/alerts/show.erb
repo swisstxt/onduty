@@ -33,11 +33,24 @@
   </tr>
   <tr>
     <th>Acknowledged at</th>
-    <td><%= @alert.acknowledged_at %></td>
+    <td>
+      <% if @alert.acknowledged_at -%>
+        <span class="glyphicon glyphicon-ok">&nbsp;</span>
+        <%= @alert.acknowledged_at %>
+      <% else %>
+        <span class="glyphicon glyphicon-remove"></span>
+      <% end %>
+    </td>
   </tr>
   <tr>
     <th>Last alerted at</th>
-    <td><%= @alert.last_alert_at %></td>
+    <td>
+      <% if @alert.last_alert_at -%>
+        <%= @alert.last_alert_at %>
+      <% else %>
+        <span class="glyphicon glyphicon-remove"></span>
+      <% end %>
+    </td>
   </tr>
 </table>
 
