@@ -24,17 +24,8 @@ module Onduty
     scope :acknowledged, ->{ where(:acknowledged_at.ne => nil) }
     scope :unacknowledged, ->{ where(acknowledged_at: nil) }
 
-    def acknowledge(icinga_cmd_path)
-      if icinga_cmd_path
-        now = Time.now.to_i
-        %x[/bin/printf \"[#{now}] ACKNOWLEDGE_SVC_PROBLEM;#{self.host};#{self.service};1;1;onduty;Acknowledged from Onduty\n\" #{now} > #{icinga_cmd_path}]
-      end
-      self.acknowledged_at = Time.now
-      self.save!
-    end
-
-    def acknowledge!(icinga_cmd_path)
-      self.acknowledge(icinga_cmd_path)
+    def acknowledge!
+      self.acknowledged_at = Alert.acknowledge(self.host, self.service)
       self.save!
     end
 

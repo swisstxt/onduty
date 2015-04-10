@@ -6,6 +6,7 @@ require "erubis"
 require "onduty/version"
 require "onduty/config"
 require "onduty/notification"
+require "onduty/icinga"
 
 Dir["./app/models/*.rb"].each { |file| require file }
 
@@ -191,6 +192,27 @@ module Onduty
       print_table table
     #rescue
     #  say "A valid alert and onduty contact is required.", :red
+    end
+
+    desc "acknowledege_service", "acknowledege_service"
+    option :host,
+      desc: "host",
+      aliases: '-H',
+      required: true
+    option :service,
+      desc: "service",
+      aliases: '-s',
+      required: true
+    option :comment,
+      desc: "comment",
+      aliases: '-c',
+      required: true
+    def acknowledege_service
+      Onduty::Icinga.new.acknowledge_service(
+        options[:host],
+        options[:service],
+        { comment: options[:comment] }
+      )
     end
 
     no_commands do
