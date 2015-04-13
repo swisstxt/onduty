@@ -190,8 +190,8 @@ module Onduty
         table << row
       end
       print_table table
-    #rescue
-    #  say "A valid alert and onduty contact is required.", :red
+    rescue
+      say "A valid alert and onduty contact is required.", :red
     end
 
     desc "acknowledege_service", "acknowledege_service"
@@ -208,11 +208,15 @@ module Onduty
       aliases: '-c',
       required: true
     def acknowledege_service
-      Onduty::Icinga.new.acknowledge_service(
+      if Onduty::Icinga.new.acknowledge_service(
         options[:host],
         options[:service],
         { comment: options[:comment] }
       )
+        say "Acknowledeged", :green
+      else
+        say "Error during acknowledegment", :red
+      end
     end
 
     no_commands do

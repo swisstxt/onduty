@@ -26,7 +26,8 @@ module Onduty
 
     def acknowledge_service_command(host, service, comment)
       now = Time.now
-      command = "[#{now.to_i}] ACKNOWLEDGE_SVC_PROBLEM;#{host};#{service};1;1;onduty;#{comment}"
+      # ACKNOWLEDGE_SVC_PROBLEM;<host_name>;<service_description>;<sticky>;<notify>;<persistent>;<author>;<comment>
+      command = "[#{now.to_i}] ACKNOWLEDGE_SVC_PROBLEM;#{host};#{service};2;1;0;onduty;#{comment}"
       begin
         File.open(Icinga.icinga_cmd_path, 'a') do |pipe|
           pipe.puts command
