@@ -3,17 +3,36 @@
 route :get, :post, '/alerts/:id/acknowledge.?:format?' do
   @alert = Onduty::Alert.find(params[:id])
   halt 403 unless @alert.uid = params[:uid]
-  @alert.acknowledge!
+
+  success_message = "The alert has been successfuly acknowledeged."
+  failure_message = "Error during acknowledging alert."
+
+  if ack = Onduty::Icinga.new.acknowledge_service(
+    @alert.host, @alert.service, { comment: "acknowledged by onduty" }
+  )
+    @alert.acknowledged_at = ack
+    @alert.save
+  end
+
   if params[:format] =~ /^(twiml|xml)$/
     content_type 'text/xml'
     Twilio::TwiML::Response.new do |r|
-      r.Say "The alert has been acknowledged. Thank you and Goodbye!", voice: "woman"
+      if ack
+        r.Say success_message, voice: "woman"
+        r.Say "Thank you and Goodbye!", voice: "woman"
+      else
+        r.Say failure_message, voice: "woman"
+      end
     end.text
   elsif params[:format] == "html"
     content_type 'text/html'
-    return "OK - alert has been acknowledged"
+    return = ack ? success_message : failure_message
   else
-    flash[:success] = "Successfuly acknowledeged alert."
+    if ack
+      flash[:success] = success_message
+    else
+      flash[:danger] = failure_message
+    end
     redirect "/alerts/#{@alert.id}"
   end
 end
