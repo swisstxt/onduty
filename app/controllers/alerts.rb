@@ -5,7 +5,7 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
   halt 403 unless @alert.uid = params[:uid]
 
   success_message = "The alert has been successfuly acknowledeged."
-  failure_message = "Error during acknowledging alert."
+  failure_message = "Error during alert acknowledgment."
 
   if ack = Onduty::Icinga.new.acknowledge_service(
     @alert.host, @alert.service, { comment: "acknowledged by onduty" }
@@ -26,7 +26,7 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
     end.text
   elsif params[:format] == "html"
     content_type 'text/html'
-    return = ack ? success_message : failure_message
+    return ack ? success_message : failure_message
   else
     if ack
       flash[:success] = success_message
