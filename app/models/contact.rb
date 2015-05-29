@@ -3,7 +3,6 @@ module Onduty
     include Mongoid::Document
     include Mongoid::Timestamps
 
-    field :name, type: String
     field :first_name, type: String
     field :last_name, type: String
     field :phone, type: String
@@ -23,5 +22,10 @@ module Onduty
     def name
       "#{first_name} #{last_name}"
     end
+
+    def duty_name
+      Onduty::Duty.types[duty]
+    end
+
   end
 end

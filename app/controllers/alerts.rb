@@ -26,7 +26,7 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
     end.text
   elsif params[:format] == "html"
     content_type 'text/html'
-    return ack ? success_message : failure_message
+    ack ? success_message : failure_message
   else
     if ack
       flash[:success] = success_message

@@ -1,10 +1,21 @@
 # Contacts Controller
 
-get '/contacts' do
+get '/contacts.?:format?' do
   protected!
-  @title = "Contacts"
-  @contacts = Onduty::Contact.all.asc(:last_name)
-  erb :"contacts/index"
+  if params[:format] == "json"
+    content_type :json
+    Onduty::Contact.all.only(:first_name, :last_name, :duty, :phone).asc(:last_name).map do |contact|
+      {
+        name: contact.name,
+        duty: contact.duty_name,
+        phone: contact.phone
+      }
+    end.to_json
+  else
+    @title = "Contacts"
+    @contacts = Onduty::Contact.all.asc(:last_name)
+    erb :"contacts/index"
+  end
 end
 
 get '/contacts/new' do
