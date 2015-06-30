@@ -4,7 +4,7 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
   @alert = Onduty::Alert.find(params[:id])
   halt 403 unless @alert.uid = params[:uid]
 
-  success_message = "The alert has been successfuly acknowledeged."
+  success_message = "The alert has been successfully acknowledeged."
   failure_message = "Error during alert acknowledgment."
 
   if ack = Onduty::Icinga.new.acknowledge_service(
