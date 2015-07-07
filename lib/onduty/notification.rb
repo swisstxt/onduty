@@ -64,8 +64,8 @@ module Onduty
          notification_plugin.logger.error "Plugin can't be used because of missing configuration options."
        end
       end
-      @alert.last_alert_at = Time.now
-      @alert.save!
+      alert.last_alert_at = Time.now
+      alert.save!
     rescue => e
       logger.error "Error triggering alert with ID #{@alert_id}: #{e.message}"
       false
