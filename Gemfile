@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rake'
 gem 'thor'
 gem 'twilio-ruby', '~> 3.13.1'
-gem "mongoid", "~> 4.0.2"
+gem "mongoid", "~> 5.0.1"
 gem 'pony'
 gem 'erubis', '~> 2.7.0'
 gem 'zendesk_api'

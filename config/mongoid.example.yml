@@ -1,6 +1,6 @@
 development:
   # Configure available database sessions. (required)
-  sessions:
+  client:
     # Defines the default session. (required)
     default:
       # Defines the name of the default database that Mongoid can connect to.

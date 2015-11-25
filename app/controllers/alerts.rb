@@ -43,11 +43,17 @@ post '/alerts/:id.twiml' do
   halt 403 unless @alert.uid = params[:uid]
   content_type 'text/xml'
   Twilio::TwiML::Response.new do |r|
-    r.Say @alert.message, voice: "woman"
-    r.Gather(numDigits: 1, action: "/alerts/#{@alert.id}/acknowledge.twiml?uid=#{@alert.uid}") do |g|
+    r.Say(@alert.message, voice: "woman", loop: 2)
+    r.Gather(
+      numDigits: 1,
+      action: "/alerts/#{@alert.id}/acknowledge.twiml?uid=#{@alert.uid}"
+    ) do |g|
       g.Say "Please enter any key to acknowledge the message.", voice: "woman"
     end
-    r.Say "We didn't receive any input. We will call you again. Goodbye!", voice: "woman"
+    r.Say(
+      "We didn't receive any input. We will call you again. Goodbye!",
+      voice: "woman"
+    )
   end.text
 end
 
