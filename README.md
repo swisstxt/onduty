@@ -41,11 +41,7 @@ The alert acknowledge and twiml methods are protected by alert UID.
 
 ### Icinga/Nagios acknowledge
 
-Set the 'icinga_cmd_path' variable in your configuration in order to acknowledge alerts in Icinga or Nagios.
-
-```bash
-icinga_cmd_path: /var/icinga/rw/icinga.cmd
-```
+TODO: configure the Icinga2 API
 
 ## Run the server
 
@@ -73,6 +69,7 @@ The following plugins are available:
   - VoiceNotification (using Twilio)
   - SmsNotification (using Twilio)
   - MailNotification
+  - SlackNotification
   - ZendeskNotification
 
 Plugins can be enabled/disables using the configuration file.
@@ -111,6 +108,15 @@ from_number: "+12345678910"
 email_sender: 'alert@onduty'
 smtp_options:
   :address: mail.example.com
+```
+
+#### SlackNotification
+
+Add a [new bot](https://my.slack.com/services/new/bot) on your Slack account and invite it to the channel your are going to configure within Onduty:
+
+```yaml
+slack_api_token: slack-api-token
+slack_channel: '#general'
 ```
 
 #### ZendeskNotification
