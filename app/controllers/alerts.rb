@@ -72,16 +72,25 @@ end
 get '/alerts' do
   protected!
   @title = "Alerts"
+
+  session[:filter_days] = params[:days]
   @alerts = if params[:days] == 'all'
     Onduty::Alert.all
   elsif params[:days].to_i > 0
     Onduty::Alert.created_after(days_ago(params[:days]))
   else
-    Onduty::Alert.created_after(days_ago(2))
+    Onduty::Alert.created_after(days_ago(7))
   end
-  @alerts = @alerts.acknowledged if params[:acknowledged] == 'true'
-  @alerts = @alerts.unacknowledged if params[:acknowledged] == 'false'
-  @alerts = @alerts.order(created_at: :desc)
+
+  session[:filter_ack] = params[:ack]
+  @alerts = if params[:ack] == 'true'
+    @alerts.acknowledged
+  elsif params[:ack] == 'false'
+    @alerts.unacknowledged
+  else
+    @alerts.order(created_at: :desc)
+  end
+
   erb :"alerts/index"
 end
 

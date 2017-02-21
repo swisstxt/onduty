@@ -64,11 +64,11 @@
     <menu class="hidden-print" role="complementary">
       <h4>Time Filter</h4>
       <ul class="nav nav-pills nav-stacked">
-        <li <% if params[:days] == '2' || params[:days] == nil %>class="active"<% end %>>
-          <a href="/alerts?<%= merge_query_string(days: "2") %>">Last 2 days</a>
+        <li <% if params[:days] == '7' || params[:days] == nil %>class="active"<% end %>>
+          <a href="/alerts?<%= merge_query_string(days: "7") %>">Last week</a>
         </li>
         <li <% if params[:days] == '30' %>class="active"<% end %>>
-          <a href="/alerts?<%= merge_query_string(days: "30") %>">Last 30 days</a>
+          <a href="/alerts?<%= merge_query_string(days: "30") %>">Last 4 weeks</a>
         </li>
         <li <% if params[:days] == 'all' %>class="active"<% end %>>
           <a href="/alerts?<%= merge_query_string(days: "all") %>">All</a>
@@ -76,14 +76,14 @@
       </ul>
       <h4>Acknowledged Filter</h4>
       <ul class="nav nav-pills nav-stacked">
-        <li <% if params[:acknowledged] == 'false' %>class="active"<% end %>>
-          <a href="/alerts?<%= merge_query_string(acknowledged: "false") %>">Unacknowledged</a>
+        <li <% if params[:ack] == 'false' %>class="active"<% end %>>
+          <a href="/alerts?<%= merge_query_string(ack: "false") %>">Unacknowledged</a>
         </li>
-        <li <% if params[:acknowledged] == 'true' %>class="active"<% end %>>
-          <a href="/alerts?<%= merge_query_string(acknowledged: "true") %>">Acknowledged</a>
+        <li <% if params[:ack] == 'true' %>class="active"<% end %>>
+          <a href="/alerts?<%= merge_query_string(ack: "true") %>">Acknowledged</a>
         </li>
-        <li <% if params[:acknowledged] == 'all' || params[:acknowledged] == nil  %>class="active"<% end %>>
-          <a href="/alerts?<%= merge_query_string(acknowledged: "all") %>">All</a>
+        <li <% if params[:ack] == 'all' || params[:ack] == nil  %>class="active"<% end %>>
+          <a href="/alerts?<%= merge_query_string(ack: "all") %>">All</a>
         </li>
       </ul>
     </menu>

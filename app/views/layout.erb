@@ -8,8 +8,9 @@
       Onduty <% if @title %>| <%= @title %><% end %>
     </title>
 
-    <link href="/favicon.ico" rel="shortcut icon">
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="/favicon.gif" type="image/gif" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
     <link href="/css/bootstrap-select.min.css" rel="stylesheet">
     <link href="/css/application.css" rel="stylesheet">
 
@@ -22,26 +23,26 @@
   </head>
   <body>
     <div class="container">
-      <header id="top">
+      <header>
           <ul class="nav nav-pills pull-right">
-            <li>
+            <li role="presentation">
               <a href="/">
-                <span class="glyphicon glyphicon-home"> Home
+                <span class="glyphicon glyphicon-home"></span> Home
               </a>
             </li>
-            <li>
+            <li role="presentation">
               <a href="/plugins">
-                <span class="glyphicon glyphicon-wrench"> Plugins
+                <span class="glyphicon glyphicon-wrench"></span> Plugins
               </a>
             </li>
-            <li>
+            <li role="presentation">
               <a href="/contacts">
-                <span class="glyphicon glyphicon-user"> Contacts
+                <span class="glyphicon glyphicon-user"></span> Contacts
               </a>
             </li>
-            <li>
+            <li role="presentation">
               <a href="/alerts">
-                <span class="glyphicon glyphicon-exclamation-sign"> Alerts
+                <span class="glyphicon glyphicon-exclamation-sign"></span> Alerts
               </a>
             </li>
           </ul>
@@ -71,9 +72,8 @@
         </p>
       </div>
     </footer>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="/javascript/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="/javascript/bootstrap-select.min.js"></script>
-    <script src="/javascript/application.js"></script>
   </body>
 </html>

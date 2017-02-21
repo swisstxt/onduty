@@ -22,13 +22,15 @@ notification_plugins:
   - VoiceNotification
   - SmsNotification
   - MailNotification
+  - SlackNotification
 
 # email_sender:   'alert@onduty'
 smtp_options:
   :address: mail.example.com
 
-icinga_cmd_path: /var/icinga/rw/icinga.cmd
-
 # zendesk_url: https://yoursubdomain.zendesk.com/api/v2
 # zendesk_username: you@yourdomain.com
 # zendesk_token: you-zendesk-token
+
+# slack_api_token: slack-api-token
+# slack_channel: '#general'

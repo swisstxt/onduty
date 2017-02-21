@@ -12,7 +12,7 @@ module Onduty
 
     def trigger
       # only trigger at first alert
-      unless @alert.last_alert_at
+      unless alert.last_alert_at
         client = ZendeskAPI::Client.new do |config|
           config.url      = @settings.zendesk_url
           config.username = @settings.zendesk_username

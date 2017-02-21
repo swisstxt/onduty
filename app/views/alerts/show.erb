@@ -55,7 +55,7 @@
 </table>
 
 <hr>
-<a href="/alerts" class="btn btn-default">Back</a>
+<a href="/alerts<%= alerts_link_filter %>" class="btn btn-default">Back</a>
 <% if @alert.acknowledged_at %>
   <a href="/alerts/<%= @alert.id %>/delete" class="btn btn-danger">Delete</a>
 <% else %>

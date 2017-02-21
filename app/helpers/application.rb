@@ -16,6 +16,17 @@ helpers do
     true
   end
 
+  def alerts_link_filter
+    filter = []
+    if session['filter_days']
+      filter << "days=#{session['filter_days']}"
+    end
+    if session['filter_ack']
+      filter << "ack=#{session['filter_ack']}"
+    end
+    filter.size > 0 ? "?" + filter.join('&') : ''
+  end
+
   def status_badge(status)
     case status
       when 1 then 'danger'

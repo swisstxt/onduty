@@ -2,13 +2,6 @@ module Onduty
   class Icinga
     require 'net/http'
 
-    def self.icinga_cmd_path
-      if defined? settings
-        return settings.icinga_cmd_path if settings.respond_to?(:icinga_cmd_path)
-      end
-      "/var/run/icinga2/cmd/icinga2.cmd"
-    end
-
     def initialize(options = {})
       @cgi_path = options[:cgi_path] || "http://localhost/icinga/cgi-bin"
       @user     = options[:user] || "icingaadmin"
@@ -17,30 +10,6 @@ module Onduty
 
     def acknowledge_service(host, service, options = {})
       comment = options[:comment] || "Acknowledged from Onduty"
-      if options[:cgi]
-        acknowledge_service_cgi(host, service, comment)
-      else
-        acknowledge_service_command(host, service, comment)
-      end
-    end
-
-    def acknowledge_service_command(host, service, comment)
-      now = Time.now
-      # ACKNOWLEDGE_SVC_PROBLEM;<host_name>;<service_description>;<sticky>;<notify>;<persistent>;<author>;<comment>
-      command = "[#{now.to_i}] ACKNOWLEDGE_SVC_PROBLEM;#{host};#{service};2;1;0;onduty;#{comment}"
-      begin
-        File.open(Icinga.icinga_cmd_path, 'a') do |pipe|
-          pipe.puts command
-          pipe.close
-        end
-      rescue => e
-        puts e.message
-        return nil
-      end
-      now
-    end
-
-    def acknowledge_service_cgi(host, service, comment)
       uri = URI(@cgi_path + "/cmd.cgi")
       req = Net::HTTP::Post.new(uri)
       req.set_form_data(
@@ -48,7 +17,6 @@ module Onduty
         "cmd_mod" => "2",
         "hostservice" => "#{host}^#{service}",
         "com_author" => "onduty",
-        "com_author" => "on",
         "com_data" => comment,
         "send_notification" => "on"
       )
