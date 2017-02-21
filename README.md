@@ -35,7 +35,7 @@ vi config/onduty.yml
 ```
 
 ### Security
-At the moment the application just provides basic auth, when you configure "admin_user" and "admin_password" in your configuration file.
+Onduty protects access using basic auth, when you configure "admin_user" and "admin_password" in your configuration file.
 
 The alert acknowledge and twiml methods are protected by alert UID.
 
@@ -112,7 +112,8 @@ smtp_options:
 
 #### SlackNotification
 
-Add a [new bot](https://my.slack.com/services/new/bot) on your Slack account and invite it to the channel your are going to configure within Onduty:
+1. Add a [new bot](https://my.slack.com/services/new/bot) on your Slack account and take note of the API token.
+2. Invite your new bot to the channel your are going to configure within Onduty.
 
 ```yaml
 slack_api_token: slack-api-token
