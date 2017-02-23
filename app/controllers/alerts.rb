@@ -124,16 +124,12 @@ end
 delete '/alerts/:id/delete' do
   protected!
   alert = Onduty::Alert.find(params[:id])
-  if params[:confirm_delete]
-    if alert.destroy
-      flash[:success] = "Successfuly deleted alert."
-      redirect to("/alerts#{alerts_link_filter}")
-    else
-      flash[:danger] = "Error deleting alert."
-    end
+  if alert.destroy
+    flash[:success] = "Successfuly deleted alert."
+    redirect to("/alerts#{alerts_link_filter}")
   else
-    flash[:danger] = "Error deleting alert. Please confirm deletion."
-    redirect "/alerts/#{alert.id}/delete"
+    flash[:danger] = "Error deleting alert."
+    redirect to("/alerts/#{params[:id]}")
   end
 end
 

@@ -4,7 +4,6 @@
 
 <form role="form" class="form-horizontal col-md-12" action="/alerts/<%= @alert.id %>/delete" method='post'>
   <input name="_method" type="hidden" value="delete" />
-  <input name="confirm_delete" type="hidden" value="1" />
   <div class="alert alert-danger" role="alert">
     <h4>
       Please confirm that you want to delete alert with ID <%= @alert.id %>.

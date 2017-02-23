@@ -4,60 +4,35 @@ module Onduty
     require 'logger'
     require 'uri'
 
-    PLUGINS = Dir[File.expand_path('../notification_plugins/**/*.rb', __FILE__)].map do |f|
+    AVAILABLE_PLUGINS = Dir[File.expand_path('../notification_plugins/**/*.rb', __FILE__)].map do |f|
       require f
       class_name = File.basename(f, '.rb').split('_').map{|f| f.capitalize}.join
       class_name =~ /.*Notification/ ? class_name : nil
     end.compact
+
     DEFAULT_PLUGINS = %w(VoiceNotification SmsNotification MailNotification)
 
-    attr_reader :alert_id, :options, :logger
+    SETTINGS = OpenStruct.new(
+      YAML::load(File.open(Onduty::Config.file))
+    )
 
-    def initialize(alert_id, options = {})
-      @alert_id = alert_id
-      @contact = Onduty::Contact.where(duty: options[:duty_type] || 1).first || Contact.new(first_name: "Jon", last_name: "Doe", phone: "+412223344")
-      @settings = OpenStruct.new(
-        YAML::load(File.open(Onduty::Config.file))
-      )
-      @options = options
-      @logger = initialize_logger
-    end
+    attr_reader :alert, :options, :logger
 
-    def alert
-      @alert ||= Onduty::Alert.find(@alert_id)
-    end
-
-    def acknowledge_url(opts = {})
-      ext = opts[:html_link] ? 'html' : 'twiml'
-      URI::join(
-        @settings.base_url,
-        "/alerts/#{alert.id}/acknowledge.#{ext}?uid=#{alert.uid}"
-      ).to_s
-    end
-
-    def name
-      "Onduty Generic Notification"
-    end
-
-    def initialize_logger
-      @logger = Logger.new(STDOUT).tap do |log|
+    def self.logger
+      Logger.new(STDOUT).tap do |log|
         STDOUT.sync = true
         log.progname = self.name
         log.level = Logger::INFO
       end
     end
 
-    def valid_configuration?
-      true
+    def self.plugins
+      SETTINGS.notification_plugins || DEFAULT_PLUGINS
     end
 
-    def plugins
-      @settings.notification_plugins || DEFAULT_PLUGINS
-    end
-
-    def notify
-      plugins.each do |plugin|
-       notification_plugin = Onduty.const_get(plugin).new(@alert_id, @options)
+    def self.notify_all(alert, options = {})
+      self.plugins.each do |plugin|
+       notification_plugin = Onduty.const_get(plugin).new(alert.id, options)
        if notification_plugin.valid_configuration?
          notification_plugin.trigger
        else
@@ -67,8 +42,37 @@ module Onduty
       alert.last_alert_at = Time.now
       alert.save!
     rescue => e
-      logger.error "Error triggering alert with ID #{@alert_id}: #{e.message}"
+      logger.error "Error triggering alert with ID #{alert.id}: #{e.message}"
       false
+    end
+
+    def initialize(alert, options = {})
+      @alert = alert
+      @contact = Onduty::Contact.where(duty: options[:duty_type] || 1).first ||
+        Contact.new(first_name: "Jon", last_name: "Doe", phone: "+412223344")
+      @options = options
+      @settings = SETTINGS
+      @logger = Onduty::Notification.logger
+    end
+
+    def acknowledge_url(opts = {})
+      ext = opts[:html_link] ? 'html' : 'twiml'
+      URI::join(
+        @@settings.base_url,
+        "/alerts/#{alert.id}/acknowledge.#{ext}?uid=#{alert.uid}"
+      ).to_s
+    end
+
+    def name
+      "Onduty Generic Notification"
+    end
+
+    def enabled?
+      Onduty::Notification.plugins.iclude? self.name
+    end
+
+    def valid_configuration?
+      true
     end
   end
 end

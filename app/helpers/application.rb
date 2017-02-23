@@ -8,6 +8,18 @@ helpers do
     halt 401, "Not authorized\n"
   end
 
+  def post_slack_message(message)
+    if @settings.slack_api_token && @settings.slack_channel
+      Onduty::Slack.post_message(
+        message,
+        @settings.slack_channel,
+        @settings.slack_api_token
+      )
+    else
+
+    end
+  end
+
   def authorized?
     @auth ||=  Rack::Auth::Basic::Request.new(request.env)
     @auth.provided? && @auth.basic? && @auth.credentials &&

@@ -1,6 +1,6 @@
-Onduty <%= alert_type %><%= ' :lightning:' if alert_type == "alert" %>:
+*Onduty Alert* :lightning:
 
-* Service '<%= alert.service %>' on '<%= alert.host %>' has issues.*
+'<%= alert.topic %>' is alerting - please take a look.
 
-_In order to acknowledge the alert, please follow the URL below:_
+_In order to acknowledge the alert, please click the link below:_
 <%= acknowledge_url %>

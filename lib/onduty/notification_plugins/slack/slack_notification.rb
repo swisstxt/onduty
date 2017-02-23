@@ -1,6 +1,7 @@
 module Onduty
   class SlackNotification < Notification
     require 'slack-ruby-client'
+    require 'slack'
 
     def name
       "Onduty Slack Notification"
@@ -11,24 +12,19 @@ module Onduty
     end
 
     def trigger
-      Slack.configure do |config|
-        config.token = @settings.slack_api_token
-      end
-      client = Slack::Web::Client.new
       message = Erubis::Eruby.new(
         File.read(File.join(File.dirname(__FILE__), 'slack_notification.erb'))
       ).result(
         alert: alert,
-        alert_type: @options[:alert_type] || "alert",
         contact: @contact,
         acknowledge_url: acknowledge_url(html_link: true)
       )
-      client.chat_postMessage(
-        channel: @settings.slack_channel,
-        text: message,
-        as_user: true
+      Onduty::Slack.post_message(
+        message,
+        @settings.slack_channel,
+        @settings.slack_api_token
       )
-      logger.info "Created Slack message for alert with ID #{@alert_id}."
+      logger.info "Succesfully sent Slack message for alert with ID #{@alert_id}."
     rescue => e
       logger.error "Error creating Slack message: #{e.message}"
     end
