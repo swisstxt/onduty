@@ -7,10 +7,10 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
   success_message = "The alert has been successfully acknowledeged."
   failure_message = "Error during alert acknowledgment."
 
-  if ack = Onduty::Icinga.new.acknowledge_service(
-    @alert.host, @alert.service, { comment: "acknowledged by onduty" }
+  if ack = Onduty::Icinga2.new.acknowledge_services(
+    @alert.services, { comment: "acknowledged by onduty" }
   )
-    @alert.acknowledged_at = ack
+    @alert.acknowledged_at = Time.now
     @alert.save
   end
 
@@ -117,7 +117,7 @@ end
 get '/alerts/:id' do
   protected!
   @alert = Onduty::Alert.find(params[:id])
-  @title = "Alert #{@alert.service}"
+  @title = "Alert #{@alert.topic}"
   erb :"alerts/show"
 end
 
@@ -127,7 +127,7 @@ delete '/alerts/:id/delete' do
   if params[:confirm_delete]
     if alert.destroy
       flash[:success] = "Successfuly deleted alert."
-      redirect '/alerts'
+      redirect to("/alerts#{alerts_link_filter}")
     else
       flash[:danger] = "Error deleting alert."
     end

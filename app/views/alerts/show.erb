@@ -4,28 +4,24 @@
 
 <table class="table table-striped" style="width: 50%;">
   <tr>
-    <th>Host</th>
-    <td><%= @alert.host %></td>
-  </tr>
-  <tr>
-    <th>Service</th>
-    <td><%= @alert.service %></td>
+    <th>Topic</th>
+    <td><%= @alert.topic %></td>
   </tr>
   <tr>
     <th>Message</th>
     <td><%= @alert.message %></td>
   </tr>
   <tr>
-    <th>Notification Type</th>
-    <td><%= @alert.notification_type %></td>
-  </tr>
-  <tr>
-    <th>Service State</th>
-    <td><%= @alert.service_state %></td>
-  </tr>
-  <tr>
     <th>UID</th>
     <td><%= @alert.uid %></td>
+  </tr>
+  <tr>
+    <th>Affected Services</th>
+    <td>
+      <% @alert.services.each do |service| -%>
+        <%= service.name %><br>
+      <% end -%>
+    </td>
   </tr>
   <tr>
     <th>Created at</th>

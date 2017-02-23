@@ -4,36 +4,23 @@
     <form role="form" class="form-horizontal col-md-8" action="/alerts/<%= @method %>" method='POST'>
 
       <div class="form-group">
-        <label for="host" class="col-sm-4 control-label">Host</label>
-        <div class="col-sm-8">
-          <input name="alert[host]" id="host" placeholder="Host" class="form-control" value="<%= @alert.host if @alert %>">
+        <label for="topic" class="col-sm-3 control-label">Topic</label>
+        <div class="col-sm-9">
+          <input name="alert[topic]" id="topic" placeholder="Topic" class="form-control" value="<%= @alert.topic if @alert %>">
         </div>
       </div>
 
       <div class="form-group">
-        <label for="service" class="col-sm-4 control-label">Service</label>
-        <div class="col-sm-8">
-          <input name="alert[service]" id="service" placeholder="Service" class="form-control" value="<%= @alert.service if @alert %>">
+        <label for="services_sring" class="col-sm-3 control-label">Affected Services</label>
+        <div class="col-sm-9">
+          <textarea name="alert[services_string]" id="services_string" class="form-control" value="<%= @alert.services_string if @alert %>" rows="3"></textarea>
+          <span id="helpBlock" class="help-block">Enter one service per line.</span>
         </div>
       </div>
 
       <div class="form-group">
-        <label for="notification_type" class="col-sm-4 control-label">Notification Type</label>
-        <div class="col-sm-8">
-          <input name="alert[notification_type]" type='text' id="notification_type" placeholder="Notification Type" class="form-control"></textarea>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="service_state" class="col-sm-4 control-label">Service State</label>
-        <div class="col-sm-8">
-          <input name="alert[service_state]" type='text' id="service_state" placeholder="Service State" class="form-control"></textarea>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-sm-offset-4 col-sm-8">
-          <a href="/alerts" class="btn btn-primary">Cancel</a>
+        <div class="col-sm-offset-3 col-sm-9">
+          <a href="/alerts<%= alerts_link_filter %>" class="btn btn-primary">Cancel</a>
           <button type="submit" class="btn btn-danger"><%= @title %></button>
         </div>
       </div>
