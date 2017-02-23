@@ -39,9 +39,15 @@ Onduty protects access using basic auth, when you configure "admin_user" and "ad
 
 The alert acknowledge and twiml methods are protected by alert UID.
 
-### Icinga/Nagios acknowledge
+### Icinga2 acknowledge
 
-TODO: configure the Icinga2 API
+Configure the Icinga2 API:
+
+```yaml
+icinga2_api_path: https://localhost:5665/v1
+icinga2_user: admin
+icinga2_password: icinga
+```
 
 ## Run the server
 

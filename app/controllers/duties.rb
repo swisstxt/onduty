@@ -7,7 +7,7 @@ post '/duties/:id/:contact_id?' do
   contact = Onduty::Contact.find(params[:contact_id])
   contact.update(duty: params[:id])
 
-  if
+  if Onduty::Notification.plugins.iclude? "SlackNotification"
     message = "#{contact.name} is on duty"
     message += " (#{Onduty::Duty.types[params[:id]]})"
     post_slack_message(message + ".")
