@@ -6,7 +6,8 @@ Manage onduty contacts and alarming.
 
 ### Depedencies
 
-Ruby 1.9.3 or greater is required to run the application.
+  - Runtime: Ruby 1.9.3 or greater is required.
+  - Database: MongoDB
 
 Dependencies are managed using bundler (install the bundler gem if you don't have it).
 
@@ -78,7 +79,7 @@ The following plugins are available:
   - SlackNotification
   - ZendeskNotification
 
-Plugins can be enabled/disables using the configuration file.
+Plugins can be enabled/disabled within the configuration file.
 
 This is the default configuration:
 
@@ -118,8 +119,8 @@ smtp_options:
 
 #### SlackNotification
 
-1. Add a [new bot](https://my.slack.com/services/new/bot) on your Slack account and take note of the API token.
-2. Invite your new bot to the channel your are going to configure within Onduty.
+  1. Add a [new bot](https://my.slack.com/services/new/bot) on your Slack account and take note of the API token.
+  2. Invite your new bot to the channel your are going to configure within Onduty.
 
 ```yaml
 slack_api_token: slack-api-token

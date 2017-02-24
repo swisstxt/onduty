@@ -4,11 +4,8 @@ set :environment,   (ENV["RACK_ENV"] || :development).to_sym
 set :root,          File.join(File.dirname(__FILE__), '../../', 'app')
 set :public_folder, File.join(File.dirname(__FILE__), '../../', 'public')
 
-if c_file = Onduty::Config.file
-  config_file c_file
-  SETTINGS = OpenStruct.new(
-    YAML::load(File.open(Onduty::Config.file))
-  )
+if file = Onduty::Config.file
+  config_file file
 else
   puts "Error: No configuration file found."
   exit 1

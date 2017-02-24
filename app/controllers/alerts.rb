@@ -4,9 +4,11 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
   @alert = Onduty::Alert.find(params[:id])
   halt 403 unless @alert.uid = params[:uid]
 
-
-
-  ack = Onduty::Icinga2.new(SETTINGS).acknowledge_services(@alert.services)
+  ack = Onduty::Icinga2.new(
+    api_path: settings.icinga2_api_path,
+    user: settings.icinga2_user,
+    password: settings.icinga2_password
+  ).acknowledge_services(@alert.services)
   if ack[:acknowledged] == 1
     @alert.acknowledge!
   end

@@ -7,15 +7,15 @@
 # admin_password: mySEcrtetPW
 
 # Specify a mongoid.yml location (default is config/mongoid.yml)
-# mongoid_config: /etc/onduty/mongoid.yml
+# mongoid_config: conf/mongoid.yml
 
 base_url:       'http://localhost:3000/'
 
 # session_secret: 'your?random!secret$'
 
-icinga2_api_path: https://localhost:5665/v1
+icinga2_api_path: https://icinga2core.stxt.media.int:5665/v1
 icinga2_user: admin
-icinga2_password: icinga
+icinga2_password: icinga2
 
 # To find these visit https://www.twilio.com/user/account
 account_sid: "12677267267267267627676276276276"
@@ -23,9 +23,9 @@ auth_token:  "32324323424242424242424242424242"
 from_number: "+12345678910"
 
 notification_plugins:
-  - VoiceNotification
-  - SmsNotification
-  - MailNotification
+  # - VoiceNotification
+  # - SmsNotification
+  # - MailNotification
   - SlackNotification
 
 # email_sender:   'alert@onduty'
@@ -36,5 +36,5 @@ smtp_options:
 # zendesk_username: you@yourdomain.com
 # zendesk_token: you-zendesk-token
 
-# slack_api_token: slack-api-token
-# slack_channel: '#general'
+slack_api_token: xoxb-144519657604-jaiNhiSuglnNmGBcxx1oi3Yp
+slack_channel: '#onduty-test'

@@ -11,8 +11,10 @@
           <span aria-hidden="true">&times;</span>
           <span class="sr-only">Close</span>
         </button>
-        <strong>Yippee!</strong> No alerts found!
-        <% unless params[:days] == 'all' %><a href="/alerts?days=all" class="alert-link">Show all.</a><% end %>
+        No alerts found! <strong>:-)</strong>
+        <% unless params[:days] == 'all' %>
+          <a href="/alerts?days=all" class="alert-link">Show all alerts.</a>
+        <% end %>
       </div>
 
     <% else %>

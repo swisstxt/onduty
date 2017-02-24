@@ -5,9 +5,9 @@ module Onduty
     require 'openssl'
 
     def initialize(options = {})
-      @api_path = options[:icinga2_api_path] || "https://localhost:5665/v1"
-      @user     = options[:icinga2_user] || "admin"
-      @password = options[:icinga2_password] || "icinga2"
+      @api_path = options[:api_path] || "https://localhost:5665/v1"
+      @user     = options[:user] || "admin"
+      @password = options[:password] || "icinga2"
     end
 
     def acknowledge_services(services, options = {})
@@ -28,7 +28,7 @@ module Onduty
       comment = options[:comment] || "Acknowledged by Onduty"
       url = URI(
         @api_path +
-        "/actions/acknowledge-problem"
+        "/actions/acknowledge-problem?host=#{service.host}&service=#{service.service}"
       )
 
       http = Net::HTTP.new(url.host, url.port)
@@ -37,13 +37,12 @@ module Onduty
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       request = Net::HTTP::Post.new(url)
       request.body = {
-          "type" => "Service",
-          "filter" => "host.name=#{service.host},service.name=#{service.service}",
-          "author" => "onduty",
-          "comment" => comment,
-          "notify" => true
+          author: "onduty",
+          comment: comment,
+          notify: true
       }.to_json
       request.basic_auth(@user, @password)
+      request["Content-Type"] = "text/json"
       request["Accept"] = "application/json"
 
       begin

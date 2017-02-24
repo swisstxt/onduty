@@ -1,19 +1,20 @@
 helpers do
   def protected!
-    unless settings.respond_to?(:admin_user) && settings.respond_to?(:admin_password)
+    unless settings.respond_to?(:admin_user) &&
+      settings.respond_to?(:admin_password)
      return
     end
     return if authorized?
-    headers['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
+    headers['WWW-Authenticate'] = 'Basic realm="Access Restricted"'
     halt 401, "Not authorized\n"
   end
 
   def post_slack_message(message)
-    if SETTINGS.slack_api_token && SETTINGS.slack_channel
+    if settings.slack_api_token && settings.slack_channel
       Onduty::SlackHelper.post_message(
         message,
-        SETTINGS.slack_channel,
-        SETTINGS.slack_api_token
+        settings.slack_channel,
+        settings.slack_api_token
       )
     else
 
