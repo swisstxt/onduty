@@ -6,6 +6,9 @@ set :public_folder, File.join(File.dirname(__FILE__), '../../', 'public')
 
 if c_file = Onduty::Config.file
   config_file c_file
+  SETTINGS = OpenStruct.new(
+    YAML::load(File.open(Onduty::Config.file))
+  )
 else
   puts "Error: No configuration file found."
   exit 1

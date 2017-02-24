@@ -68,7 +68,7 @@ module Onduty
     end
 
     def enabled?
-      Onduty::Notification.plugins.iclude? self.name
+      Onduty::Notification.plugins.include? self.name
     end
 
     def valid_configuration?

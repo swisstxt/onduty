@@ -13,6 +13,10 @@ base_url:       'http://localhost:3000/'
 
 # session_secret: 'your?random!secret$'
 
+icinga2_api_path: https://localhost:5665/v1
+icinga2_user: admin
+icinga2_password: icinga
+
 # To find these visit https://www.twilio.com/user/account
 account_sid: "12677267267267267627676276276276"
 auth_token:  "32324323424242424242424242424242"

@@ -4,34 +4,29 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
   @alert = Onduty::Alert.find(params[:id])
   halt 403 unless @alert.uid = params[:uid]
 
-  success_message = "The alert has been successfully acknowledeged."
-  failure_message = "Error during alert acknowledgment."
 
-  if ack = Onduty::Icinga2.new.acknowledge_services(
-    @alert.services, { comment: "acknowledged by onduty" }
-  )
-    @alert.acknowledged_at = Time.now
-    @alert.save
+
+  ack = Onduty::Icinga2.new(SETTINGS).acknowledge_services(@alert.services)
+  if ack[:acknowledged] == 1
+    @alert.acknowledge!
   end
 
   if params[:format] =~ /^(twiml|xml)$/
     content_type 'text/xml'
     Twilio::TwiML::Response.new do |r|
-      if ack
-        r.Say success_message, voice: "woman"
+      r.Say ack[:message], voice: "woman"
+      if @alert.acknowledged?
         r.Say "Thank you and Goodbye!", voice: "woman"
-      else
-        r.Say failure_message, voice: "woman"
       end
     end.text
   elsif params[:format] == "html"
     content_type 'text/html'
-    ack ? success_message : failure_message
+    ack[:message]
   else
-    if ack
-      flash[:success] = success_message
+    if @alert.acknowledged?
+      flash[:success] = ack[:message]
     else
-      flash[:danger] = failure_message
+      flash[:danger] = ack[:message]
     end
     redirect "/alerts/#{@alert.id}"
   end
@@ -61,7 +56,7 @@ post '/alerts/:id/alert/?:duty_type?' do
   protected!
   @alert = Onduty::Alert.find(params[:id])
   options = params[:duty_type] ? {duty_type: params[:duty_type].to_i} : {}
-  if Onduty::Notification.new(@alert.id, options).notify
+  if Onduty::Notification.notify_all(@alert, options)
     flash[:success] = "Successfuly alerted."
   else
     flash[:danger] = "There was a problem notifying onduty contacts."

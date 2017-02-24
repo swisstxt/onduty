@@ -1,7 +1,7 @@
 module Onduty
   class SlackNotification < Notification
     require 'slack-ruby-client'
-    require 'slack'
+    require_relative './slack_helper'
 
     def name
       "Onduty Slack Notification"
@@ -19,7 +19,7 @@ module Onduty
         contact: @contact,
         acknowledge_url: acknowledge_url(html_link: true)
       )
-      Onduty::Slack.post_message(
+      Onduty::SlackHelper.post_message(
         message,
         @settings.slack_channel,
         @settings.slack_api_token

@@ -38,8 +38,12 @@ module Onduty
     end
 
     def acknowledge!
-      self.acknowledged_at = Alert.acknowledge(self.host, self.service)
+      self.acknowledged_at = Time.now
       self.save!
+    end
+
+    def acknowledged?
+      self.acknowledged_at != nil
     end
 
     def message
