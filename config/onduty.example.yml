@@ -23,9 +23,9 @@ auth_token:  "32324323424242424242424242424242"
 from_number: "+12345678910"
 
 notification_plugins:
-  # - VoiceNotification
-  # - SmsNotification
-  # - MailNotification
+  - VoiceNotification
+  - SmsNotification
+  - MailNotification
   - SlackNotification
 
 # email_sender:   'alert@onduty'
@@ -36,5 +36,5 @@ smtp_options:
 # zendesk_username: you@yourdomain.com
 # zendesk_token: you-zendesk-token
 
-slack_api_token: xoxb-144519657604-jaiNhiSuglnNmGBcxx1oi3Yp
-slack_channel: '#onduty-test'
+# slack_api_token: slack-api-token
+# slack_channel: '#general'
