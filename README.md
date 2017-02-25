@@ -35,6 +35,20 @@ cp config/onduty.example.yml config/onduty.yml
 vi config/onduty.yml
 ```
 
+### Run with Docker
+
+Build the image:
+
+```bash
+docker build -t onduty:latest .
+```
+
+Run it together with mongodb:
+
+```bash
+docker-compose up
+```
+
 ### Security
 Onduty protects access using basic auth, when you configure "admin_user" and "admin_password" in your configuration file.
 

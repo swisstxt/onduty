@@ -1,0 +1,14 @@
+version: '2'
+services:
+  web:
+    image: onduty:latest
+    command: bundle exec puma -p 9292
+    environment:
+      - MONGODB=mongodb:27017
+    ports:
+      - 9292:9292
+    links:
+      - mongodb:mongodb
+  mongodb:
+    image: mongo:3.4.2
+    command: mongod --smallfiles
