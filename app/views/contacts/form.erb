@@ -21,6 +21,7 @@
         <label for="phone" class="col-sm-2 control-label">Phone</label>
         <div class="col-sm-10">
           <input name="contact[phone]" id="phone" placeholder="Phone" class="form-control" value="<%= @contact.phone if @contact %>">
+          <span id="helpBlock" class="help-block">Please enter number in international format, i.e. +41 32 322 22 33.</span>
         </div>
       </div>
 

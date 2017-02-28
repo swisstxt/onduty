@@ -52,14 +52,14 @@
       </header>
 
       <main>
-        <% %w(info success danger).each do |type| %>
-          <% if flash[type.to_sym] %>
+        <% %w(info success danger).each do |type| -%>
+          <% if flash[type.to_sym] -%>
             <div class="alert alert-<%= type %>">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
               <%= flash[type.to_sym] %>
             </div>
-          <% end %>
-        <% end %>
+          <% end -%>
+        <% end -%>
 
         <%= yield %>
       </main>

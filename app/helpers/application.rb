@@ -60,4 +60,18 @@ helpers do
   def days_ago(x)
     Time.now - x.to_i * 3600 * 24
   end
+
+  def formated_phone(number)
+    "#{number[0..2]} #{number[3..4]} #{number[5..7]} #{number[8..9]} #{number[10..-1]}" rescue number
+  end
+
+  def form_error_message(model, options = {})
+    message = [options[:title] || "" ]
+    if model.errors.size > 0
+      message << %w(<br> <ul>)
+      message << model.errors.full_messages.map {|msg| "<li>#{msg}</li>"}
+      message << "</ul>"
+    end
+    message.join("\n")
+  end
 end

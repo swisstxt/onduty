@@ -19,6 +19,8 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
       r.Say ack[:message], voice: "woman"
       if @alert.acknowledged?
         r.Say "Thank you and Goodbye!", voice: "woman"
+      else
+        r.Say "Sorry, we are unable to acknowledge the issue.", voice: "woman"
       end
     end.text
   elsif params[:format] == "html"
@@ -30,7 +32,7 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
     else
       flash[:danger] = ack[:message]
     end
-    redirect "/alerts/#{@alert.id}"
+    erb :"alerts/show"
   end
 end
 

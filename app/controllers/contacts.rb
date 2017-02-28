@@ -33,12 +33,14 @@ post '/contacts/new' do
     flash[:success] = "Successfuly created contact."
     redirect "/contacts/#{@contact.id}"
   else
-    message = "Error during contact creation. Please submit all required values."
-    @contact.errors.full_messages.each do |msg|
-      message += "<br> -#{msg}"
-    end
+    message = form_error_message(
+      @contact,
+      "Error during contact creation. Please review your input:"
+    )
     flash[:danger] = message
-    redirect '/contacts/new'
+    @method = 'new'
+    @title = "Create Contact"
+    erb :"/contacts/form"
   end
 end
 
@@ -64,8 +66,14 @@ post '/contacts/:id/edit' do
     flash[:success] = "Successfuly edited contact."
     redirect "/contacts/#{@contact.id}"
   else
-    flash[:danger] = "Error editing contact."
-    redirect back
+    message = form_error_message(
+      @contact,
+      title: "Error editing contact:"
+    )
+    flash[:danger] = message
+    @title = "Edit Contact"
+    @method = "#{params[:id]}/edit"
+    erb :"contacts/form"
   end
 end
 

@@ -13,7 +13,7 @@ module Onduty
     def acknowledge_services(services, options = {})
       status = 1
       ack = {}
-      status = services.each do |service|
+      services.each do |service|
         ack = acknowledge_service(service, options)
         status = ack[:acknowledged] > status ? ack[:acknowledged] : status
       end
@@ -28,7 +28,8 @@ module Onduty
       comment = options[:comment] || "Acknowledged by Onduty"
       url = URI(
         @api_path +
-        "/actions/acknowledge-problem?host=#{service.host}&service=#{service.service}"
+        "/actions/acknowledge-problem?type=Service&filter=host.name=='#{service.host}',service.name=='#{service.service}'"
+        # "/actions/acknowledge-problem?type=Service&host=#{service.host}&service=#{service.service}"
       )
 
       http = Net::HTTP.new(url.host, url.port)
@@ -65,8 +66,8 @@ module Onduty
         puts e.backtrace
         {
           acknowledged: 2,
-          message: "Unable to contact the Icinga2 API",
-          debug: e.message
+          message: "ERROR: Unable to contact the Icinga2 API (#{e.message})",
+          debug: e.backtrace
         }
       end
     end

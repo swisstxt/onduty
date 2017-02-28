@@ -35,7 +35,7 @@
                 </div>
                 <% end %>
               </td>
-              <td><%= contact.phone %></td>
+              <td><%= formated_phone(contact.phone) %></td>
               <td>
                 <a href="/contacts/<%= contact.id %>" class="btn btn-sm btn-primary">Show</a>
                 <a href="/contacts/<%= contact.id %>/edit" class="btn btn-sm btn-success">Edit</a>

@@ -14,10 +14,13 @@ module Onduty
     validates_presence_of :first_name
     validates_presence_of :last_name
 
+    before_save :strip_phone_number, if: :changed?
+
     validates :phone,
       presence: true,
-      format: { with: /\+[0-9]+/ },
-      length: { minimum: 10, maximum: 15 }
+      format: {
+        with: /\A[+]{1}[0-9]{2}\s?[0-9]{2}\s?[0-9]{3}\s?[0-9]{2}\s?[0-9]{2}\z/
+      }
 
     def name
       "#{first_name} #{last_name}"
@@ -25,6 +28,12 @@ module Onduty
 
     def duty_name
       Onduty::Duty.types[duty]
+    end
+
+    protected
+
+    def strip_phone_number
+      self.phone.gsub!(' ', '')
     end
 
   end
