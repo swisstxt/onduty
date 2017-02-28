@@ -11,13 +11,17 @@ helpers do
 
   def post_slack_message(message)
     if settings.slack_api_token && settings.slack_channel
-      Onduty::SlackHelper.post_message(
-        message,
-        settings.slack_channel,
-        settings.slack_api_token
-      )
+      begin
+        Onduty::SlackHelper.post_message(
+          message,
+          settings.slack_channel,
+          settings.slack_api_token
+        )
+      rescue => e
+        puts "ERROR: Can't create Slack message - #{e.message}"
+      end
     else
-
+      puts "WARNING: Unsuficient credentials for posting Slack message."
     end
   end
 
