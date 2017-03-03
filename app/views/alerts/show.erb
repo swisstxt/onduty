@@ -4,8 +4,8 @@
 
 <table class="table table-striped" style="width: 50%;">
   <tr>
-    <th>Topic</th>
-    <td><%= @alert.topic %></td>
+    <th>Name</th>
+    <td><%= @alert.name %></td>
   </tr>
   <tr>
     <th>Message</th>
@@ -22,6 +22,10 @@
         <%= service.name %><br>
       <% end -%>
     </td>
+  </tr>
+  <tr>
+    <th>Trigger-Count</th>
+    <td><%= @alert.count %></td>
   </tr>
   <tr>
     <th>Created at</th>
@@ -52,18 +56,17 @@
 
 <hr>
 <a href="/alerts<%= alerts_link_filter %>" class="btn btn-default">Back</a>
-<% if @alert.acknowledged_at %>
-  <a href="/alerts/<%= @alert.id %>/delete" class="btn btn-danger">Delete</a>
-<% else %>
-  <form action="/alerts/<%= @alert.id %>/acknowledge?uid=<%= @alert.uid %>" method="post" style="display: inline-block">
-    <button type="submit" class="btn btn-primary">Acknowledge</button>
-  </form>
-  <form action="/alerts/<%= @alert.id %>/alert" method="post" style="display: inline-block">
-    <button type="submit" class="btn btn-danger">Alert</button>
-  </form>
-  <% if @alert.last_alert_at %>
-  <form action="/alerts/<%= @alert.id %>/alert/2" method="post" style="display: inline-block">
-    <button type="submit" class="btn btn-danger">Escalate</button>
-  </form>
-  <% end %>
+<a href="/alerts/<%= @alert.id %>/delete" class="btn btn-danger">Delete</a>
+
+
+<form action="/alerts/<%= @alert.id %>/acknowledge?uid=<%= @alert.uid %>" method="post" style="display: inline-block">
+  <button type="submit" class="btn btn-primary">Acknowledge</button>
+</form>
+<form action="/alerts/<%= @alert.id %>/alert?force=1" method="post" style="display: inline-block">
+  <button type="submit" class="btn btn-danger">Alert</button>
+</form>
+<% if @alert.last_alert_at %>
+<form action="/alerts/<%= @alert.id %>/alert/2" method="post" style="display: inline-block">
+  <button type="submit" class="btn btn-danger">Escalate</button>
+</form>
 <% end %>

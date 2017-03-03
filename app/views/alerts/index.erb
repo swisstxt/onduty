@@ -21,7 +21,7 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Topic</th>
+            <th>Name</th>
             <th>Created At</th>
             <th class="text-right">Actions</th>
           </tr>
@@ -31,7 +31,7 @@
           <tr <%= 'class="success"' if alert.acknowledged_at %>>
             <td>
               <b>
-                <a href="/alerts/<%= alert.id %>"><%= alert.topic %></a>
+                <a href="/alerts/<%= alert.id %>"><%= alert.name %></a>
               </b>
             </td>
             <td><%= h_time(alert.created_at) %></td>

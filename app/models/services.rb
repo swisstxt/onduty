@@ -4,10 +4,10 @@ module Onduty
     embedded_in :alert
 
     field :host, type: String
-    field :service, type: String
+    field :name, type: String
 
-    def name
-      "#{host}!#{service}"
+    def full_name
+      "#{host}!#{name}"
     end
 
   end

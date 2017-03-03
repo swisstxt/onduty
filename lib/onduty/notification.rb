@@ -31,19 +31,27 @@ module Onduty
     end
 
     def self.notify_all(alert, options = {})
-      self.plugins.each do |plugin|
-       notification_plugin = Onduty.const_get(plugin).new(alert.id, options)
-       if notification_plugin.valid_configuration?
-         notification_plugin.trigger
-       else
-         notification_plugin.logger.error "Plugin can't be used because of missing configuration options."
-       end
+      if options[:force] || alert.count >= (SETTINGS.alert_count || 1)
+        begin
+          self.plugins.each do |plugin|
+           notification_plugin = Onduty.const_get(plugin).new(alert, options)
+           if notification_plugin.valid_configuration?
+             notification_plugin.trigger
+           else
+             notification_plugin.logger.error "Plugin #{plugin} can't be used because of missing configuration options."
+           end
+          end
+          alert.last_alert_at = Time.now
+          alert.count += 1
+          alert.save!
+        rescue => e
+          logger.error "Error triggering alert with ID #{alert.id}: #{e.message}"
+          false
+        end
+      else
+        alert.count += 1
+        alert.save!
       end
-      alert.last_alert_at = Time.now
-      alert.save!
-    rescue => e
-      logger.error "Error triggering alert with ID #{alert.id}: #{e.message}"
-      false
     end
 
     def initialize(alert, options = {})
@@ -58,8 +66,8 @@ module Onduty
     def acknowledge_url(opts = {})
       ext = opts[:html_link] ? 'html' : 'twiml'
       URI::join(
-        @@settings.base_url,
-        "/alerts/#{alert.id}/acknowledge.#{ext}?uid=#{alert.uid}"
+        SETTINGS.base_url,
+        "/alerts/#{@alert.id}/acknowledge.#{ext}?uid=#{@alert.uid}"
       ).to_s
     end
 

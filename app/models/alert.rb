@@ -7,15 +7,16 @@ module Onduty
 
     field :uid, type: String,
       default: ->{ SecureRandom.urlsafe_base64(8) }
-    field :topic, type: String
+    field :name, type: String
     field :notification_type, type: String, default: "Alert"
     field :last_alert_at, type: Time
     field :escalated_at, type: Time
     field :acknowledged_at, type: Time
+    field :count, type: Integer, default: 1
 
     embeds_many :services
 
-    validates_presence_of :topic
+    validates_presence_of :name
     validates_presence_of :services
 
     scope :created_after, ->(time) { where(:created_at.gt => time) }
@@ -26,7 +27,7 @@ module Onduty
       str.lines.each do |s_str|
         self.services << Service.new(
           host: s_str.split('!').first,
-          service: s_str.split('!').last
+          name: s_str.split('!').last
         )
       end
     end
@@ -47,7 +48,7 @@ module Onduty
     end
 
     def message
-      [notification_type, topic].join(' - ')
+      [notification_type, name].join(' - ')
     end
 
   end

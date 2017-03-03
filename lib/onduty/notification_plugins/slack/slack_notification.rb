@@ -15,7 +15,7 @@ module Onduty
       message = Erubis::Eruby.new(
         File.read(File.join(File.dirname(__FILE__), 'slack_notification.erb'))
       ).result(
-        alert: alert,
+        alert: @alert,
         contact: @contact,
         acknowledge_url: acknowledge_url(html_link: true)
       )
@@ -24,9 +24,10 @@ module Onduty
         @settings.slack_channel,
         @settings.slack_api_token
       )
-      logger.info "Succesfully sent Slack message for alert with ID #{@alert_id}."
+      logger.info "Succesfully sent Slack message for alert with ID #{@alert.id}."
     rescue => e
       logger.error "Error creating Slack message: #{e.message}"
+      logger.error "#{e.backtrace}"
     end
   end
 end

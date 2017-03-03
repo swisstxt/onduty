@@ -61,7 +61,7 @@ Configure the Icinga2 API:
 ```yaml
 icinga2_api_path: https://localhost:5665/v1
 icinga2_user: admin
-icinga2_password: icinga2
+icinga2_password: icinga
 ```
 
 ## Run the server

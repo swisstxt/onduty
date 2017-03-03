@@ -65,7 +65,7 @@ module Onduty
       enum: %w(all ack nak)
     def alerts
       connect_to_db
-      table = [%w(ID Host Service Created Acknowledged)]
+      table = [%w(ID Name Created Trigger-Count Acknowledged)]
       alerts = Alert.created_after(days_ago(options[:days_ago]))
       case options[:status]
       when 'ack'
@@ -76,8 +76,8 @@ module Onduty
       alerts.order(created_at: :desc).each do |alert|
         table << [
           alert.id,
-          alert.host,
-          alert.service,
+          alert.name,
+          alert.count,
           alert.created_at,
           alert.acknowledged_at
         ]
@@ -86,21 +86,14 @@ module Onduty
     end
 
     desc "create_alert", "create a new alert"
-    option :host,
-      desc: "host",
-      aliases: '-H',
+    option :name,
+      desc: "name",
+      aliases: '-n',
       required: true
-    option :service,
-      desc: "service",
+    option :services,
+      desc: "services (<host_1>!<service_1> <host_2>!<service2> ...)",
       aliases: '-s',
-      required: true
-    option :notification_type,
-      desc: "notification type",
-      aliases: '-t',
-      required: true
-    option :service_state,
-      desc: "service state",
-      aliases: '-S',
+      type: Array,
       required: true
     option :alert,
       desc: "alert?",
@@ -112,23 +105,23 @@ module Onduty
       default: 60
     def create_alert
       connect_to_db
-      alert = Alert.find_or_create_by(
-        host:    options[:host],
-        service: options[:service],
+      alert = Alert.where(
+        name:    options[:name],
         acknowledged_at: nil
-      ) do |a|
-        a.notification_type = options[:notification_type]
-        a.service_state       = options[:service_state]
+      ) do |alrt|
+        options[:services].each do |s_str|
+          alrt.services << Service.new(
+            host: s_str.split('!').first,
+            service: s_str.split('!').last
+          )
+        end
       end
 
       if alert.save
-        if options[:alert]
-          if alert.last_alert_at == nil ||
-            (options[:suspend_for] * 60) < (Time.now - alert.last_alert_at)
+        if options[:alert] && alert.last_alert_at == nil
+          if alert.count == onduty_config.alert_count
             say "Alerting...", :yellow
             invoke("trigger_alert", [alert.id], {})
-          else
-            say "Not sending alerts, still suspended...", :yellow
           end
         end
         invoke "show_alert", [alert.id], {}
@@ -167,7 +160,7 @@ module Onduty
       end
       print_table table
     rescue
-      say "Alert not found.", :red
+      say "ERROR: Alert not found.", :red
     end
 
     desc "plugins", "show active plugins and their state"
@@ -191,40 +184,41 @@ module Onduty
       end
       print_table table
     rescue
-      say "A valid alert and onduty contact is required.", :red
+      say "ERROR: A valid alert and onduty contact is required.", :red
     end
 
     desc "acknowledege_service", "acknowledege_service"
-    option :host,
-      desc: "host",
-      aliases: '-H',
-      required: true
-    option :service,
-      desc: "service",
-      aliases: '-s',
+    option :id,
+      desc: "id",
       required: true
     option :comment,
       desc: "comment",
       aliases: '-c',
-      required: true
     def acknowledege_service
-      if Onduty::Icinga.new.acknowledge_service(
-        options[:host],
-        options[:service],
-        { comment: options[:comment] }
-      )
-        say "Acknowledeged", :green
-      else
-        say "Error during acknowledegment", :red
+      opts = options[:comment] ? { comment: options[:comment] } : {}
+      begin
+        Alert.find(options[:id])
+        if Onduty::Icinga.new.acknowledge_service(service, opts)
+          say "Acknowledeged", :green
+        else
+          say "Error during acknowledegment.", :yellow
+        end
+      rescue => e
+        say "ERROR: Alert not found.", :red
+        exit 1
       end
     end
 
     no_commands do
       def connect_to_db(env = options[:env])
-        Mongoid.load!(Onduty::Config.new.mongoid_config, env)
+        Mongoid.load!(onduty_config.mongoid_config, env)
       rescue => e
-        say "Error: Can't connect to the database: #{e.message}", :red
+        say "ERROR: Can't connect to the database: #{e.message}", :red
         exit 1
+      end
+
+      def onduty_config
+        @onduty_config ||= Onduty::Config.new
       end
 
       def days_ago(x)

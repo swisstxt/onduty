@@ -7,7 +7,7 @@ module Onduty
     def initialize(options = {})
       @api_path = options[:api_path] || "https://localhost:5665/v1"
       @user     = options[:user] || "admin"
-      @password = options[:password] || "icinga2"
+      @password = options[:password] || "icinga"
     end
 
     def acknowledge_services(services, options = {})
@@ -28,8 +28,7 @@ module Onduty
       comment = options[:comment] || "Acknowledged by Onduty"
       url = URI(
         @api_path +
-        "/actions/acknowledge-problem?type=Service&filter=host.name=='#{service.host}',service.name=='#{service.service}'"
-        # "/actions/acknowledge-problem?type=Service&host=#{service.host}&service=#{service.service}"
+        "/actions/acknowledge-problem?service=#{service.full_name}"
       )
 
       http = Net::HTTP.new(url.host, url.port)

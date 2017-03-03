@@ -16,19 +16,19 @@ module Onduty
         body = Erubis::Eruby.new(
           File.read(File.join(File.dirname(__FILE__), 'mail_notification.erb'))
         ).result(
-          alert: alert,
+          alert: @alert,
           contact: @contact,
           acknowledge_url: acknowledge_url(html_link: true)
         )
         Pony.mail({
           from:    from,
           to:      @contact.email,
-          subject: "[Alert #{@alert_id}] Alert from onduty" ,
+          subject: "[Alert #{@alert.id}] Alert from onduty" ,
           body:    body,
           via:     :smtp,
           via_options: @settings.smtp_options
         })
-        logger.info "Sent alert email with ID #{@alert_id} to #{@contact.name}."
+        logger.info "Sent alert email with ID #{@alert.id} to #{@contact.name}."
       end
     rescue => e
       logger.error "Error sending email: #{e.message}"

@@ -13,9 +13,12 @@ base_url:       'http://localhost:3000/'
 
 # session_secret: 'your?random!secret$'
 
-icinga2_api_path: https://icinga2core.stxt.media.int:5665/v1
+# Trigger alert on first notification
+# alert_count: 1
+
+icinga2_api_path: https://localhost:5665/v1
 icinga2_user: admin
-icinga2_password: icinga2
+icinga2_password: icinga
 
 # To find these visit https://www.twilio.com/user/account
 account_sid: "12677267267267267627676276276276"

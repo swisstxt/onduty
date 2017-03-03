@@ -2,7 +2,7 @@
 
 route :get, :post, '/alerts/:id/acknowledge.?:format?' do
   @alert = Onduty::Alert.find(params[:id])
-  halt 403 unless @alert.uid = params[:uid]
+  halt 403 unless @alert.uid == params[:uid]
 
   ack = Onduty::Icinga2.new(
     api_path: settings.icinga2_api_path,
@@ -60,6 +60,7 @@ post '/alerts/:id/alert/?:duty_type?' do
   protected!
   @alert = Onduty::Alert.find(params[:id])
   options = params[:duty_type] ? {duty_type: params[:duty_type].to_i} : {}
+  options[:force] = true if params[:force] == '1'
   if Onduty::Notification.notify_all(@alert, options)
     flash[:success] = "Successfuly alerted."
   else
@@ -103,9 +104,14 @@ end
 
 post '/alerts/new' do
   protected!
-  alert = Onduty::Alert.new(params[:alert])
+  alert = Onduty::Alert.create(params[:alert])
   if alert.save
-    flash[:success] = "Successfuly created alert."
+    message = "Successfuly created "
+    if params[:trigger_alert] == "1"
+      Onduty::Notification.notify_all(alert, { duty_type: 1 })
+      message += " and triggered"
+    end
+    flash[:success] = "#{message} alert."
     redirect "/alerts/#{alert.id}"
   else
     flash[:danger] = "Error during alert creation. Please submit all required values."
@@ -116,7 +122,7 @@ end
 get '/alerts/:id' do
   protected!
   @alert = Onduty::Alert.find(params[:id])
-  @title = "Alert #{@alert.topic}"
+  @title = "Alert #{@alert.name}"
   erb :"alerts/show"
 end
 
