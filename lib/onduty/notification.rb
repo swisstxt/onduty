@@ -31,7 +31,7 @@ module Onduty
     end
 
     def self.notify_all(alert, options = {})
-      if options[:force] || alert.count >= (SETTINGS.alert_count || 1)
+      if options[:force] || alert.count >= (SETTINGS.alert_count || 0)
         begin
           self.plugins.each do |plugin|
            notification_plugin = Onduty.const_get(plugin).new(alert, options)
