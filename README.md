@@ -51,7 +51,7 @@ Run it together with mongodb:
 docker-compose up
 ```
 
-### Security
+### Access Control
 
 OnDuty protects access using basic auth, when you configure "admin_user" and "admin_password" in your configuration file.
 
