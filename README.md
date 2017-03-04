@@ -1,13 +1,15 @@
-# Onduty
+# OnDuty
 
-Manage onduty contacts and alarming.
+Manage onduty contacts and trigger alarms via phone, SMS, Slack and Email.
 
 ## Setup
 
 ### Depedencies
 
-  - Runtime: Ruby 1.9.3 or greater is required.
+  - Runtime: up from Ruby 1.9.3 required, 2.0+ is recommended.
   - Database: MongoDB
+  - Alert Acknowledgement: Icinga2
+  - Phone and SMS alerts: Twilio
 
 Dependencies are managed using bundler (install the bundler gem if you don't have it).
 
@@ -17,7 +19,7 @@ bundle install
 
 ### Configure the database connection
 
-Onduty uses MongoDB as backend.
+OnDuty uses MongoDB as backend.
 Create a configuration file named config/mongoid.yml (see config/mongoid.example.yml).
 
 ### Create your own configuration
@@ -50,7 +52,8 @@ docker-compose up
 ```
 
 ### Security
-Onduty protects access using basic auth, when you configure "admin_user" and "admin_password" in your configuration file.
+
+OnDuty protects access using basic auth, when you configure "admin_user" and "admin_password" in your configuration file.
 
 The alert acknowledge and twiml methods are protected by alert UID.
 
@@ -66,7 +69,7 @@ icinga2_password: icinga
 
 ## Run the server
 
-Onduty is a Sinatra Webapp and can be started using any Rack compatible webserver.
+OnDuty is a Sinatra Webapp and can be started using any Rack compatible webserver.
 
 From the application base directory:
 
@@ -134,7 +137,7 @@ smtp_options:
 #### SlackNotification
 
   1. Add a [new bot](https://my.slack.com/services/new/bot) on your Slack account and take note of the API token.
-  2. Invite your new bot to the channel your are going to configure within Onduty.
+  2. Invite your new bot to the channel your are going to configure within OnDuty.
 
 ```yaml
 slack_api_token: slack-api-token
