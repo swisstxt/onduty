@@ -1,6 +1,8 @@
 # OnDuty
 
-Manage onduty contacts and trigger alarms via phone, SMS, Slack and Email.
+![OnDuty](public/images/onduty.png)
+
+Manage OnDuty contacts and trigger alarms via phone, SMS, Slack and Email.
 
 ## Setup
 
