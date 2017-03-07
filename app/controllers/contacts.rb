@@ -80,16 +80,11 @@ end
 delete '/contacts/:id/delete' do
   protected!
   contact = Onduty::Contact.find(params[:id])
-  if params[:confirm_delete]
-    if contact.destroy
-      flash[:success] = "Successfuly deleted contact."
-      redirect '/contacts'
-    else
-      flash[:danger] = "Error deleting contact."
-    end
+  if contact.destroy
+    flash[:success] = "Successfuly deleted contact."
+    redirect '/contacts'
   else
-    flash[:danger] = "Error deleting contact. Please confirm deletion."
-    redirect "/contacts/#{contact.id}/delete"
+    flash[:danger] = "Error deleting contact."
   end
 end
 

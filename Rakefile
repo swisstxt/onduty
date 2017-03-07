@@ -17,3 +17,9 @@ task :tag do
   %x[git push --tags]
   puts "Finished!"
 end
+
+desc "Generate secret"
+task :secret do
+  require 'securerandom'
+  puts SecureRandom.hex(64)
+end
