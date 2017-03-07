@@ -1,5 +1,4 @@
 header {
-  padding-bottom: 1em;
   margin-top: 0.7em;
 }
 
@@ -18,7 +17,7 @@ footer {
 }
 
 .alert {
-  max-width: 600px;
+  margin-top: 1em;
 }
 
 menu {

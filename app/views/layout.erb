@@ -24,37 +24,39 @@
   <body>
     <div class="container">
       <header>
-          <ul class="nav nav-pills pull-right">
-            <li role="presentation">
-              <a href="/settings">
-                <span class="glyphicon glyphicon-wrench"></span> Settings
-              </a>
-            </li>
-            <li role="presentation">
-              <a href="/contacts">
-                <span class="glyphicon glyphicon-user"></span> Contacts
-              </a>
-            </li>
-            <li role="presentation">
-              <a href="/alerts<%= alerts_link_filter %>">
-                <span class="glyphicon glyphicon-exclamation-sign"></span> Alerts
-              </a>
-            </li>
-            <li role="presentation">
-              <a href="/">
-                <span class="glyphicon glyphicon-home"></span> Home
-              </a>
-            </li>
-          </ul>
+        <ul class="nav nav-pills pull-right">
+          <li role="presentation">
+            <a href="/settings">
+              <span class="glyphicon glyphicon-wrench"></span> Settings
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="/contacts">
+              <span class="glyphicon glyphicon-user"></span> Contacts
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="/alerts<%= alerts_link_filter %>">
+              <span class="glyphicon glyphicon-exclamation-sign"></span> Alerts
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="/">
+              <span class="glyphicon glyphicon-home"></span> Home
+            </a>
+          </li>
+        </ul>
         <h3>
-          <a href="/"><img width="80" height="80" src="/images/onduty.png"></a>
+          <a href="/">
+            <img width="80" height="80" src="/images/onduty.png">
+          </a>
         </h3>
       </header>
 
       <main>
         <% %w(info success danger).each do |type| -%>
           <% if flash[type.to_sym] -%>
-            <div class="alert alert-<%= type %>">
+            <div class="alert alert-<%= type %> col-md-6">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
               <%= flash[type.to_sym] %>
             </div>
