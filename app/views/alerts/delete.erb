@@ -6,13 +6,13 @@
   <input name="_method" type="hidden" value="delete" />
   <div class="alert alert-danger" role="alert">
     <h4>
-      Please confirm that you want to delete alert with ID <%= @alert.id %>.
+      Please confirm that you want to delete alert "<%= @alert.name %>" with ID <%= @alert.id %>.
     </h4>
   </div>
   <div class="form-group">
     <div class="col-sm-9">
       <a href="/alerts<%= alerts_link_filter %>" class="btn btn-primary">Cancel</a>
-      <button type="submit" class="btn btn-danger"><%= @title %></button>
+      <button type="submit" class="btn btn-danger">Confirm</button>
     </div>
   </div>
 </form>
