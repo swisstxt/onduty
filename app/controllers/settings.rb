@@ -1,8 +1,8 @@
 # Plugins Controller
 
-get '/plugins' do
+get '/settings' do
   protected!
   @title = "Plugins"
   @plugins = Onduty::Notification::AVAILABLE_PLUGINS
-  erb :"plugins/index"
+  erb :"settings/index"
 end
