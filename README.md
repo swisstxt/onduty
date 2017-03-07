@@ -1,6 +1,4 @@
-# OnDuty
-
-![OnDuty](public/images/onduty.png)
+# ![OnDuty](public/images/onduty.png) OnDuty
 
 Manage OnDuty contacts and trigger alarms via phone, SMS, Slack and Email.
 
