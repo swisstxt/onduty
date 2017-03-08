@@ -3,7 +3,8 @@ source 'https://rubygems.org'
 gem 'rake'
 gem 'thor'
 gem 'twilio-ruby', '~> 3.13.1'
-gem "mongoid", "~> 6.1"
+# mongoid 6 requires activesupport > 5 which requires ruby >= 2.2.2
+gem "mongoid", "~> 5.2.0"
 gem 'pony'
 gem 'erubis', '~> 2.7.0'
 gem 'zendesk_api'
