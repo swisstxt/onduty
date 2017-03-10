@@ -6,7 +6,7 @@ require "erubis"
 require "onduty/version"
 require "onduty/config"
 require "onduty/notification"
-require "onduty/icinga"
+require "onduty/icinga2"
 
 Dir["./app/models/*.rb"].each { |file| require file }
 
@@ -93,7 +93,7 @@ module Onduty
     option :services,
       desc: "services (<host_1>!<service_1> <host_2>!<service2> ...)",
       aliases: '-s',
-      type: Array,
+      type: :array,
       required: true
     option :alert,
       desc: "alert?",
@@ -105,21 +105,21 @@ module Onduty
       default: 60
     def create_alert
       connect_to_db
-      alert = Alert.where(
+      alert = Alert.find_or_create_by(
         name:    options[:name],
         acknowledged_at: nil
-      ) do |alrt|
-        options[:services].each do |s_str|
-          alrt.services << Service.new(
-            host: s_str.split('!').first,
-            service: s_str.split('!').last
-          )
-        end
+      )
+      options[:services].each do |s_str|
+        alert.services.find_or_create_by(
+          host: s_str.split('!').first,
+          name: s_str.split('!').last
+        )
       end
 
       if alert.save
         if options[:alert] && alert.last_alert_at == nil
-          if alert.count == onduty_config.alert_count
+          puts onduty_config.settings["alert_count"]
+          if alert.count >= (onduty_config.settings["alert_count"] || 0)
             say "Alerting...", :yellow
             invoke("trigger_alert", [alert.id], {})
           end
@@ -154,8 +154,8 @@ module Onduty
     def show_alert(id)
       connect_to_db
       alert = Alert.find(id)
-      table = %w(id uid host service
-      created_at acknowledged_at last_alert_at).map do |attr|
+      table = %w(id uid name
+      created_at acknowledged_at count last_alert_at).map do |attr|
         [attr, alert[attr.to_sym] ? alert[attr.to_sym].to_s : '-']
       end
       print_table table
@@ -193,7 +193,7 @@ module Onduty
       required: true
     option :comment,
       desc: "comment",
-      aliases: '-c',
+      aliases: '-c'
     def acknowledege_service
       opts = options[:comment] ? { comment: options[:comment] } : {}
       begin

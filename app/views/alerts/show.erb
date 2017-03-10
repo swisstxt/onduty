@@ -18,9 +18,11 @@
   <tr>
     <th>Affected Services</th>
     <td>
+      <ul>
       <% @alert.services.each do |service| -%>
-        <%= service.name %><br>
+        <li>Host: <%= service.host %>, Name: <%= service.name %></li>
       <% end -%>
+      </ul>
     </td>
   </tr>
   <tr>

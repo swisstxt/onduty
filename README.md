@@ -153,3 +153,12 @@ zendesk_url: https://yoursubdomain.zendesk.com/api/v2
 zendesk_username: you@yourdomain.com
 zendesk_token: you-zendesk-token
 ```
+
+# Trigger alerts from external sources
+
+The following example shows how to create an alert using cURL and JSON payload:
+
+```bash
+curl -v -i -X POST -H "Content-Type: application/json" \
+--data '{"alert":{"name":"test_alert","services":[{"name":"service1","host":"host1"},{"name":"service2","host":"host2"}]},"trigger_alert":"true"}' \ 'http://admin:password@127.0.0.1:9393/alerts/new.json'
+```

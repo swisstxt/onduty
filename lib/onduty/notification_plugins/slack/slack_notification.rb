@@ -27,7 +27,6 @@ module Onduty
       logger.info "Succesfully sent Slack message for alert with ID #{@alert.id}."
     rescue => e
       logger.error "Error creating Slack message: #{e.message}"
-      logger.error "#{e.backtrace}"
     end
   end
 end

@@ -102,20 +102,49 @@ get '/alerts/new' do
   erb :"alerts/form"
 end
 
-post '/alerts/new' do
+post '/alerts/new.?:format?' do
   protected!
-  alert = Onduty::Alert.create(params[:alert])
-  if alert.save
-    message = "Successfuly created "
-    if params[:trigger_alert] == "1"
-      Onduty::Notification.notify_all(alert, { duty_type: 1 })
-      message += " and triggered"
+  if params[:format] == "json"
+    content_type :json
+    begin
+      payload = JSON.parse(request.body.read)
+      alert = Onduty::Alert.find_or_create_by(
+        name: payload['alert']['name'],
+        acknowledged_at: nil
+      )
+      payload['alert']['services'].each do |srv|
+        alert.services.find_or_create_by(
+          name: srv["name"],
+          host: srv["host"]
+        )
+      end
+      if alert.save
+        if payload['trigger_alert'] == "1" || payload['trigger_alert'] == 'true'
+          Onduty::Notification.notify_all(alert, { duty_type: 1 })
+        end
+        alert.to_json
+      else
+        status 400
+        { errors: alert.errors.full_messages }.to_json
+      end
+    rescue => e
+      status 400
+      { errors: [e.message] }.to_json
     end
-    flash[:success] = "#{message} alert."
-    redirect "/alerts/#{alert.id}"
   else
-    flash[:danger] = "Error during alert creation. Please submit all required values."
-    redirect '/alerts/new'
+    alert = Onduty::Alert.create(params[:alert])
+    if alert.save
+      message = "Successfuly created "
+      if params[:trigger_alert] == "1"
+        Onduty::Notification.notify_all(alert, { duty_type: 1 })
+        message += " and triggered"
+      end
+      flash[:success] = "#{message} alert."
+      redirect "/alerts/#{alert.id}"
+    else
+      flash[:danger] = "Error during alert creation. Please submit all required values."
+      redirect '/alerts/new'
+    end
   end
 end
 

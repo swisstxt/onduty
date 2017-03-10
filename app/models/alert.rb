@@ -6,7 +6,7 @@ module Onduty
     include Mongoid::Timestamps
 
     field :uid, type: String,
-      default: ->{ SecureRandom.urlsafe_base64(8) }
+      default: ->{ SecureRandom.urlsafe_base64(32) }
     field :name, type: String
     field :notification_type, type: String, default: "Alert"
     field :last_alert_at, type: Time
@@ -17,7 +17,6 @@ module Onduty
     embeds_many :services
 
     validates_presence_of :name
-    validates_presence_of :services
 
     scope :created_after, ->(time) { where(:created_at.gt => time) }
     scope :acknowledged, ->{ where(:acknowledged_at.ne => nil) }
