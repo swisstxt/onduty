@@ -2,9 +2,11 @@ Dear <%= contact.name %>,
 
 Please take notice of the following alert:
 
-Message: <%= alert.message %>
-Host: <%= alert.host  %>
-Service: <%= alert.service %>
+Alert: <%= alert.message %>
+Service:
+<%= alert.services.each do |service| -%>
+  - <%= service.full_name %>
+<% end -%>
 
 In order to acknowledge the alert, please follow the URL below:
 <%= acknowledge_url %>

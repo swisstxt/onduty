@@ -54,14 +54,16 @@
         <div class="col-sm-offset-2 col-sm-10">
           <div class="checkbox">
             <label>
-              <input type="checkbox" name="contact[alert_by_sms]" value="1" checked="<%= 'true' if @contact.alert_by_sms == 1 %>"> Alert by SMS
+              <input type="checkbox" name="contact[alert_by_sms]" value="1" <%= 'checked="true"' if @contact.alert_by_sms == 1 %>">
+              Alert by SMS
             </label>
           </div>
         </div>
         <div class="col-sm-offset-2 col-sm-10">
           <div class="checkbox">
             <label>
-              <input type="checkbox" name="contact[alert_by_email]" value="1" checked="<%= 'true ' if @contact.alert_by_email == 1 %>"> Alert by Email
+              <input type="checkbox" name="contact[alert_by_email]" value="1" <%= 'checked="true"' if @contact.alert_by_email == 1 %>">
+              Alert by Email
             </label>
           </div>
         </div>

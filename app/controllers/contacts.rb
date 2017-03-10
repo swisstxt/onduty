@@ -62,6 +62,8 @@ end
 post '/contacts/:id/edit' do
   protected!
   @contact = Onduty::Contact.find(params[:id])
+  params[:contact][:alert_by_email] = params[:contact][:alert_by_email] || 0
+  params[:contact][:alert_by_sms] = params[:contact][:alert_by_sms] || 0
   if @contact.update(params[:contact])
     flash[:success] = "Successfuly edited contact."
     redirect "/contacts/#{@contact.id}"
