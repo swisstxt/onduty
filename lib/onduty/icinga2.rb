@@ -28,7 +28,7 @@ module Onduty
       comment = options[:comment] || "Acknowledged by Onduty"
       url = URI(
         @api_path +
-        "/actions/acknowledge-problem?service=#{service.full_name}"
+        "/actions/acknowledge-problem?service=#{URI.escape(service.full_name)}"
       )
 
       http = Net::HTTP.new(url.host, url.port)

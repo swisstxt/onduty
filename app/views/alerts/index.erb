@@ -22,6 +22,7 @@
         <thead>
           <tr>
             <th>Name</th>
+            <th>Alert-Count</th>
             <th>Created At</th>
             <th class="text-right">Actions</th>
           </tr>
@@ -33,6 +34,9 @@
               <b>
                 <a href="/alerts/<%= alert.id %>"><%= alert.name %></a>
               </b>
+            </td>
+            <td>
+              <span class="badge"><%= alert.count %></span>
             </td>
             <td><%= h_time(alert.created_at) %></td>
             <td class="text-right">

@@ -2,7 +2,7 @@
   <h1>Alert details</h1>
 </div>
 
-<table class="table table-striped" style="width: 50%;">
+<table class="table table-striped" style="width: 65%;">
   <tr>
     <th>Name</th>
     <td><%= @alert.name %></td>
@@ -20,14 +20,23 @@
     <td>
       <ul>
       <% @alert.services.each do |service| -%>
-        <li>Host: <%= service.host %>, Name: <%= service.name %></li>
+        <li>
+          <a href="<%= service.icinga2_host_link(settings.icinga2_web) %>" target="blank">
+            <%= service.host %>
+          </a> -
+          <a href="<%= service.icinga2_service_link(settings.icinga2_web) %>" target="blank">
+            <%= service.name %>
+          </a>
+        </li>
       <% end -%>
       </ul>
     </td>
   </tr>
   <tr>
-    <th>Trigger-Count</th>
-    <td><%= @alert.count %></td>
+    <th>Alert-Count</th>
+    <td>
+      <span class="badge"><%= @alert.count %></span>
+    </td>
   </tr>
   <tr>
     <th>Created at</th>
@@ -62,10 +71,10 @@
 
 
 <form action="/alerts/<%= @alert.id %>/acknowledge?uid=<%= @alert.uid %>" method="post" style="display: inline-block">
-  <button type="submit" class="btn btn-primary">Acknowledge</button>
+  <button type="submit" class="btn btn-success">Acknowledge</button>
 </form>
 <form action="/alerts/<%= @alert.id %>/alert" method="post" style="display: inline-block">
-  <button type="submit" class="btn btn-danger">Trigger Alert</button>
+  <button type="submit" class="btn btn-primary">Trigger Alert</button>
 </form>
 <% if @alert.last_alert_at %>
 <form action="/alerts/<%= @alert.id %>/alert/2" method="post" style="display: inline-block">

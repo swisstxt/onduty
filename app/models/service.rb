@@ -1,5 +1,6 @@
 module Onduty
   class Service
+    require "uri"
     include Mongoid::Document
     embedded_in :alert
 
@@ -8,6 +9,14 @@ module Onduty
 
     def full_name
       "#{host}!#{name}"
+    end
+
+    def icinga2_host_link(icinga2_web)
+      "#{icinga2_web}/monitoring/host/show?host=#{URI.escape(self.host)}"
+    end
+
+    def icinga2_service_link(icinga2_web)
+      "#{icinga2_web}/monitoring/service/show?host=#{URI.escape(self.host)}&service=#{URI.escape(self.name)}"
     end
 
   end
