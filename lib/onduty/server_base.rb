@@ -1,6 +1,6 @@
+require 'json'
 require 'mongoid'
 require 'sinatra'
-require 'json'
 require 'sinatra/contrib'
 require 'sinatra/config_file'
 require 'rack-flash'

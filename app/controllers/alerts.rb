@@ -1,5 +1,6 @@
 # Alerts Controller
 
+# Acknowledge alert (format: twiml & html)
 route :get, :post, '/alerts/:id/acknowledge.?:format?' do
   @alert = Onduty::Alert.find(params[:id])
   halt 403 unless @alert.uid == params[:uid]
@@ -56,6 +57,7 @@ post '/alerts/:id.twiml' do
   end.text
 end
 
+# Trigger notifications for a certain alert
 post '/alerts/:id/alert/?:duty_type?' do
   protected!
   @alert = Onduty::Alert.find(params[:id])
@@ -69,17 +71,17 @@ post '/alerts/:id/alert/?:duty_type?' do
   redirect "/alerts/#{@alert.id}"
 end
 
+# List all alerts
 get '/alerts' do
   protected!
   @title = "Alerts"
-
   session[:filter_days] = params[:days]
+
   @alerts = if params[:days] == 'all'
     Onduty::Alert.all
-  elsif params[:days].to_i > 0
-    Onduty::Alert.created_after(days_ago(params[:days]))
   else
-    Onduty::Alert.created_after(days_ago(7))
+    ago = params[:days].to_i > 0 ? params[:days] : 7
+    Onduty::Alert.created_after(days_ago(ago))
   end
 
   session[:filter_ack] = params[:ack]
@@ -102,49 +104,52 @@ get '/alerts/new' do
   erb :"alerts/form"
 end
 
-post '/alerts/new.?:format?' do
+
+# Create a new alert (JSON)
+post '/alerts/new.json' do
   protected!
-  if params[:format] == "json"
-    content_type :json
-    begin
-      payload = JSON.parse(request.body.read)
-      alert = Onduty::Alert.find_or_create_by(
-        name: payload['alert']['name'],
-        acknowledged_at: nil
+  content_type :json
+  begin
+    payload = JSON.parse(request.body.read)
+    alert = Onduty::Alert.find_or_create_by(
+      name: payload['alert']['name'],
+      acknowledged_at: nil
+    )
+    payload['alert']['services'].each do |srv|
+      alert.services.find_or_create_by(
+        name: srv["name"],
+        host: srv["host"]
       )
-      payload['alert']['services'].each do |srv|
-        alert.services.find_or_create_by(
-          name: srv["name"],
-          host: srv["host"]
-        )
-      end
-      if alert.save
-        if payload['trigger_alert'] == "1" || payload['trigger_alert'] == 'true'
-          Onduty::Notification.notify_all(alert, { duty_type: 1 })
-        end
-        alert.to_json
-      else
-        status 400
-        { errors: alert.errors.full_messages }.to_json
-      end
-    rescue => e
-      status 400
-      { errors: [e.message] }.to_json
     end
-  else
-    alert = Onduty::Alert.create(params[:alert])
     if alert.save
-      message = "Successfuly created "
-      if params[:trigger_alert] == "1"
-        Onduty::Notification.notify_all(alert, { duty_type: 1 })
-        message += " and triggered"
-      end
-      flash[:success] = "#{message} alert."
-      redirect "/alerts/#{alert.id}"
+      options = { duty_type: 1 }
+      options[:force] = true if payload['force']
+      Onduty::Notification.notify_all(alert, options)
+      alert.to_json
     else
-      flash[:danger] = "Error during alert creation. Please submit all required values."
-      redirect '/alerts/new'
+      status 400
+      { errors: alert.errors.full_messages }.to_json
     end
+  rescue => e
+    status 400
+    { errors: [e.message] }.to_json
+  end
+end
+
+# Create a new alert (html)
+post '/alerts/new' do
+  protected!
+  alert = Onduty::Alert.create(params[:alert])
+  if alert.save
+    message = "Successfuly created "
+    options = { duty_type: 1 }
+    options[:force] = true if params[:force]
+    Onduty::Notification.notify_all(alert, options)
+    flash[:success] = "#{message} alert."
+    redirect "/alerts/#{alert.id}"
+  else
+    flash[:danger] = "Error during alert creation. Please submit all required values."
+    redirect '/alerts/new'
   end
 end
 
