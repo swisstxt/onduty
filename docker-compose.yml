@@ -10,5 +10,5 @@ services:
     links:
       - mongodb:mongodb
   mongodb:
-    image: mongo:3.4.2
+    image: mongo:3.4.4
     command: mongod --smallfiles
