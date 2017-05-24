@@ -77,11 +77,13 @@
 <form action="/alerts/<%= @alert.id %>/acknowledge?uid=<%= @alert.uid %>" method="post" style="display: inline-block">
   <button type="submit" class="btn btn-success">Acknowledge</button>
 </form>
+<% if settings.notification_plugins.size > 0 -%>
 <form action="/alerts/<%= @alert.id %>/alert" method="post" style="display: inline-block">
   <button type="submit" class="btn btn-primary">Trigger Alert</button>
 </form>
-<% if @alert.last_alert_at %>
-<form action="/alerts/<%= @alert.id %>/alert/2" method="post" style="display: inline-block">
-  <button type="submit" class="btn btn-danger">Escalate</button>
-</form>
-<% end %>
+  <% if @alert.last_alert_at -%>
+  <form action="/alerts/<%= @alert.id %>/alert/2" method="post" style="display: inline-block">
+    <button type="submit" class="btn btn-danger">Escalate</button>
+  </form>
+  <% end -%>
+<% end -%>

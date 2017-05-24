@@ -58,8 +58,13 @@
               </div>
             <% end -%>
           <% end -%>
-        </div>
-
+          <% if settings.notification_plugins.size == 0 -%>
+            <div class="alert alert-warning col-md-6">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              No notification plugin configured!
+            </div>
+          </div>
+        <% end -%>
         <%= yield %>
       </main>
     </div> <!-- /container -->
