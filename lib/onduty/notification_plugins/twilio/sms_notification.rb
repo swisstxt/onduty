@@ -21,9 +21,9 @@ module Onduty
 
     def api
       @api ||= TwilioApi.new(
-        account_sid: @settings.account_sid,
-        auth_token: @settings.auth_token,
-        from_number: @settings.from_number
+        account_sid: @settings.twilio_account_sid,
+        auth_token: @settings.twilio_auth_token,
+        from_number: @settings.twilio_from_number
       )
     end
 

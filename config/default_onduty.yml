@@ -1,0 +1,58 @@
+##########################
+#
+#  OnDuty base configuration
+#
+
+# Mongoid database configuration file
+mongoid_config: conf/default_mongoid.yml
+
+# Base URL for menu links
+base_url: <%= ENV['ONDUTY_BASE_URL'] || "http://localhost" %>
+
+# Secure onduty with simple auth
+admin_user: <%= ENV['ONDUTY_ADMIN_USER'] || "admin" %>
+admin_password: <%= ENV['ONDUTY_ADMIN_PASSWORD'] || "password" %>
+
+# When to trigger notifications for alerts
+alert_limit: <%= ENV['ONDUTY_ALERT_LIMIT'] || 1 %>
+
+# Rack session secret
+session_secret: <%= ENV['ONDUTY_SESSION_SECRET'] %>
+
+# Icinga2 specific configurations
+icinga2_api_path: <%= ENV['ONDUTY_ICINGA2_API_PATH'] %>
+icinga2_web: <%= ENV['ONDUTY_ICINGA2_API_PATH'] %>
+icinga2_user: <%= ENV['ONDUTY_ICINGA2_USER'] %>
+icinga2_password: <%= ENV['ONDUTY_ICINGA2_PASSWORD'] %>
+
+##########################
+#
+#  notification plugins
+#
+
+# Enable or disable notification plugins
+notification_plugins: <%= ENV['ONDUTY_NOTIFICATION_PLUGINS'] || [] %>
+#  - MailNotification
+#  - SlackNotification
+#  - SmsNotification
+#  - VoiceNotification
+#  - ZendeskNotification
+
+# Email notification
+email_sender:  <%= ENV['ONDUTY_EMAIL_SENDER'] || 'alert@onduty' %>
+smtp_options:
+  :address: <%= ENV['ONDUTY_SMTP_ADDRESS'] %>
+
+# Twilio notifications (voice, SMS)
+# To find these visit https://www.twilio.com/user/account
+twilio_account_sid: <%= ENV['ONDUTY_TWILIO_ACCOUNT_SID'] %>
+twilio_auth_token:  <%= ENV['ONDUTY_TWILIO_ACCOUNT_TOKEN'] %>
+twilio_from_number: <%= ENV['ONDUTY_TWILIO_FROM_NUMBER'] %>
+
+# Zendesk notifications
+zendesk_url: <%= ENV['ONDUTY_ZENDESK_URL'] %>
+zendesk_username: <%= ENV['ONDUTY_ZENDESK_USERNAME'] %>
+zendesk_token: <%= ENV['ONDUTY_ZENDESK_TOKEN'] %>
+
+slack_api_token: <%= ENV['ONDUTY_SLACK_API_TOKEN'] %>
+slack_channel:  <%= ENV['ONDUTY_SLACK_CHANNEL'] %>

@@ -5,7 +5,7 @@ set :root,          File.join(File.dirname(__FILE__), '../../', 'app')
 set :public_folder, File.join(File.dirname(__FILE__), '../../', 'public')
 
 if file = Onduty::Config.file
-  config_file file
+  set Onduty::Config.new.settings
 else
   puts "Error: No configuration file found."
   exit 1

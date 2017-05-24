@@ -118,7 +118,7 @@ module Onduty
 
       if alert.save
         if options[:alert] && alert.last_alert_at == nil
-          if alert.count >= (onduty_config.settings["alert_count"] || 0)
+          if alert.count >= (onduty_config.settings["alert_limit"] || 0)
             say "Alerting...", :yellow
             invoke("trigger_alert", [alert.id], {})
           end

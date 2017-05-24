@@ -1,4 +1,5 @@
 require 'yaml'
+require 'erb'
 
 module Onduty
   class Config
@@ -9,7 +10,7 @@ module Onduty
 
     def settings
       @settings ||= YAML::load(
-        File.open(@config_file)
+        ERB.new(File.read @config_file).result
       )
     end
 
@@ -26,14 +27,8 @@ module Onduty
     end
 
     def self.file
-      config_file = [
-        '/etc/onduty.yml',
-        '/etc/onduty/onduty.yml',
-        File.join(Config.base_path, 'config/onduty.yml'),
-        File.join(Config.base_path, 'config/onduty.example.yml')
-      ].find {
-        |config| File.exists? config
-      }
+      default_config = File.join(Config.base_path, 'config/default_onduty.yml')
+      File.exists?(default_config) ? default_config : nil
     end
 
   end
