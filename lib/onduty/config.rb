@@ -18,7 +18,7 @@ module Onduty
       if settings.respond_to?(:mongoid_config)
         settings.mongoid_config
       else
-        "config/mongoid.yml"
+        "config/default_mongoid.yml"
       end
     end
 

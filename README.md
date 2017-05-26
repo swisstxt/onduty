@@ -39,7 +39,7 @@ cp config/onduty.example.yml config/onduty.yml
 vi config/onduty.yml
 ```
 
-### Run with Docker
+### Build & Run with Docker
 
 Build the image:
 

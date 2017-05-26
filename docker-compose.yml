@@ -1,10 +1,11 @@
 version: '2'
 services:
-  web:
+  onduty:
     image: onduty:latest
     command: bundle exec puma -p 9292
     environment:
-      - MONGODB=mongodb:27017
+      - ONDUTY_MONGODB_HOST=mongodb:27017
+      #- RACK_ENV=production
     ports:
       - 9292:9292
     links:

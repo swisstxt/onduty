@@ -9,4 +9,4 @@ development:
       # Provides the hosts the default session can connect to. Must be an array
       # of host:port pairs. (required)
       hosts:
-        - <%= ENV['ONDUTY_MONGODB_HOSTS'] || "localhost:27017" %>
+        - <%= ENV['ONDUTY_MONGODB_HOST'] || "localhost:27017" %>
