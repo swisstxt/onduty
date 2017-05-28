@@ -54,5 +54,6 @@ zendesk_url: <%= ENV['ONDUTY_ZENDESK_URL'] %>
 zendesk_username: <%= ENV['ONDUTY_ZENDESK_USERNAME'] %>
 zendesk_token: <%= ENV['ONDUTY_ZENDESK_TOKEN'] %>
 
+# Slack notifications
 slack_api_token: <%= ENV['ONDUTY_SLACK_API_TOKEN'] %>
 slack_channel:  <%= ENV['ONDUTY_SLACK_CHANNEL'] %>

@@ -1,9 +1,5 @@
 require 'onduty/server_base'
 
-set :environment,   (ENV["RACK_ENV"] || :development).to_sym
-set :root,          File.join(File.dirname(__FILE__), '../../', 'app')
-set :public_folder, File.join(File.dirname(__FILE__), '../../', 'public')
-
 if file = Onduty::Config.file
   set Onduty::Config.new.settings
 else

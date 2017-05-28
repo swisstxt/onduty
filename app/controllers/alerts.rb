@@ -77,13 +77,13 @@ get '/alerts' do
   @title = "Alerts"
   session[:filter_days] = params[:days]
 
-  @alerts = if params[:days] == 'all'
-    Onduty::Alert.all
+  time = if params[:days] == 'all'
+    0
   else
-    ago = params[:days].to_i > 0 ? params[:days] : 7
-    Onduty::Alert.created_after(days_ago(ago))
+    params[:days].to_i > 0 ? days_ago(params[:days]) : days_ago(7)
   end
 
+  @alerts = Onduty::Alert.created_after(time).page(params[:page]).per(10)
   session[:filter_ack] = params[:ack]
   @alerts = if params[:ack] == 'true'
     @alerts.acknowledged

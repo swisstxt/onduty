@@ -33,6 +33,12 @@ helpers do
     true
   end
 
+  def paginate(collection, base_path, options = {})
+    @collection = collection
+    @path = base_path
+    erb :pagination, options.merge!(layout: false)
+  end
+
   def alerts_link_filter
     filter = []
     if session['filter_days']

@@ -1,0 +1,21 @@
+<% if @collection.total_pages > 1  %>
+  <nav aria-label="Page navigation">
+    <ul class="pagination">
+      <li<%= @collection.prev_page ? '' : ' class="disabled"' %>>
+        <a href="/<%= @path %>?<%= merge_query_string(page: @collection.prev_page || @collection.current_page) %>" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <% (1..@collection.total_pages).each do |page| %>
+        <li<%= @collection.current_page == page ? ' class="active"' : '' %>>
+          <a href="/<%= @path %>?<%= merge_query_string(page: page) %>"><%= page %></a>
+        </li>
+      <% end %>
+      <li<%= @collection.next_page ? '' : ' class="disabled"' %>>
+        <a href="/<%= @path %>?<%= merge_query_string(page: @collection.next_page || @collection.current_page) %>" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+<% end %>

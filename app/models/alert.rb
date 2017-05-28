@@ -12,7 +12,7 @@ module Onduty
     field :last_alert_at, type: Time
     field :escalated_at, type: Time
     field :acknowledged_at, type: Time
-    field :count, type: Integer, default: 0
+    field :count, type: Integer, default: 1
 
     embeds_many :services
 

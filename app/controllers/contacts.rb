@@ -13,7 +13,7 @@ get '/contacts.?:format?' do
     end.to_json
   else
     @title = "Contacts"
-    @contacts = Onduty::Contact.all.asc(:last_name)
+    @contacts = Onduty::Contact.all.asc(:last_name).page(params[:page]).per(10)
     erb :"contacts/index"
   end
 end

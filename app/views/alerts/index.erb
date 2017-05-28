@@ -53,8 +53,9 @@
       <% end %>
         </tbody>
       </table>
+      <%= paginate @alerts, 'alerts' %>
     <% end %>
-    
+
     <p>
       <a type="button" class="btn btn-success" href="/alerts/new">
         New Alert

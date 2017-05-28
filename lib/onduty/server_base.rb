@@ -6,6 +6,10 @@ require 'sinatra/config_file'
 require 'rack-flash'
 require 'erubis'
 
+require 'kaminari/core'
+require 'kaminari/mongoid'
+require 'kaminari/sinatra'
+
 require 'onduty/version'
 require 'onduty/config'
 require 'onduty/notification'
