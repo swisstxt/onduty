@@ -8,7 +8,7 @@ Manage OnDuty contacts and trigger alarms via phone, SMS, Slack and Email.
 
 ### Depedencies
 
-  - Runtime: up from Ruby 1.9.3 required, 2.0+ is recommended.
+  - Runtime: Ruby 2.2+ required
   - Database: MongoDB
   - Alert Acknowledgement: Icinga2
   - Phone and SMS alerts: Twilio

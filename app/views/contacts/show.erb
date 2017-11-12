@@ -25,6 +25,14 @@
     </td>
   </tr>
   <tr>
+    <th>Group</th>
+    <td>
+      <% if @contact.group %>
+        <%= @contact.group.name %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
     <th>Status</th>
     <td>
       <% if @contact.duty %>

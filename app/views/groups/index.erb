@@ -1,0 +1,46 @@
+<div class="row">
+  <content class="col-md-9" role="main">
+    <div class="page-header">
+      <h1>On Duty Groups</h1>
+    </div>
+
+    <% if @groups.size == 0 %>
+      <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <strong>No groups yet... </strong>
+        <a href="/groups/new" class="alert-link">Create on!</a>
+      </div>
+    <% else %>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @groups.each do |group| %>
+            <tr>
+              <td><b><a href="/groups/<%= group.id %>"><%= group.name %></a></b></td>
+              <td>
+                <a href="/groups/<%= group.id %>" class="btn btn-sm btn-primary">Show</a>
+                <a href="/groups/<%= group.id %>/edit" class="btn btn-sm btn-success">Edit</a>
+                <a href="/groups/<%= group.id %>/delete" class="btn btn-sm btn-danger">Delete</a>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= paginate @groups, 'groups' %>
+    <% end %>
+
+    <p>
+      <a type="button" class="btn btn-success" href="/groups/new">
+        New Group
+      </a>
+    </p>
+  </content>
+</div>
