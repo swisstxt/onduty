@@ -28,7 +28,7 @@
     <th>Group</th>
     <td>
       <% if @contact.group %>
-        <%= @contact.group.name %>
+        <a href="/groups/<%= @contact.group.id %>"><%= @contact.group.name %></a>
       <% end %>
     </td>
   </tr>

@@ -15,7 +15,6 @@
     <link href="/css/application.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -27,22 +26,26 @@
         <ul class="nav nav-pills pull-right">
           <li role="presentation">
             <a href="/settings">
-              <span class="glyphicon glyphicon-wrench"></span> Settings
+              <span class="glyphicon glyphicon-wrench"></span>&nbsp;
+              Settings
             </a>
           </li>
           <li role="presentation">
             <a href="/groups">
-              <span class="glyphicon glyphicon-group"></span> Groups
+              <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
+              Groups
             </a>
           </li>
           <li role="presentation">
             <a href="/contacts">
-              <span class="glyphicon glyphicon-user"></span> Contacts
+              <span class="glyphicon glyphicon-user"></span>&nbsp;
+              Contacts
             </a>
           </li>
           <li role="presentation">
             <a href="/alerts<%= alerts_link_filter %>">
-              <span class="glyphicon glyphicon-exclamation-sign"></span> Alerts
+              <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;
+              Alerts
             </a>
           </li>
         </ul>
@@ -65,7 +68,6 @@
           <% end -%>
           <% if settings.notification_plugins.size == 0 -%>
             <div class="alert alert-warning col-md-6">
-              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
               No notification plugin configured!
             </div>
           </div>
@@ -81,7 +83,8 @@
         </p>
       </div>
     </footer>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="/javascript/bootstrap-select.min.js"></script>
   </body>

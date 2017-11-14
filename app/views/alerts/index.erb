@@ -4,7 +4,7 @@
       <h1>Alerts</h1>
     </div>
 
-    <% if @alerts.size == 0 %>
+    <% if @alerts.size < 1 %>
 
       <div class="alert alert-info" role="alert">
         <button type="button" class="close" data-dismiss="alert">
@@ -23,6 +23,7 @@
           <tr>
             <th>Name</th>
             <th>Alert-Count</th>
+            <th>Group</th>
             <th>Created At</th>
             <th class="text-right">Actions</th>
           </tr>
@@ -38,16 +39,17 @@
             <td>
               <span class="badge"><%= alert.count %></span>
             </td>
+            <td><%= alert.group ? alert.group.name : "-" %></td>
             <td><%= h_time(alert.created_at) %></td>
             <td class="text-right">
               <% if alert.acknowledged_at -%>
-                <a href="/alerts/<%= alert.id %>/delete" class="btn btn-sm btn-danger">Delete</a>
+                <a href="/alerts/<%= alert.id %>/delete" class="btn btn-xs btn-danger">Delete</a>
               <% else -%>
                 <form action="/alerts/<%= alert.id %>/acknowledge?uid=<%= alert.uid %>" method="post" style="display: inline-block">
-                  <button type="submit" class="btn btn-sm btn-success">Acknowledge</button>
+                  <button type="submit" class="btn btn-xs btn-success">Acknowledge</button>
                 </form>
               <% end -%>
-              <a href="/alerts/<%= alert.id %>" class="btn btn-sm btn-primary">Show</a>
+              <a href="/alerts/<%= alert.id %>" class="btn btn-xs btn-primary">Show</a>
             </td>
           </tr>
       <% end %>

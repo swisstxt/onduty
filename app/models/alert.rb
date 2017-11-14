@@ -15,6 +15,7 @@ module Onduty
     field :count, type: Integer, default: 1
 
     embeds_many :services
+    belongs_to :group
 
     validates_presence_of :name
 

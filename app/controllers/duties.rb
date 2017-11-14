@@ -1,12 +1,14 @@
 # Duties Controller
 
-post '/duties/:id/:contact_id?' do
+post '/duties/' do
   protected!
-  duty_type = params[:id].to_i
-  Onduty::Contact.where(duty: duty_type).update_all(duty: 0)
-
   begin
     contact = Onduty::Contact.find(params[:contact_id])
+    duty_type = params[:id].to_i
+    Onduty::Contact.where(
+      duty: duty_type,
+      group_id: contact.group_id
+    ).update_all(duty: 0)
     contact.update(duty: duty_type)
     if Onduty::Notification.plugins.include? "SlackNotification"
       post_slack_message(

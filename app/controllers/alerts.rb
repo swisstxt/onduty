@@ -104,7 +104,6 @@ get '/alerts/new' do
   erb :"alerts/form"
 end
 
-
 # Create a new alert (JSON)
 post '/alerts/new.json' do
   protected!
@@ -120,6 +119,9 @@ post '/alerts/new.json' do
         name: srv["name"],
         host: srv["host"]
       )
+    end
+    if payload[:group]
+      alert.group = Group.where(name: payload[:group]).first
     end
     if alert.save
       options = { duty_type: 1 }
@@ -140,6 +142,7 @@ end
 post '/alerts/new' do
   protected!
   alert = Onduty::Alert.create(params[:alert])
+  puts params[:alert].inspect
   if alert.save
     message = "Successfuly created "
     options = { duty_type: 1 }

@@ -45,7 +45,7 @@
           </thead>
           <tbody>
             <% @plugins.each do |plugin_name| -%>
-              <% plugin = Onduty.const_get(plugin_name).new(1) -%>
+              <% plugin = Onduty.const_get(plugin_name).new(Onduty::Alert.new) -%>
               <tr>
                 <th><b><%= plugin_name %></b></th>
                 <td>

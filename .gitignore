@@ -3,3 +3,4 @@ config/mongoid.yml
 cache
 log/*
 tmp/*
+.DS_Store

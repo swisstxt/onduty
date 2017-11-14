@@ -22,6 +22,21 @@
       </div>
 
       <div class="form-group">
+        <label for="group" class="col-sm-3 control-label">Group</label>
+        <div class="col-sm-9">
+          <select name="alert[group]" class="selectpicker">
+            <% Onduty::Group.all.each do |group| %>
+              <% unless @alert.group_id == group.id %>
+                <option value="<%= group.id %>"><%= group.name %></option>
+              <% else %>
+                <option value="<%= group.id %>" selected><%= group.name %></option>
+              <% end %>
+            <% end %>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
           <div class="checkbox">
             <label>
@@ -34,7 +49,7 @@
       <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
           <a href="/alerts<%= alerts_link_filter %>" class="btn btn-primary">Cancel</a>
-          <button type="submit" class="btn btn-danger"><%= @title %></button>
+          <button type="submit" class="btn btn-success"><%= @title %></button>
         </div>
       </div>
     </form>

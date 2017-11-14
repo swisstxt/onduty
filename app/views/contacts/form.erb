@@ -35,7 +35,7 @@
       <div class="form-group">
         <label for="group" class="col-sm-2 control-label">Group</label>
         <div class="col-sm-10">
-          <select name="contact[group]">
+          <select name="contact[group]" class="selectpicker">
             <% Onduty::Group.all.each do |group| %>
               <% unless @contact.group_id == group.id %>
                 <option value="<%= group.id %>"><%= group.name %></option>
@@ -70,7 +70,7 @@
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <a href="/contacts" class="btn btn-primary">Cancel</a>
-          <button type="submit" class="btn btn-danger"><%= @title %></button>
+          <button type="submit" class="btn btn-success"><%= @title %></button>
         </div>
       </div>
     </form>

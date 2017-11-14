@@ -7,7 +7,7 @@ get '/groups.?:format?' do
     Onduty::Group.all.to_json
   else
     @title = "Groups"
-    @groups = Onduty::Group.all.asc(:order).page(params[:page]).per(10)
+    @groups = Onduty::Group.all.asc(:position).page(params[:page]).per(10)
     erb :"groups/index"
   end
 end
@@ -87,4 +87,16 @@ get '/groups/:id/delete' do
   @group = Onduty::Group.find(params[:id])
   @title = "Delete Group"
   erb :"groups/delete"
+end
+
+post '/groups/:id/reposition/' do
+  case params[:action]
+  when "+1"
+    Onduty::Group.find(params[:id]).position_down!
+  when "-1"
+    Onduty::Group.find(params[:id]).position_up!
+  end
+  @title = "Groups"
+  @groups = Onduty::Group.all.asc(:position).page(params[:page]).per(10)
+  erb :"groups/index"
 end

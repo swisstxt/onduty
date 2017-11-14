@@ -1,10 +1,11 @@
 <div class="row">
   <content class="col-md-9" role="main">
     <div class="page-header">
-      <h1>On Duty Contacts</h1>
+      <h1>Contacts</h1>
     </div>
 
-    <% if @contacts.size == 0 %>
+    <% if @contacts.size < 1 %>
+
       <div class="alert alert-info" role="alert">
         <button type="button" class="close" data-dismiss="alert">
           <span aria-hidden="true">&times;</span>
@@ -13,39 +14,45 @@
         <strong>No contacts yet... </strong>
         <a href="/contacts/new" class="alert-link">Create on!</a>
       </div>
+
     <% else %>
+
+      <% @contacts.group_by{|c| c.group.name }.each do |group_name, contacts| -%>
+      <h2><a href="/groups/<%= contacts.first.group_id %>"><%= group_name %></a></h2>
       <table class="table table-striped">
         <thead>
           <tr>
             <th>Name</th>
             <th>Status</th>
-            <th>Phone</th>
-            <th>Actions</th>
+            <th>Set duties</th>
           </tr>
         </thead>
         <tbody>
-          <% @contacts.each do |contact| %>
+          <% contacts.each do |contact| %>
             <tr>
-              <td><b><a href="/contacts/<%= contact.id %>"><%= contact.name %></a></b></td>
               <td>
-                <% if contact.duty %>
-                <div class="btn-group">
-                  <span class="label label-<%= status_badge(contact.duty) %>">
-                    <%= Onduty::Duty.types[contact.duty] %></span>
-                </div>
-                <% end %>
+                <b><a href="/contacts/<%= contact.id %>"><%= contact.name %></a></b>
               </td>
-              <td><%= formated_phone(contact.phone) %></td>
               <td>
-                <a href="/contacts/<%= contact.id %>" class="btn btn-sm btn-primary">Show</a>
-                <a href="/contacts/<%= contact.id %>/edit" class="btn btn-sm btn-success">Edit</a>
-                <a href="/contacts/<%= contact.id %>/delete" class="btn btn-sm btn-danger">Delete</a>
+                <% if contact.duty -%>
+                <div class="btn-group">
+                  <span class="label label-<%= status_badge(contact.duty) %>"><%= Onduty::Duty.types[contact.duty] %></span>
+                </div>
+                <% end -%>
+              </td>
+              <td>
+                <form action="/duties/" method="post">
+                  <input type="hidden" name="contact_id" value="<%= contact.id %>" readonly />
+                  <button type="submit" name="id" value="1" class="btn btn-xs btn-danger"<%= ' disabled="disabled"' if contact.duty == 1 %>>Primary</button>
+                  <button type="submit" name="id" value="2" class="btn btn-xs btn-primary"<%= ' disabled="disabled"' if contact.duty == 2 %>>Escalation</button>
+                </form>
               </td>
             </tr>
           <% end %>
         </tbody>
       </table>
-      <%= paginate @contacts, 'contacts' %>
+
+      <% end %>
     <% end %>
 
     <p>
@@ -54,25 +61,4 @@
       </a>
     </p>
   </content>
-
-  <sidebar class="col-md-3">
-    <div class="page-header">
-      <h3>Manage Duties</h3>
-    </div>
-    <% Onduty::Duty.types.reject{|id, name| id == 0 }.each do |id, name| %>
-      <h4><%= name %></h4>
-      <form action="/duties/<%= id %>/" method="post">
-        <select name="contact_id" onchange="this.form.submit()" class="selectpicker" data-style="btn-<%= status_badge(id) %>">
-            <option>-</option>
-          <% @contacts.each do |contact| %>
-            <% unless contact.duty == id %>
-              <option value="<%= contact.id %>"><%= contact.name %></option>
-            <% else %>
-              <option value="<%= contact.id %>" selected><%= contact.name %></option>
-            <% end %>
-          <% end %>
-        </select>
-      </form>
-    <% end %>
-  </sidebar>
 </div>

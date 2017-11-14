@@ -56,8 +56,11 @@ module Onduty
 
     def initialize(alert, options = {})
       @alert = alert
-      @contact = Onduty::Contact.where(duty: options[:duty_type] || 1).first ||
-        Contact.new(first_name: "Jon", last_name: "Doe", phone: "+412223344")
+      @group = alert.group
+      @contact = Onduty::Contact.where(
+        duty: (options[:duty_type] || 1),
+        group: (alert.group || Onduty::Group.all.asc(:position).first)
+      ).first || Contact.new(first_name: "Jon", last_name: "Doe", phone: "+412223344")
       @options = options
       @settings = SETTINGS
       @logger = Onduty::Notification.logger
