@@ -19,7 +19,5 @@ post '/duties/' do
   rescue
     flash[:danger] = "ERROR: Couldn't associate duty with new contact: Contact not found."
   end
-  @title = "Contacts"
-  @contacts = Onduty::Contact.all.asc(:last_name)
-  erb :"contacts/index"
+  redirect back
 end

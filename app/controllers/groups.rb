@@ -90,13 +90,15 @@ get '/groups/:id/delete' do
 end
 
 post '/groups/:id/reposition/' do
-  case params[:action]
+  group = Onduty::Group.find(params[:id])
+  position = case params[:value]
   when "+1"
-    Onduty::Group.find(params[:id]).position_down!
+    group.position - 1
   when "-1"
-    Onduty::Group.find(params[:id]).position_up!
+    group.position + 1
+  else
+    params[:value].to_i
   end
-  @title = "Groups"
-  @groups = Onduty::Group.all.asc(:position).page(params[:page]).per(10)
-  erb :"groups/index"
+  group.update_attributes!(position: position)
+  redirect back
 end

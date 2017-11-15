@@ -10,14 +10,5 @@ module Onduty
     has_many :alerts
 
     validates_presence_of :name
-
-    def position_up!
-      update_attributes!(position: self.position - 1)
-    end
-
-    def position_down!
-      update_attributes!(position: self.position + 1)
-    end
-
   end
 end

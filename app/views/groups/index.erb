@@ -34,11 +34,11 @@
               </td>
               <td>
                 <form action="/groups/<%= group.id %>/reposition/" method="post">
-                  <button type="submit" name="action" value="-1" class="btn btn-default btn-xs">
+                  <button type="submit" name="value" value="+1" class="btn btn-default btn-xs">
                     <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
                   </button>
-                  <span class="label label-default"><%= group.position %></span>
-                  <button type="submit" name="action" value="+1" class="btn btn-default btn-xs">
+                  <span class="label label-primary"><%= group.position %></span>
+                  <button type="submit" name="value" value="-1" class="btn btn-default btn-xs">
                     <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                   </button>
                 </form>
@@ -46,7 +46,6 @@
               <td>
                 <a href="/groups/<%= group.id %>" class="btn btn-xs btn-primary">Show</a>
                 <a href="/groups/<%= group.id %>/edit" class="btn btn-xs btn-success">Edit</a>
-                <a href="/groups/<%= group.id %>/delete" class="btn btn-xs btn-danger">Delete</a>
               </td>
             </tr>
           <% end %>

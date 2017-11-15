@@ -23,8 +23,9 @@
         <thead>
           <tr>
             <th>Name</th>
-            <th>Status</th>
-            <th>Set duties</th>
+            <th>Phone</th>
+            <th>Duty</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -34,18 +35,21 @@
                 <b><a href="/contacts/<%= contact.id %>"><%= contact.name %></a></b>
               </td>
               <td>
-                <% if contact.duty -%>
-                <div class="btn-group">
-                  <span class="label label-<%= status_badge(contact.duty) %>"><%= Onduty::Duty.types[contact.duty] %></span>
-                </div>
+                <%= formated_phone(contact.phone) %>
+              </td>
+              <td>
+                <% if contact.duty == 1 -%>
+                  <button class="btn btn-xs btn-danger">on duty</button>
+                <% else -%>
+                  <form action="/duties/" method="post">
+                    <input type="hidden" name="contact_id" value="<%= contact.id %>" readonly />
+                    <button title="Set on duty" data-toggle="tooltip" data-placement="top" type="submit" name="id" value="1" class="btn btn-xs btn-default">off duty</button>
+                  </form>
                 <% end -%>
               </td>
               <td>
-                <form action="/duties/" method="post">
-                  <input type="hidden" name="contact_id" value="<%= contact.id %>" readonly />
-                  <button type="submit" name="id" value="1" class="btn btn-xs btn-danger"<%= ' disabled="disabled"' if contact.duty == 1 %>>Primary</button>
-                  <button type="submit" name="id" value="2" class="btn btn-xs btn-primary"<%= ' disabled="disabled"' if contact.duty == 2 %>>Escalation</button>
-                </form>
+                <a href="/contacts/<%= contact.id %>" class="btn btn-xs btn-primary">Show</a>
+                <a href="/contacts/<%= contact.id %>/edit" class="btn btn-xs btn-success">Edit</a>
               </td>
             </tr>
           <% end %>
