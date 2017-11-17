@@ -2,18 +2,37 @@
 
 get '/contacts.?:format?' do
   protected!
+
+  filter = {}
+  if params[:group] && params[:group] != "all"
+    filter[:group_id] = params[:group]
+  end
+  if params[:group_name] && params[:group_name] != "all"
+    if group = Onduty::Group.where(name: params[:group_name]).only(:id).first
+      filter[:group_id] = group.id
+    end
+  end
+  if params[:duty] && params[:duty] != "all"
+    filter[:duty] = Onduty::Duty.types.invert[params[:duty]]
+  end
+
+  puts filter
+
+
   if params[:format] == "json"
     content_type :json
-    Onduty::Contact.all.only(:first_name, :last_name, :duty, :phone).asc(:last_name).map do |contact|
+    Onduty::Contact.where(filter).only(:first_name, :last_name, :duty, :phone, :group).asc(:last_name).map do |contact|
       {
         name: contact.name,
-        duty: contact.duty_name,
+        group: (contact.group ? contact.group.name : ""),
+        duty: contact.duty,
+        duty_name: contact.duty_name,
         phone: contact.phone
       }
     end.to_json
   else
     @title = "Contacts"
-    @contacts = Onduty::Contact.all.asc(:last_name)
+    @contacts = Onduty::Contact.where(filter).asc(:last_name)
     erb :"contacts/index"
   end
 end

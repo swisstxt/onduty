@@ -11,14 +11,21 @@
           <span aria-hidden="true">&times;</span>
           <span class="sr-only">Close</span>
         </button>
-        <strong>No contacts yet... </strong>
-        <a href="/contacts/new" class="alert-link">Create on!</a>
+        <strong>No contacts found...</strong>
+        <% unless params[:duty] == 'all' && params[:group] == 'all' %>
+          <a href="/contacts" class="alert-link">Show all contacts.</a>
+        <% end %>
       </div>
 
     <% else %>
 
       <% @contacts.group_by{|c| c.group.name }.each do |group_name, contacts| -%>
-      <h2><a href="/groups/<%= contacts.first.group_id %>"><%= group_name %></a></h2>
+      <h3>
+        <a href="/groups/<%= contacts.first.group_id %>">
+          <span class="glyphicon glyphicon-folder-open"></span>
+        </a>
+        &nbsp;<%= group_name %>
+      </h3>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -55,9 +62,10 @@
           <% end %>
         </tbody>
       </table>
-
+      <hr>
       <% end %>
     <% end %>
+
 
     <p>
       <a type="button" class="btn btn-success" href="/contacts/new">
@@ -65,4 +73,36 @@
       </a>
     </p>
   </content>
+
+  <sidebar class="col-md-3">
+    <div class="page-header">
+      <h3>Filters</h3>
+    </div>
+    <menu class="hidden-print" role="complementary">
+      <h4>Duty</h4>
+      <ul class="nav nav-pills nav-stacked">
+        <li <% if params[:duty] == 'all' || params[:duty] == nil  %>class="active"<% end %>>
+          <a href="/contacts?<%= merge_query_string(duty: 'all') %>">All</a>
+        </li>
+        <li <% if params[:duty].to_s == 'primary' %>class="active"<% end %>>
+          <a href="/contacts?<%= merge_query_string(duty: 'primary') %>">Primary</a>
+        </li>
+        <li <% if params[:duty].to_s == 'escalation' %>class="active"<% end %>>
+          <a href="/contacts?<%= merge_query_string(duty: 'escalation') %>">Escalation</a>
+        </li>
+      </ul>
+      <hr>
+      <h4>Group</h4>
+      <ul class="nav nav-pills nav-stacked">
+        <li <% if params[:group] == 'all' || params[:group] == nil %>class="active"<% end %>>
+          <a href="/contacts?<%= merge_query_string(group: "all") %>">All</a>
+        </li>
+        <% Onduty::Group.all.each do |group| -%>
+          <li<%= ' class="active"' if params[:group].to_s == group.id.to_s %>>
+            <a href="/contacts?<%= merge_query_string(group: group.id) %>")><%= group.name %></a>
+          </li>
+        <% end -%>
+      </ul>
+    </menu>
+  </sidebar>
 </div>

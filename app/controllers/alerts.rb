@@ -72,7 +72,7 @@ post '/alerts/:id/alert/?:duty_type?' do
 end
 
 # List all alerts
-get '/alerts' do
+get '/alerts.?:format?' do
   protected!
   @title = "Alerts"
   session[:filter_days] = params[:days]
@@ -83,7 +83,12 @@ get '/alerts' do
     params[:days].to_i > 0 ? days_ago(params[:days]) : days_ago(7)
   end
 
-  @alerts = Onduty::Alert.created_after(time).page(params[:page]).per(10)
+  @alerts =  if params[:format] == "json"
+    Onduty::Alert.created_after(time)
+  else
+    Onduty::Alert.created_after(time).page(params[:page]).per(10)
+  end
+
   session[:filter_ack] = params[:ack]
   @alerts = if params[:ack] == 'true'
     @alerts.acknowledged
@@ -93,7 +98,12 @@ get '/alerts' do
     @alerts.order(created_at: :desc)
   end
 
-  erb :"alerts/index"
+  if params[:format] == "json"
+    content_type :json
+    @alerts.to_json
+  else
+    erb :"alerts/index"
+  end
 end
 
 get '/alerts/new' do

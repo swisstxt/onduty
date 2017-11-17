@@ -85,6 +85,20 @@ rackup config.ru
 puma config.ru -p 80
 ```
 
+## JSON API
+
+You can get JSON output for several resources.
+
+Example for getting the primary onduty contact for group "Infrastructure":
+```bash
+GET /contacts.json?duty=primary&group_name=Infrastructure
+```
+
+Getting all groups:
+```bash
+GET /groups.json
+```
+
 ## CLI
 
 See `bundle exec bin/onduty-cli` for a cli help.

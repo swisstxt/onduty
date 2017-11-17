@@ -60,7 +60,7 @@ helpers do
 
   def merge_query_string(args)
     query = params.merge(args.keys[0].to_s => args.values[0])
-    query.map{|k,v| "#{k}=#{v}"}.join('&')
+    query.select{|k,_| k != "format"}.map{|k,v| "#{k}=#{v}"}.join('&')
   end
 
   def h_time(time)
