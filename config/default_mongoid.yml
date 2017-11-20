@@ -3,10 +3,4 @@ development:
   clients:
     # Defines the default session. (required)
     default:
-      # Defines the name of the default database that Mongoid can connect to.
-      # (required).
-      database: <%= ENV['ONDUTY_MONGODB_DATABASE'] || "onduty_development" %>
-      # Provides the hosts the default session can connect to. Must be an array
-      # of host:port pairs. (required)
-      hosts:
-        - <%= ENV['ONDUTY_MONGODB_HOST'] || "localhost:27017" %>
+      uri: <%= ENV['MONGODB_URI'] || "localhost:27017/onduty_production" %>

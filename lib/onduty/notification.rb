@@ -27,7 +27,13 @@ module Onduty
     end
 
     def self.plugins
-      SETTINGS.notification_plugins || DEFAULT_PLUGINS
+      if SETTINGS.notification_plugins
+        SETTINGS.notification_plugins.is_a?(Array) ?
+          SETTINGS.notification_plugins :
+          SETTINGS.notification_plugins.split(",")
+      else
+        DEFAULT_PLUGINS
+      end
     end
 
     def self.notify_all(alert, options = {})

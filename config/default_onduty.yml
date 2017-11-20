@@ -21,7 +21,7 @@ session_secret: <%= ENV['ONDUTY_SESSION_SECRET'] %>
 
 # Icinga2 specific configurations
 icinga2_api_path: <%= ENV['ONDUTY_ICINGA2_API_PATH'] %>
-icinga2_web: <%= ENV['ONDUTY_ICINGA2_API_PATH'] %>
+icinga2_web: <%= ENV['ONDUTY_ICINGA2_WEB_PATH'] %>
 icinga2_user: <%= ENV['ONDUTY_ICINGA2_USER'] %>
 icinga2_password: <%= ENV['ONDUTY_ICINGA2_PASSWORD'] %>
 

@@ -1,6 +1,7 @@
 IMAGE=onduty
-VERSION=`cat VERSION`
+VERSION=`awk -F'"' '$0=$2' lib/onduty/version.rb`
 
 docker build -t $IMAGE:v$VERSION .
-docker tag $IMAGE:v$VERSION $IMAGE:latest
-docker push repo.swisstxt.ch:5000/$IMAGE
+docker tag $IMAGE:v$VERSION docker.swisstxt.ch/$IMAGE:v$VERSION
+docker tag $IMAGE:v$VERSION docker.swisstxt.ch/$IMAGE:latest
+docker push docker.swisstxt.ch/$IMAGE

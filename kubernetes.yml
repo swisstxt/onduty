@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1beta1 # for 1.8.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: onduty-deployment
+spec:
+  selector:
+    matchLabels:
+      app: onduty
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: onduty
+    spec:
+      containers:
+      - name: onduty
+        image: docker.swisstxt.ch/onduty:v1.1.1
+        ports:
+        - containerPort: 3000
+        envFrom:
+          - configMapRef:
+              name: onduty-config
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: 2
+      imagePullSecrets:
+        - name: regsecret
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: onduty-service
+spec:
+  selector:
+    app: onduty
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: onduty
+  namespace: geostream-prod
+spec:
+  rules:
+  - host: onduty2.swisstxt.ch
+    http:
+      paths:
+      - backend:
+          serviceName: onduty-service
+          servicePort: 80
+        path: /
+  tls:
+  - secretName: traefik-cert
