@@ -11,3 +11,4 @@ USER nobody
 ENV RACK_ENV development
 EXPOSE 9292
 WORKDIR /app
+CMD ["bundle", "exec", "puma", "-p", "3000"]
