@@ -19,7 +19,7 @@
 
     <% else %>
 
-      <% @contacts.group_by{|c| c.group.name }.each do |group_name, contacts| -%>
+      <% @contacts.group_by{|c| c.group.name rescue '-' }.each do |group_name, contacts| -%>
       <h3>
         <a href="/groups/<%= contacts.first.group_id %>">
           <span class="glyphicon glyphicon-folder-open"></span>

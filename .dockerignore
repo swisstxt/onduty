@@ -1,0 +1,11 @@
+.git*
+log/*
+tmp/*
+doc/*
+test/*
+db/*
+Dockerfile
+README.md
+docker-build.sh
+docker-compose.yml
+onduty-config.yml
