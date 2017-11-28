@@ -132,6 +132,8 @@ post '/alerts/new.json' do
     end
     if payload[:group]
       alert.group = Group.where(name: payload[:group]).first
+    else
+      alert.group = Group.asc(:position).first
     end
     if alert.save
       options = { duty_type: 1 }
