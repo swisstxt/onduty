@@ -125,15 +125,15 @@ post '/alerts/new.json' do
       acknowledged_at: nil
     )
     payload['alert']['services'].each do |srv|
-      alert.services.find_or_create_by(
+      alert.services.find_or_initialize_by(
         name: srv["name"],
         host: srv["host"]
       )
     end
     if payload[:group]
-      alert.group = Group.where(name: payload[:group]).first
+      alert.group = Onduty::Group.where(name: payload[:group]).first || nil
     else
-      alert.group = Group.asc(:position).first
+      alert.group = Onduty::Group.asc(:position).first || nil
     end
     if alert.save
       options = { duty_type: 1 }
