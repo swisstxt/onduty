@@ -1,6 +1,12 @@
-development:
+development: &default
   # Configure available database sessions. (required)
   clients:
     # Defines the default session. (required)
     default:
-      uri: <%= ENV['MONGODB_URI'] || "mongodb://localhost:27017/onduty_production" %>
+      uri: <%= ENV['MONGODB_URI'] || "mongodb://localhost:27017/onduty" %>
+
+test:
+  <<: *default
+
+production:
+  <<: *default

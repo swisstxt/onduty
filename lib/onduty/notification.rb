@@ -13,7 +13,7 @@ module Onduty
     DEFAULT_PLUGINS = %w(VoiceNotification MailNotification)
 
     SETTINGS = OpenStruct.new(
-      YAML::load(File.open(Onduty::Config.file))
+      Onduty::Config.new(ENV['ONDUTY_CONFIG_FILE'] || Onduty::Config.file).settings
     )
 
     attr_reader :alert, :options, :logger
@@ -27,13 +27,7 @@ module Onduty
     end
 
     def self.plugins
-      if SETTINGS.notification_plugins
-        SETTINGS.notification_plugins.is_a?(Array) ?
-          SETTINGS.notification_plugins :
-          SETTINGS.notification_plugins.split(",")
-      else
-        DEFAULT_PLUGINS
-      end
+      SETTINGS.notification_plugins || DEFAULT_PLUGINS
     end
 
     def self.notify_all(alert, options = {})

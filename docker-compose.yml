@@ -1,7 +1,7 @@
 version: '2'
 services:
   onduty:
-    image: onduty:latest
+    image: onduty:1.1.7
     command: bundle exec puma -p 9292
     env_file:
       - onduty_config.env

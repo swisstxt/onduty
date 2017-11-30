@@ -12,6 +12,10 @@ module Onduty
       @settings ||= YAML::load(
         ERB.new(File.read @config_file).result
       )
+      if @settings['notification_plugins'].is_a?(String)
+        @settings['notification_plugins'] = @settings['notification_plugins'].split(",")
+      end
+      @settings
     end
 
     def mongoid_config
