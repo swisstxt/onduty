@@ -62,10 +62,11 @@ module Onduty
 
     def initialize(alert, options = {})
       @alert = alert
-      @group = alert.group
+      @group = alert.group || Onduty::Group.all.asc(:position).first
+      @duty_type = options[:duty_type] || 1
       @contact = Onduty::Contact.where(
-        duty: (options[:duty_type] || 1),
-        group: (alert.group || Onduty::Group.all.asc(:position).first)
+        duty: @duty_type,
+        group: @group
       ).first || Contact.new(first_name: "Jon", last_name: "Doe", phone: "+412223344")
       @options = options
       @settings = SETTINGS

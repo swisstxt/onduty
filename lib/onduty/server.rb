@@ -1,7 +1,8 @@
 require 'onduty/server_base'
 
-if file = ENV['ONDUTY_CONFIG'] || Onduty::Config.file
+if file = ENV['ONDUTY_CONFIG_FILE'] || Onduty::Config.file
   set Onduty::Config.new(file).settings
+  puts Onduty::Config.new(file).settings
 else
   puts "Error: No configuration file found."
   exit 1
