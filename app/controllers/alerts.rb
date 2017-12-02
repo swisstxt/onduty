@@ -153,17 +153,20 @@ end
 # Create a new alert (html)
 post '/alerts/new' do
   protected!
-  alert = Onduty::Alert.create(params[:alert])
-  puts params[:alert].inspect
-  if alert.save
+  @alert = Onduty::Alert.create(params[:alert])
+  if @alert.save
     message = "Successfuly created "
     options = { duty_type: 1 }
     options[:force] = true if params[:force]
-    Onduty::Notification.notify_all(alert, options)
+    Onduty::Notification.notify_all(@alert, options)
     flash[:success] = "#{message} alert."
-    redirect "/alerts/#{alert.id}"
+    redirect "/alerts/#{@alert.id}"
   else
-    flash[:danger] = "Error during alert creation. Please submit all required values."
+    message = form_error_message(
+      @alert,
+      title: "Error during alert creation. Please review your input:"
+    )
+    flash[:danger] = message
     redirect '/alerts/new'
   end
 end

@@ -29,7 +29,7 @@ post '/groups/new' do
   else
     message = form_error_message(
       @group,
-      "Error during group creation. Please review your input:"
+      title: "Error during group creation. Please review your input:"
     )
     flash[:danger] = message
     @method = 'new'

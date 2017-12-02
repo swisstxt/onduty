@@ -48,7 +48,7 @@ post '/contacts/new' do
   else
     message = form_error_message(
       @contact,
-      "Error during contact creation. Please review your input:"
+      title: "Error during contact creation. Please review your input:"
     )
     flash[:danger] = message
     @method = 'new'
