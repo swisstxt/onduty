@@ -4,7 +4,7 @@ services:
     image: onduty:latest
     command: bundle exec puma -p 9292
     env_file:
-      - onduty_config.env
+      - onduty-config.env
     ports:
       - 9292:9292
     links:

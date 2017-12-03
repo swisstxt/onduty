@@ -1,7 +1,7 @@
 config/onduty.yml
 config/mongoid.yml
 onduty-config.yml
-onduty_config.env
+onduty-config.env
 cache
 log/*
 tmp/*
