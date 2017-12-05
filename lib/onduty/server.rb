@@ -1,11 +1,6 @@
 require 'onduty/server_base'
 
-if file = ENV['ONDUTY_CONFIG_FILE'] || Onduty::Config.file
-  set Onduty::Config.new(file).settings
-else
-  puts "Error: No configuration file found."
-  exit 1
-end
+set Onduty::Config.new.settings
 
 module Onduty
   class Server < Sinatra::Base

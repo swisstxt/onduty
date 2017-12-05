@@ -12,9 +12,7 @@ module Onduty
 
     DEFAULT_PLUGINS = %w(VoiceNotification MailNotification)
 
-    SETTINGS = OpenStruct.new(
-      Onduty::Config.new(ENV['ONDUTY_CONFIG_FILE'] || Onduty::Config.file).settings
-    )
+    SETTINGS = OpenStruct.new(Onduty::Config.new.settings)
 
     attr_reader :alert, :options, :logger
 
