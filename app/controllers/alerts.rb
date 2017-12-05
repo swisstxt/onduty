@@ -24,9 +24,6 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
         r.Say "Sorry, we are unable to acknowledge the issue.", voice: "woman"
       end
     end.text
-  elsif params[:format] == "html"
-    content_type 'text/html'
-    ack[:message]
   else
     if @alert.acknowledged?
       flash[:success] = ack[:message]

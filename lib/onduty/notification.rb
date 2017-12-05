@@ -32,18 +32,23 @@ module Onduty
       if options[:force] || alert.count >= (SETTINGS.alert_limit.to_i || 0)
         begin
           self.plugins.each do |plugin|
-           notification_plugin = Onduty.const_get(plugin).new(alert, options)
-           if notification_plugin.valid_configuration?
-             notification_plugin.trigger
-           else
-             notification_plugin.logger.error "Plugin #{plugin} can't be used because of missing configuration options."
-           end
+            notification_plugin = Onduty.const_get(plugin).new(alert, options)
+            if notification_plugin.valid_configuration?
+              notification_plugin.trigger
+            else
+              notification_plugin.logger.error(
+                "Plugin #{plugin} can't be used because of missing configuration options."
+              )
+            end
           end
           alert.last_alert_at = Time.now
           alert.count += 1
           alert.save!
         rescue => e
           logger.error "Error triggering alert with ID #{alert.id}: #{e.message}"
+          if ENV['RACK_ENV'] == 'development'
+            logger.info "Backtrace: #{e.backtrace}"
+          end
           false
         end
       else
@@ -59,7 +64,9 @@ module Onduty
       @contact = Onduty::Contact.where(
         duty: @duty_type,
         group: @group
-      ).first || Contact.new(first_name: "Jon", last_name: "Doe", phone: "+412223344")
+      ).first || Contact.new(
+        first_name: "Jon", last_name: "Doe", phone: "+412223344", email: "test@test.com"
+      )
       @options = options
       @settings = SETTINGS
       @logger = Onduty::Notification.logger

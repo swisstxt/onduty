@@ -17,6 +17,9 @@ module Onduty
       logger.info "Initiated phone call for alert with ID #{@alert.id} to #{@contact.name} (#{@contact.group ? @contact.group.name : '-'})."
     rescue => e
       logger.error "Error initiated phone call: #{e.message}"
+      if ENV['RACK_ENV'] == 'development'
+        logger.info "Backtrace: #{e.backtrace}"
+      end
     end
 
     private

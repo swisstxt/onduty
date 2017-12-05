@@ -1,16 +1,18 @@
 module Onduty
   class MailNotification < Notification
-    require 'pony'
+    require 'mail'
 
     def name
       "Onduty Mail Notification"
     end
 
     def valid_configuration?
-      @contact.email && @settings.smtp_options
+      @contact.email
     end
 
     def trigger
+      email = @contact.email
+      alert_id = @alert.id
       if @contact.email && @contact.alert_by_email == 1
         from = @settings.email_sender ? @settings.email_sender : 'onduty@onduty'
         body_text = Erubis::Eruby.new(
@@ -20,20 +22,23 @@ module Onduty
           contact: @contact,
           acknowledge_url: acknowledge_url(html_link: true)
         )
-        Pony.mail(
-          from: from,
-          to: @contact.email,
-          subject: "[Alert #{@alert.id}] Alert from onduty",
-          body: body_text,
-          via: :smtp,
-          via_options: @settings.smtp_options
-        )
+        if smtp_options = @settings.smtp_options
+          Mail.defaults do
+            delivery_method :smtp, smtp_options
+          end
+        end
+        Mail.deliver do
+          from     from
+          to       email
+          subject  "[Alert #{alert_id}] Alert from onduty"
+          body     body_text
+        end
         logger.info "Sent alert email with ID #{@alert.id} to #{@contact.name} (#{@contact.group ? @contact.group.name : '-'})."
       end
     rescue => e
       logger.error "Error sending email: #{e.message}"
       if ENV['RACK_ENV'] == 'development'
-        logger.error "Error sending email: #{e.backtrace}"
+        logger.info "Backtrace: #{e.backtrace}"
       end
     end
 

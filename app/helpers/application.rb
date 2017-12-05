@@ -30,7 +30,7 @@ helpers do
     @auth.provided? && @auth.basic? && @auth.credentials &&
       @auth.credentials == [settings.admin_user, settings.admin_password]
   rescue
-    true
+    false
   end
 
   def paginate(collection, base_path, options = {})

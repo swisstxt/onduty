@@ -1,3 +1,11 @@
+<% if settings.notification_plugins.size == 0 -%>
+<div class="row">
+  <div class="alert alert-warning col-md-6">
+    No notification plugin configured!
+  </div>
+</div>
+<% end -%>
+
 <div class="row">
   <content class="col-md-9" role="main">
     <div class="page-header">

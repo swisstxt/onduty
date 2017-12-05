@@ -9,10 +9,6 @@ configure do
   set :environment,   (ENV["RACK_ENV"] || :development).to_sym
   set :root,          File.join(File.dirname(__FILE__), '../../', 'app')
   set :public_folder, File.join(File.dirname(__FILE__), '../../', 'public')
-
-  # set :layout,  true
-  # set :erb, layout_options: { layout: 'layout' }
-  # register Kaminari::Helpers::SinatraHelpers
 end
 
 get '/' do

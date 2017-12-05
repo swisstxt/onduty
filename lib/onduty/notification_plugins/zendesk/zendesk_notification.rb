@@ -36,6 +36,9 @@ module Onduty
       end
     rescue => e
       logger.error "Error creating Zendesk ticket: #{e.message}"
+      if ENV['RACK_ENV'] == 'development'
+        logger.info "Backtrace: #{e.backtrace}"
+      end
     end
   end
 end
