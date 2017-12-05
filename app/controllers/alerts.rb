@@ -130,8 +130,8 @@ post '/alerts/new.json' do
         host: srv["host"]
       )
     end
-    if payload[:group]
-      alert.group = Onduty::Group.where(name: payload[:group]).first || nil
+    if payload['alert']['group']
+      alert.group = Onduty::Group.where(name: payload['alert']['group']).first || nil
     else
       alert.group = Onduty::Group.asc(:position).first || nil
     end
