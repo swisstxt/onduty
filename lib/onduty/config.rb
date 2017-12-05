@@ -25,14 +25,14 @@ module Onduty
     def load_settings
       s = {}
       # Base URL for menu links
-      s['base_url'] = ENV['ONDUTY_BASE_URL'] || 'http://localhost:9292'
+      s['base_url'] = ENV.fetch('ONDUTY_BASE_URL', 'http://localhost:9292')
       # Secure onduty with simple auth
-      s['admin_user'] = ENV['ONDUTY_ADMIN_USER'] || 'admin'
-      s['admin_password'] = ENV['ONDUTY_ADMIN_PASSWORD'] || 'password'
+      s['admin_user'] = ENV.fetch('ONDUTY_ADMIN_USER', 'admin')
+      s['admin_password'] = ENV.fetch('ONDUTY_ADMIN_PASSWORD', 'password')
       # When to trigger notifications for alerts
-      s['alert_limit'] = ENV['ONDUTY_ALERT_LIMIT'] || 1
+      s['alert_limit'] = ENV.fetch('ONDUTY_ALERT_LIMIT', 1).to_i
       # Rack session secret
-      s['session_secret'] = ENV['ONDUTY_SESSION_SECRET']
+      s['session_secret'] = ENV.fetch('ONDUTY_SESSION_SECRET', SecureRandom.hex(64))
       # Icinga2 specific configurations
       s['icinga2_api_path'] = ENV['ONDUTY_ICINGA2_API_PATH']
       s['icinga2_web'] = ENV['ONDUTY_ICINGA2_WEB_PATH']
@@ -44,7 +44,7 @@ module Onduty
       s['notification_plugins'] = ENV['ONDUTY_NOTIFICATION_PLUGINS'] ?
         ENV['ONDUTY_NOTIFICATION_PLUGINS'].split(",") : []
       # Email notification
-      s['email_sender'] = ENV['ONDUTY_EMAIL_SENDER'] || 'alert@onduty'
+      s['email_sender'] = ENV.fetch('ONDUTY_EMAIL_SENDER', 'alert@onduty')
       if ENV['ONDUTY_SMTP_ADDRESS']
         s['smtp_options'] = { address: ENV['ONDUTY_SMTP_ADDRESS'] }
       end

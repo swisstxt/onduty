@@ -2,7 +2,7 @@
 
 configure do
   enable :sessions
-  set :session_secret, settings.session_secret || SecureRandom.hex(64)
+  set :session_secret, settings.session_secret
   use Rack::Flash, sweep: true
   register Sinatra::MultiRoute
   Mongoid.load! Onduty::Config.new.mongoid_config

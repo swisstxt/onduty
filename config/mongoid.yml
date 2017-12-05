@@ -3,7 +3,7 @@ development: &default
   clients:
     # Defines the default session. (required)
     default:
-      uri: <%= "#{ENV['MONGODB_URI']}" || 'mongodb://localhost:27017/onduty' %>
+      uri: <%= ENV['MONGODB_URI'] || 'mongodb://localhost:27017/onduty' %>
 
 test:
   <<: *default

@@ -8,7 +8,6 @@ RUN apk --update add --virtual build-dependencies ruby-dev build-base && \
 ADD . /app
 RUN chown -R nobody:nogroup /app
 USER nobody
-ENV RACK_ENV development
-EXPOSE 9292
+EXPOSE 3000
 WORKDIR /app
-CMD ["bundle", "exec", "puma", "-p", "3000"]
+CMD ["bundle", "exec", "puma", "-p", "3000", "-t",  "2:2"]

@@ -2,11 +2,11 @@ version: '2'
 services:
   onduty:
     image: onduty:latest
-    command: bundle exec puma -p 9292
+    command: bundle exec puma -p 3000 -t 2:2
     env_file:
       - onduty-config.env
     ports:
-      - 9292:9292
+      - 3000:3000
     links:
       - mongodb:mongodbserver
     depends_on:
