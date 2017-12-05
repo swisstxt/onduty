@@ -24,9 +24,8 @@
       <div class="form-group">
         <label for="group" class="col-sm-3 control-label">Group</label>
         <div class="col-sm-9">
-          <select name="alert[group]" class="selectpicker">
-            <option value="">-</option>
-            <% Onduty::Group.all.each do |group| %>
+          <select name="alert[group]" class="form-control">
+            <% Onduty::Group.asc(:position).each do |group| %>
               <% unless @alert.group_id == group.id %>
                 <option value="<%= group.id %>"><%= group.name %></option>
               <% else %>

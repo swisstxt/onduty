@@ -127,11 +127,7 @@ post '/alerts/new.json' do
         host: srv["host"]
       )
     end
-    if payload['alert']['group']
-      alert.group = Onduty::Group.where(name: payload['alert']['group']).first || nil
-    else
-      alert.group = Onduty::Group.asc(:position).first || nil
-    end
+    alert.group = Onduty::Group.find_or_default(payload['alert']['group'])
     if alert.save
       options = { duty_type: 1 }
       options[:force] = true if payload['force']

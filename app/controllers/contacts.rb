@@ -36,6 +36,7 @@ get '/contacts/new' do
   @method = 'new'
   @title = "Create Contact"
   @contact = Onduty::Contact.new
+  @contact.group = Onduty::Group.first_or_default
   erb :"contacts/form"
 end
 

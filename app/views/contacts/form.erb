@@ -35,9 +35,8 @@
       <div class="form-group">
         <label for="group" class="col-sm-2 control-label">Group</label>
         <div class="col-sm-10">
-          <select name="contact[group]" class="selectpicker">
-            <option value="">-</option>
-            <% Onduty::Group.all.each do |group| %>
+          <select name="contact[group]" class="form-control">
+            <% Onduty::Group.asc(:position).each do |group| %>
               <% unless @contact.group_id == group.id %>
                 <option value="<%= group.id %>"><%= group.name %></option>
               <% else %>
