@@ -16,14 +16,14 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
 
   if params[:format] =~ /^(twiml|xml)$/
     content_type 'text/xml'
-    Twilio::TwiML::Response.new do |r|
-      r.Say ack[:message], voice: "woman"
+    Twilio::TwiML::VoiceResponse.new do |r|
+      r.say ack[:message], voice: "woman"
       if @alert.acknowledged?
-        r.Say "Thank you and Goodbye!", voice: "woman"
+        r.say "Thank you and Goodbye!", voice: "woman"
       else
-        r.Say "Sorry, we are unable to acknowledge the issue.", voice: "woman"
+        r.say "Sorry, we are unable to acknowledge the issue.", voice: "alice"
       end
-    end.text
+    end.to_s
   else
     if @alert.acknowledged?
       flash[:success] = ack[:message]
@@ -45,7 +45,7 @@ post '/alerts/:id.twiml' do
       numDigits: 1,
       action: "/alerts/#{@alert.id}/acknowledge.twiml?uid=#{@alert.uid}"
     ) do |g|
-      g.say "Please enter any key to acknowledge the message.", voice: "woman"
+      g.say "Please enter any key to acknowledge the message.", voice: "alice"
     end
     r.say(
       "We didn't receive any input. We will call you again. Goodbye!",
