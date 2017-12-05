@@ -7,7 +7,7 @@ gem 'erubis', '~> 2.7.0'
 
 # Plugin dependencies
 gem 'pony'
-gem 'twilio-ruby', '~> 4.13'
+gem 'twilio-ruby', '~> 5.5.1'
 gem 'zendesk_api'
 gem 'slack-ruby-client'
 

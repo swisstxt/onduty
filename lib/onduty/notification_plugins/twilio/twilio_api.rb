@@ -14,7 +14,7 @@ module Onduty
     end
 
     def call(number, twiml_url)
-      client.account.calls.create(
+      client.api.account.calls.create(
         from: @from_number,
         to:   number,
         url:  twiml_url,
@@ -23,12 +23,12 @@ module Onduty
     end
 
     def sms(number, message)
-      client.account.messages.create(
+      client.api.account.messages.create(
         from: @from_number,
         to:   number,
         body: message
       )
-    rescue Twilio::REST::RequestError => e
+    rescue Twilio::REST::RestError => e
       puts e.message
     end
 

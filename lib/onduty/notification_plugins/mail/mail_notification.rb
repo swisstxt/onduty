@@ -20,18 +20,21 @@ module Onduty
           contact: @contact,
           acknowledge_url: acknowledge_url(html_link: true)
         )
-        Pony.mail({
-          from:    from,
-          to:      @contact.email,
+        Pony.mail(
+          from: from,
+          to: @contact.email,
           subject: "[Alert #{@alert.id}] Alert from onduty",
-          body:    body_text,
-          via:     :smtp,
+          body: body_text,
+          via: :smtp,
           via_options: @settings.smtp_options
-        })
+        )
         logger.info "Sent alert email with ID #{@alert.id} to #{@contact.name} (#{@contact.group ? @contact.group.name : '-'})."
       end
     rescue => e
       logger.error "Error sending email: #{e.message}"
+      if ENV['RACK_ENV'] == 'development'
+        logger.error "Error sending email: #{e.backtrace}"
+      end
     end
 
   end

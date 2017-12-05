@@ -3,9 +3,9 @@ Dear <%= contact.name %>,
 Please take notice of the following alert:
 
 Alert: <%= alert.message %>
-<% if alert.group %>
-Group: <%= alert.group ? alert.group.name : '-' %>
-<% end %>
+<% if alert.group -%>
+Group: <%= alert.group.name %>
+<% end -%>
 Service:
 <% alert.services.each do |service| -%>
   - <%= service.full_name %>
