@@ -12,7 +12,7 @@ post '/duties/' do
     contact.update(duty: duty_type)
     if Onduty::Notification.plugins.include? "SlackNotification"
       post_slack_message(
-        ":+1: *#{contact.name}* is on duty (#{Onduty::Duty.types[duty_type]} contact)."
+        ":+1: *#{contact.name}* (#{contact.group ? contact.group.name : ''}) is on duty (#{Onduty::Duty.types[duty_type]} contact)."
       )
     end
     flash[:success] = "Successfuly updated duty settings."
