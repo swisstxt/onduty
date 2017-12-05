@@ -1,3 +1,3 @@
 module Onduty
-  VERSION = "1.1.19"
+  VERSION = "1.1.20"
 end

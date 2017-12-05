@@ -39,19 +39,19 @@ post '/alerts/:id.twiml' do
   @alert = Onduty::Alert.find(params[:id])
   halt 403 unless @alert.uid = params[:uid]
   content_type 'text/xml'
-  Twilio::TwiML::Response.new do |r|
-    r.Say(@alert.message, voice: "woman", loop: 2)
-    r.Gather(
+  Twilio::TwiML::VoiceResponse.new do |r|
+    r.say(@alert.message, voice: "woman", loop: 2)
+    r.gather(
       numDigits: 1,
       action: "/alerts/#{@alert.id}/acknowledge.twiml?uid=#{@alert.uid}"
     ) do |g|
-      g.Say "Please enter any key to acknowledge the message.", voice: "woman"
+      g.say "Please enter any key to acknowledge the message.", voice: "woman"
     end
-    r.Say(
+    r.say(
       "We didn't receive any input. We will call you again. Goodbye!",
       voice: "woman"
     )
-  end.text
+  end.to_s
 end
 
 # Trigger notifications for a certain alert
