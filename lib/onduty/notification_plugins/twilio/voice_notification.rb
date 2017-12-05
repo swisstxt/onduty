@@ -14,7 +14,7 @@ module Onduty
         @contact.phone,
         URI::join(@settings.base_url, "/alerts/#{alert.id}.twiml?uid=#{@alert.uid}")
       )
-      logger.info "Initiated phone call for alert with ID #{@alert.id} to #{@contact.name}."
+      logger.info "Initiated phone call for alert with ID #{@alert.id} to #{@contact.name} (#{@contact.group ? @contact.group.name : '-'})."
     rescue => e
       logger.error "Error initiated phone call: #{e.message}"
     end

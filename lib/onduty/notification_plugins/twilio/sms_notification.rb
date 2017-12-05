@@ -11,7 +11,7 @@ module Onduty
     def trigger
       if @contact.phone && @contact.alert_by_sms == 1
         api.sms(@contact.phone, alert.message)
-        logger.info "Sent alert SMS with ID #{@alert_id} to #{@contact.name} (#{@contact.group ? @contact.group.name : ''})."
+        logger.info "Sent alert SMS with ID #{@alert_id} to #{@contact.name} (#{@contact.group ? @contact.group.name : '-'})."
       end
     rescue => e
       logger.error "Error sending SMS: #{e.message}"

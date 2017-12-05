@@ -13,7 +13,7 @@ module Onduty
     def trigger
       if @contact.email && @contact.alert_by_email == 1
         from = @settings.email_sender ? @settings.email_sender : 'onduty@onduty'
-        body = Erubis::Eruby.new(
+        body_text = Erubis::Eruby.new(
           File.read(File.join(File.dirname(__FILE__), 'mail_notification.erb'))
         ).result(
           alert: @alert,
@@ -23,12 +23,12 @@ module Onduty
         Pony.mail({
           from:    from,
           to:      @contact.email,
-          subject: "[Alert #{@alert.id}] Alert from onduty" ,
-          body:    body,
+          subject: "[Alert #{@alert.id}] Alert from onduty",
+          body:    body_text,
           via:     :smtp,
           via_options: @settings.smtp_options
         })
-        logger.info "Sent alert email with ID #{@alert.id} to #{@contact.name}."
+        logger.info "Sent alert email with ID #{@alert.id} to #{@contact.name} (#{@contact.group ? @contact.group.name : '-'})."
       end
     rescue => e
       logger.error "Error sending email: #{e.message}"
