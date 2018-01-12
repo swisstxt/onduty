@@ -7,7 +7,7 @@ gem 'erubis', '~> 2.7.0'
 
 # Plugin dependencies
 gem 'mail', '~> 2.7'
-gem 'twilio-ruby', '~> 5.5.1'
+gem 'twilio-ruby', '~> 5.6.0'
 gem 'zendesk_api'
 gem 'slack-ruby-client'
 
