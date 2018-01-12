@@ -40,7 +40,11 @@ end
 
 get '/groups/:id' do
   protected!
-  @group = Onduty::Group.find(params[:id])
+  begin
+    @group = Onduty::Group.find(params[:id])
+  rescue Mongoid::Errors::DocumentNotFound
+    halt 404
+  end
   @title = @group.name
   erb :"groups/show"
 end

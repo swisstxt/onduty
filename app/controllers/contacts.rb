@@ -60,7 +60,11 @@ end
 
 get '/contacts/:id' do
   protected!
-  @contact = Onduty::Contact.find(params[:id])
+  begin
+    @contact = Onduty::Contact.find(params[:id])
+  rescue Mongoid::Errors::DocumentNotFound
+    halt 404
+  end
   @title = @contact.name
   erb :"contacts/show"
 end

@@ -166,7 +166,11 @@ end
 
 get '/alerts/:id' do
   protected!
-  @alert = Onduty::Alert.find(params[:id])
+  begin
+    @alert = Onduty::Alert.find(params[:id])
+  rescue Mongoid::Errors::DocumentNotFound
+    halt 404
+  end
   @title = "Alert #{@alert.name}"
   erb :"alerts/show"
 end
