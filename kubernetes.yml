@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: onduty
-        image: docker.swisstxt.ch/onduty:v1.1.22
+        image: docker.swisstxt.ch/onduty:v1.1.23
         ports:
         - containerPort: 3000
         envFrom:
