@@ -5,11 +5,14 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
   @alert = Onduty::Alert.find(params[:id])
   halt 403 unless @alert.uid == params[:uid]
 
-  ack = Onduty::Icinga2.new(
+  ack = settings.icinga2_api_path ? Onduty::Icinga2.new(
     api_path: settings.icinga2_api_path,
     user: settings.icinga2_user,
     password: settings.icinga2_password
-  ).acknowledge_services(@alert.services)
+  ).acknowledge_services(@alert.services) : {
+    acknowledged: 1,
+    message: "The alert has been successfully acknowledeged."
+  }
   if ack[:acknowledged] == 1
     @alert.acknowledge!
   end
@@ -30,7 +33,7 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
     else
       flash[:danger] = ack[:message]
     end
-    erb :"alerts/show"
+    redirect back
   end
 end
 

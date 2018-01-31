@@ -11,12 +11,12 @@ module Onduty
       "#{host}!#{name}"
     end
 
-    def icinga2_host_link(icinga2_web)
-      "#{icinga2_web}/monitoring/host/show?host=#{URI.escape(self.host)}"
+    def icinga2_host_link(icinga2_web_path)
+      "#{icinga2_web_path}/monitoring/host/show?host=#{URI.escape(self.host)}"
     end
 
-    def icinga2_service_link(icinga2_web)
-      "#{icinga2_web}/monitoring/service/show?host=#{URI.escape(self.host)}&service=#{URI.escape(self.name)}"
+    def icinga2_service_link(icinga2_web_path)
+      "#{icinga2_web_path}/monitoring/service/show?host=#{URI.escape(self.host)}&service=#{URI.escape(self.name)}"
     end
 
   end

@@ -26,18 +26,22 @@ module Onduty
       s = {}
       # Base URL for menu links
       s['base_url'] = ENV.fetch('ONDUTY_BASE_URL', 'http://localhost:9292')
+
       # Secure onduty with simple auth
       s['admin_user'] = ENV.fetch('ONDUTY_ADMIN_USER', 'admin')
       s['admin_password'] = ENV.fetch('ONDUTY_ADMIN_PASSWORD', 'password')
+
       # When to trigger notifications for alerts
       s['alert_limit'] = ENV.fetch('ONDUTY_ALERT_LIMIT', 1).to_i
+
       # Rack session secret
       s['session_secret'] = ENV.fetch('ONDUTY_SESSION_SECRET', SecureRandom.hex(64))
+
       # Icinga2 specific configurations
-      s['icinga2_api_path'] = ENV['ONDUTY_ICINGA2_API_PATH']
-      s['icinga2_web'] = ENV['ONDUTY_ICINGA2_WEB_PATH']
-      s['icinga2_user'] = ENV['ONDUTY_ICINGA2_USER']
-      s['icinga2_password'] = ENV['ONDUTY_ICINGA2_PASSWORD']
+      s['icinga2_api_path'] = ENV.fetch('ONDUTY_ICINGA2_API_PATH', nil)
+      s['icinga2_web_path'] = ENV.fetch('ONDUTY_ICINGA2_WEB_PATH', nil)
+      s['icinga2_user'] = ENV.fetch('ONDUTY_ICINGA2_USER', nil)
+      s['icinga2_password'] = ENV.fetch('ONDUTY_ICINGA2_PASSWORD', nil)
 
       #  notification plugins
       # Enable or disable notification plugins

@@ -32,12 +32,16 @@
         <ul>
         <% @alert.services.each do |service| -%>
           <li>
-            <a href="<%= service.icinga2_host_link(settings.icinga2_web) %>" target="blank">
+            <% if settings.icinga2_web_path -%>
+            <a href="<%= service.icinga2_host_link(settings.icinga2_web_path) %>" target="blank">
               <%= service.host %>
             </a> -
-            <a href="<%= service.icinga2_service_link(settings.icinga2_web) %>" target="blank">
+            <a href="<%= service.icinga2_service_link(settings.icinga2_web_path) %>" target="blank">
               <%= service.name %>
             </a>
+            <% else %>
+              <%= service.host %> - <%= service.name %>
+            <% end -%>
           </li>
         <% end -%>
         </ul>
@@ -84,10 +88,11 @@
   <a href="/alerts<%= alerts_link_filter %>" class="btn btn-default">Back</a>
   <a href="/alerts/<%= @alert.id %>/delete" class="btn btn-danger">Delete</a>
 
-
+  <% unless @alert.acknowledged_at -%>
   <form action="/alerts/<%= @alert.id %>/acknowledge?uid=<%= @alert.uid %>" method="post" style="display: inline-block">
     <button type="submit" class="btn btn-success">Acknowledge</button>
   </form>
+  <% end -%>
   <% if settings.notification_plugins.size > 0 -%>
   <form action="/alerts/<%= @alert.id %>/alert" method="post" style="display: inline-block">
     <button type="submit" class="btn btn-primary">Trigger Alert</button>
