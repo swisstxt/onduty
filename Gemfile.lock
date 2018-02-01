@@ -67,7 +67,7 @@ GEM
       tilt (>= 1.4.1, < 3)
     padrino-support (0.14.2)
     puma (3.11.2)
-    rack (2.0.3)
+    rack (2.0.4)
     rack-flash3 (1.0.5)
       rack
     rack-protection (2.0.0)
