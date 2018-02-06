@@ -174,5 +174,5 @@ The following example shows how to create an alert using cURL and JSON payload:
 
 ```bash
 curl -v -i -X POST -H "Content-Type: application/json" \
---data '{"alert":{"name":"test_alert","group":"Test","services":[{"name":"service1","host":"host1"},{"name":"service2","host":"host2"}]},"force":"false"}' \ 'http://admin:password@127.0.0.1:9393/alerts/new.json'
+--data '{"alert":{"name":"test_alert","group":"Test","services":[{"name":"service1","host":"host1"},{"name":"service2","host":"host2"}]},"force":"false"}' \ 'http://admin:password@127.0.0.1:3000/alerts/new.json'
 ```

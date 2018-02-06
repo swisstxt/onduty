@@ -34,6 +34,10 @@ module Onduty
       # When to trigger notifications for alerts
       s['alert_limit'] = ENV.fetch('ONDUTY_ALERT_LIMIT', 1).to_i
 
+      # When to consider an existing alert as new (in hours)
+      # when the time is below this value the count of an alert goes up
+      s['alert_threshold'] = ENV.fetch('ONDUTY_ALERT_THRESHOLD', 2.0).to_f
+
       # Rack session secret
       s['session_secret'] = ENV.fetch('ONDUTY_SESSION_SECRET', SecureRandom.hex(64))
 

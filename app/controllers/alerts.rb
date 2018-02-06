@@ -120,7 +120,9 @@ post '/alerts/new.json' do
   content_type :json
   begin
     payload = JSON.parse(request.body.read)
-    alert = Onduty::Alert.find_or_create_by(
+    alert = Onduty::Alert.where(
+      :created_at.gte => Time.now - settings.alert_threshold
+    ).find_or_create_by(
       name: payload['alert']['name'],
       acknowledged_at: nil
     )
