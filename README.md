@@ -19,24 +19,13 @@ Dependencies are managed using bundler (install the bundler gem if you don't hav
 bundle install
 ```
 
-### Configure the database connection
-
-OnDuty uses MongoDB as backend.
-Create a configuration file named config/mongoid.yml (see config/mongoid.example.yml).
-
-### Create your own configuration
-
-Create your own configuration and adapt it.
-
-The following locations are checked for a config file (in this order):
-   * /etc/onduty.yml
-   * /etc/onduty/onduty.yml
-   * config/onduty.yml
-   * config/onduty.example.yml
+### Base configuration
 
 ```bash
-cp config/onduty.example.yml config/onduty.yml
-vi config/onduty.yml
+MONGODB_URI=mongodb://mongodbserver:27017/onduty
+ONDUTY_BASE_URL=http://localhost:3000/
+ONDUTY_ALERT_LIMIT=1
+ONDUTY_ALERT_THRESHOLD=0.01
 ```
 
 ### Build & Run with Docker
@@ -55,7 +44,12 @@ docker-compose up
 
 ### Access Control
 
-OnDuty protects access using basic auth, when you configure "admin_user" and "admin_password" in your configuration file.
+OnDuty protects access using basic auth, when you set the ENV variables ONDUTY_ADMIN_USER and ONDUTY_ADMIN_PASSWORD:
+
+```bash
+ONDUTY_ADMIN_USER=admin
+ONDUTY_ADMIN_PASSWORD=password
+```
 
 The alert acknowledge and twiml methods are protected by alert UID.
 
@@ -63,10 +57,11 @@ The alert acknowledge and twiml methods are protected by alert UID.
 
 Configure the Icinga2 API:
 
-```yaml
-icinga2_api_path: https://localhost:5665/v1
-icinga2_user: admin
-icinga2_password: icinga
+```bash
+ONDUTY_ICINGA2_API_PATH=https://icinga2.local:5665/v1
+ONDUTY_ICINGA2_WEB_PATH=http://icinga2.local
+ONDUTY_ICINGA2_USER=icinga2-onduty
+ONDUTY_ICINGA2_PASSWORD=icinga2-password
 ```
 
 ## Run the server
@@ -112,15 +107,12 @@ The following plugins are available:
   - SlackNotification
   - ZendeskNotification
 
-Plugins can be enabled/disabled within the configuration file.
+Plugins can be enabled/disabled using ENV.
 
 This is the default configuration:
 
 ```bash
-notification_plugins:
-  - VoiceNotification
-  - SmsNotification
-  - MailNotification
+ONDUTY_NOTIFICATION_PLUGINS=VoiceNotification,MailNotification
 ```
 
 Check the plugins state using the onduty-cli:
@@ -131,23 +123,21 @@ bundle exec bin/onduty-cli plugins
 
 ### Plugin Configuration Parameters
 
-#### VoiceNotification and SmsNotification
+#### Twilio VoiceNotification and SmsNotification
 
 In order to use the VoiceNotification and SmsNotification plugins you have to configure the following twilio account parameters:
 
-```yaml
-# To find these visit https://www.twilio.com/user/account
-account_sid: "12677267267267267627676276276276"
-auth_token:  "32324323424242424242424242424242"
-from_number: "+12345678910"
+```bash
+ONDUTY_TWILIO_ACCOUNT_SID=<account-sid>
+ONDUTY_TWILIO_ACCOUNT_TOKEN=<account-token>
+ONDUTY_TWILIO_FROM_NUMBER=+411235678
 ```
 
 #### MailNotification
 
-```yaml
-email_sender: 'alert@onduty'
-smtp_options:
-  :address: mail.example.com
+```bash
+ONDUTY_EMAIL_SENDER=onduty@onduty.local
+ONDUTY_SMTP_ADDRESS=smtprelay.onduty.local
 ```
 
 #### SlackNotification
@@ -155,17 +145,17 @@ smtp_options:
   1. Add a [new bot](https://my.slack.com/services/new/bot) on your Slack account and take note of the API token.
   2. Invite your new bot to the channel your are going to configure within OnDuty.
 
-```yaml
-slack_api_token: slack-api-token
-slack_channel: '#general'
+```bash
+ONDUTY_SLACK_API_TOKEN=<slack-api-token>
+ONDUTY_SLACK_CHANNEL=#onduty-test
 ```
 
 #### ZendeskNotification
 
-```yaml
-zendesk_url: https://yoursubdomain.zendesk.com/api/v2
-zendesk_username: you@yourdomain.com
-zendesk_token: you-zendesk-token
+```bash
+ONDUTY_ZENDESK_URL=https://onduty.zendesk.com/api/v2
+ONDUTY_ZENDESK_USERNAME=onduty@onduty.local
+ONDUTY_ZENDESK_TOKEN=<zendesk-token>
 ```
 
 # Trigger alerts from external sources
