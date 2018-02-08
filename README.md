@@ -24,8 +24,11 @@ bundle install
 ```bash
 MONGODB_URI=mongodb://mongodbserver:27017/onduty
 ONDUTY_BASE_URL=http://localhost:3000/
-ONDUTY_ALERT_LIMIT=1
-ONDUTY_ALERT_THRESHOLD=0.01
+# How many alerts are required to trigger a notification
+ONDUTY_ALERT_LIMIT=2
+# When to consider an existing alert as new (in hours)
+# when the time is below this value the count of an alert goes up
+ONDUTY_ALERT_THRESHOLD=2
 ```
 
 ### Build & Run with Docker
