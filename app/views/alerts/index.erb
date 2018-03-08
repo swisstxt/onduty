@@ -76,7 +76,7 @@
           <a href="/alerts?<%= merge_query_string(days: "all") %>">All</a>
         </li>
         <li <% if params[:days] == '1' || params[:days] == nil %>class="active"<% end %>>
-          <a href="/alerts?<%= merge_query_string(days: "1") %>">Last 24h</a>
+          <a href="/alerts?<%= merge_query_string(days: "1") %>">Today</a>
         </li>
         <li <% if params[:days] == '7' || params[:days] == nil %>class="active"<% end %>>
           <a href="/alerts?<%= merge_query_string(days: "7") %>">Last week</a>
