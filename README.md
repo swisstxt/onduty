@@ -22,7 +22,11 @@ bundle install
 ### Base configuration
 
 ```bash
+# Application environment, i.e. production, test, development
+APP_ENV=development
+# MongoDB connection URI
 MONGODB_URI=mongodb://mongodbserver:27017/onduty
+# Application base URL
 ONDUTY_BASE_URL=http://localhost:3000/
 # How many alerts are required to trigger a notification
 ONDUTY_ALERT_LIMIT=2

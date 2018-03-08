@@ -87,9 +87,6 @@
         <li <% if params[:duty].to_s == 'primary' %>class="active"<% end %>>
           <a href="/contacts?<%= merge_query_string(duty: 'primary') %>">Primary</a>
         </li>
-        <li <% if params[:duty].to_s == 'escalation' %>class="active"<% end %>>
-          <a href="/contacts?<%= merge_query_string(duty: 'escalation') %>">Escalation</a>
-        </li>
       </ul>
       <hr>
       <h4>Group</h4>

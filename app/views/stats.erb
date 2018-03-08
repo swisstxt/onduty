@@ -1,0 +1,62 @@
+<div class="row">
+  <content class="col-md-12" role="main">
+    <div class="page-header">
+      <h1>Alarming Stats</h1>
+    </div>
+
+    <section class="col-md-6">
+      <h2>Alarms by Group (last 7 days)</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Pos.</th>
+            <th>Group</th>
+            <th>Alert Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @stats.alerts_by_group.each_with_index do |group, i| %>
+            <tr>
+              <td><%= i + 1 %></td>
+              <td>
+                <a href="/groups/<%= group["_id"] %>">
+                  <%= Onduty::Group.only(:name).find(group["_id"]).name %>
+                </a>
+              </td>
+              <td>
+                <span class="badge"><%= group["sum"] %></span>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="col-md-6">
+      <h2>Alarms by Service (last 30 days)</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Pos.</th>
+            <th>Service</th>
+            <th>Alert Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @stats.alerts_by_service.each_with_index do |service, i| %>
+            <tr>
+              <td><%= i + 1 %></td>
+              <td>
+                <%= service["_id"] %>
+              </td>
+              <td>
+                <span class="badge"><%= service["sum"] %></span>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </section>
+
+  </content>
+</div>

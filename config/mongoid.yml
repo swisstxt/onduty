@@ -4,6 +4,7 @@ development: &default
     # Defines the default session. (required)
     default:
       uri: <%= ENV['MONGODB_URI'] || 'mongodb://localhost:27017/onduty' %>
+      connect_timeout: 1
 
 test:
   <<: *default

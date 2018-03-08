@@ -37,7 +37,7 @@ module Onduty
       end
     rescue => e
       logger.error "Error sending email: #{e.message}"
-      if ENV['RACK_ENV'] == 'development'
+      if ENV['APP_ENV'] == 'development'
         logger.info "Backtrace: #{e.backtrace}"
       end
     end

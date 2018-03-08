@@ -27,7 +27,7 @@ module Onduty
       logger.info "Succesfully sent Slack message for alert with ID #{@alert.id}."
     rescue => e
       logger.error "Error creating Slack message: #{e.message}"
-      if ENV['RACK_ENV'] == 'development'
+      if ENV['APP_ENV'] == 'development'
         logger.info "Backtrace: #{e.backtrace}"
       end
     end

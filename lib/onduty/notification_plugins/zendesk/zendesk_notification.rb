@@ -21,14 +21,16 @@ module Onduty
         comment = Erubis::Eruby.new(
           File.read(File.join(File.dirname(__FILE__), 'zendesk_notification.erb'))
         ).result(
-          alert: @alert,
-          contact: @contact,
+          alert: @alert, contact: @contact,
           acknowledge_url: acknowledge_url(html_link: true)
         )
         ZendeskAPI::Ticket.create(
           client, subject: "[Alert #{@alert.id}] Alert from onduty",
           comment: { value: comment },
-          submitter_id: client.current_user.id, priority: "urgent"
+          submitter_id: client.current_user.id,
+          assignee_email: @contact.email,
+          priority: "normal",
+          tags: %w(onduty)
         )
         logger.info "Created Zendesk ticket for alert with ID #{@alert.id}."
       else
@@ -36,7 +38,7 @@ module Onduty
       end
     rescue => e
       logger.error "Error creating Zendesk ticket: #{e.message}"
-      if ENV['RACK_ENV'] == 'development'
+      if ENV['APP_ENV'] == 'development'
         logger.info "Backtrace: #{e.backtrace}"
       end
     end
