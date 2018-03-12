@@ -75,19 +75,15 @@ end
 get '/alerts.?:format?' do
   protected!
   @title = "Alerts"
+
   session[:filter_days] = params[:days]
-
-  time = if params[:days] == 'all'
-    0
-  else
+  time = params[:days] == 'all' ? 0 :
     params[:days].to_i > 0 ? days_ago(params[:days]) : days_ago(7)
-  end
 
-  @alerts =  if params[:format] == "json"
+  session[:group_id] = params[:group_id]
+  @alerts = params[:group_id] && params[:group_id] != 'all' ?
+    Onduty::Alert.where(group_id: params[:group_id]).created_after(time) :
     Onduty::Alert.created_after(time)
-  else
-    Onduty::Alert.created_after(time).page(params[:page]).per(10)
-  end
 
   session[:filter_ack] = params[:ack]
   @alerts = if params[:ack] == 'true'
@@ -102,6 +98,7 @@ get '/alerts.?:format?' do
     content_type :json
     @alerts.to_json
   else
+    @alerts = @alerts.page(params[:page]).per(10)
     erb :"alerts/index"
   end
 end

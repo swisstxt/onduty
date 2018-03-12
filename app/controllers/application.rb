@@ -13,6 +13,7 @@ end
 
 get '/' do
   @stats = Onduty::Stats.new
+  @groups = Onduty::Group.all
   erb :"stats"
 end
 

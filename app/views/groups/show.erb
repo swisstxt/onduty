@@ -1,18 +1,14 @@
 <div class="page-header">
-  <h1><%= @group.name %></h1>
+  <h1>Group: <%= @group.name %></h1>
 </div>
 
-<table class="table table-striped" style="width: 50%;">
-	<tr>
-		<th>Name</th>
-		<td><%= @group.name %></td>
-	</tr>
-  <tr>
-		<th>Position</th>
-		<td><%= @group.position %></td>
-	</tr>
-  </tr>
-</table>
+<h3>Alarms</h3>
+
+<script src="/javascript/chartkick.js"></script>
+<%= column_chart @stats.map {|day| [
+    day['_id']['day'], day["sum"
+  ]]}.reverse, defer: true %>
+<br>
 
 <hr>
 <a href="/groups" class="btn btn-default">Back</a>

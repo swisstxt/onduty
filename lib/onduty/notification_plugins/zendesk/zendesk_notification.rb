@@ -24,15 +24,19 @@ module Onduty
           alert: @alert, contact: @contact,
           acknowledge_url: acknowledge_url(html_link: true)
         )
-        ZendeskAPI::Ticket.create(
-          client, subject: "[Alert #{@alert.id}] Alert from onduty",
+        ticket = ZendeskAPI::Ticket.new(client,
+          subject: "[Alert #{@alert.id}] Alert from onduty",
           comment: { value: comment },
           submitter_id: client.current_user.id,
           assignee_email: @contact.email,
           priority: "normal",
           tags: %w(onduty)
         )
-        logger.info "Created Zendesk ticket for alert with ID #{@alert.id}."
+        if ticket.save
+          logger.info "Created Zendesk ticket for alert with ID #{@alert.id}."
+        else
+          logger.error "Zendeks ticket can't be saved: #{ticket.errors}"
+        end
       else
         logger.info "Skipping Zendesk ticket for alert with ID #{@alert.id} because the alert is not new."
       end

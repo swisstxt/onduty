@@ -1,8 +1,18 @@
 <div class="row">
   <content class="col-md-12" role="main">
     <div class="page-header">
-      <h1>Alarming Stats</h1>
+      <h1>Alarm Statistics</h1>
     </div>
+
+    <script src="/javascript/chartkick.js"></script>
+    <%= column_chart @groups.map { |group| {
+        name: group.name,
+        data: @stats.alerts_by_group_and_day(group_id: group.id, since_days: 60).map { |day|
+          [day['_id']['day'], day["sum"]]
+        }.reverse
+      }},
+     defer: true %>
+    <br>
 
     <section class="col-md-6">
       <h2>Alarms by Group (last 7 days)</h2>
@@ -11,7 +21,7 @@
           <tr>
             <th>Pos.</th>
             <th>Group</th>
-            <th>Alert Count</th>
+            <th># Alerts</th>
           </tr>
         </thead>
         <tbody>
@@ -20,7 +30,7 @@
               <td><%= i + 1 %></td>
               <td>
                 <a href="/groups/<%= group["_id"] %>">
-                  <%= Onduty::Group.only(:name).find(group["_id"]).name %>
+                  <%= @groups.detect{|group| group.id == group["_id"] }.name %>
                 </a>
               </td>
               <td>
@@ -39,7 +49,7 @@
           <tr>
             <th>Pos.</th>
             <th>Service</th>
-            <th>Alert Count</th>
+            <th># Alerts</th>
           </tr>
         </thead>
         <tbody>

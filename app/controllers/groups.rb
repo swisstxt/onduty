@@ -6,7 +6,6 @@ get '/groups.?:format?' do
     content_type :json
     Onduty::Group.all.to_json
   else
-    @title = "Groups"
     @groups = Onduty::Group.all.asc(:position).page(params[:page]).per(10)
     erb :"groups/index"
   end
@@ -42,10 +41,13 @@ get '/groups/:id' do
   protected!
   begin
     @group = Onduty::Group.find(params[:id])
+    @stats = Onduty::Stats.new.alerts_by_group_and_day(
+      group_id: @group.id,
+      since_days: 30
+    )
   rescue Mongoid::Errors::DocumentNotFound
     halt 404
   end
-  @title = @group.name
   erb :"groups/show"
 end
 
@@ -89,7 +91,6 @@ end
 get '/groups/:id/delete' do
   protected!
   @group = Onduty::Group.find(params[:id])
-  @title = "Delete Group"
   erb :"groups/delete"
 end
 

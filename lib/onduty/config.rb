@@ -51,20 +51,24 @@ module Onduty
       # Enable or disable notification plugins
       s['notification_plugins'] = ENV['ONDUTY_NOTIFICATION_PLUGINS'] ?
         ENV['ONDUTY_NOTIFICATION_PLUGINS'].split(",") : []
+
       # Email notification
       s['email_sender'] = ENV.fetch('ONDUTY_EMAIL_SENDER', 'alert@onduty')
       if ENV['ONDUTY_SMTP_ADDRESS']
         s['smtp_options'] = { address: ENV['ONDUTY_SMTP_ADDRESS'] }
       end
+
       # Twilio notifications (voice, SMS)
       # To find these visit https://www.twilio.com/user/account
       s['twilio_account_sid'] = ENV['ONDUTY_TWILIO_ACCOUNT_SID']
       s['twilio_auth_token'] = ENV['ONDUTY_TWILIO_ACCOUNT_TOKEN']
       s['twilio_from_number'] = ENV['ONDUTY_TWILIO_FROM_NUMBER']
+
       # Zendesk notifications
       s['zendesk_url'] = ENV['ONDUTY_ZENDESK_URL']
       s['zendesk_username'] = ENV['ONDUTY_ZENDESK_USERNAME']
       s['zendesk_token'] = ENV['ONDUTY_ZENDESK_TOKEN']
+      
       # Slack notifications
       s['slack_api_token'] = ENV['ONDUTY_SLACK_API_TOKEN']
       s['slack_channel'] = ENV['ONDUTY_SLACK_CHANNEL']

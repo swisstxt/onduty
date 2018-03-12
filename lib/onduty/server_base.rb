@@ -5,6 +5,7 @@ require 'sinatra/contrib'
 require 'sinatra/config_file'
 require 'rack-flash'
 require 'erubis'
+require 'chartkick'
 
 require 'kaminari/core'
 require 'kaminari/mongoid'
