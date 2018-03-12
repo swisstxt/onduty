@@ -1,4 +1,5 @@
 require 'onduty/server_base'
+require 'chartkick'
 
 set Onduty::Config.new.settings
 
