@@ -105,7 +105,7 @@
           <a href="/alerts?<%= merge_query_string(group_id: "all") %>">All</a>
         </li>
         <% Onduty::Group.all.each do |group| %>
-          <li<% ' class="active"' if params[:group_id] == group.id %>>
+          <li<%= ' class="active"' if params[:group_id] == group.id.to_s %>>
             <a href="/alerts?<%= merge_query_string(group_id: group.id) %>"><%= group.name %></a>
           </li>
         <% end %>
