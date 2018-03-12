@@ -1,11 +1,13 @@
 require 'json'
-require 'mongoid'
 require 'sinatra'
 require 'sinatra/contrib'
 require 'sinatra/config_file'
 require 'rack-flash'
 require 'erubis'
 
+require "chartkick"
+
+require 'mongoid'
 require 'kaminari/core'
 require 'kaminari/mongoid'
 require 'kaminari/sinatra'

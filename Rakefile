@@ -1,5 +1,5 @@
-# require 'bundler'
-# Bundler.require
+require 'bundler'
+Bundler.require
 
 # resolve path, ignoring symlinks
 require "pathname"
