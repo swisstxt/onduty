@@ -21,13 +21,16 @@ get '/_health.json' do
     status = 503
     messages << "No notification plugin enabled"
     @status[:notification] = "ERROR"
+  else
+    messages << "#{settings.notification_plugins.size} notification plugin(s) enabled"
+    @status[:notification] = "OK"
   end
 
   # Add Twilio status information
-  twilio = JSON.parse(Net::HTTP.get(
-    URI("https://gpkpyklzq55q.statuspage.io/api/v2/status.json")
-  ))
-  @status[:twilio] = (twilio && twilio["status"]) ? twilio["status"] : "N/A"
+  # twilio = JSON.parse(Net::HTTP.get(
+  #   URI("https://gpkpyklzq55q.statuspage.io/api/v2/status.json")
+  # ))
+  # @status[:twilio] = (twilio && twilio["status"]) ? twilio["status"] : "N/A"
 
   @status[:message] = messages.join("\n")
   { status: @status }.to_json

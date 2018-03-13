@@ -12,6 +12,7 @@ configure do
 end
 
 get '/' do
+  protected!
   @stats = Onduty::Stats.new
   @groups = Onduty::Group.all
   erb :"stats"

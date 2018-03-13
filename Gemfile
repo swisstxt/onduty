@@ -17,3 +17,8 @@ gem 'mail', '~> 2.7'
 gem 'twilio-ruby', '~> 5.7.0'
 gem 'zendesk_api'
 gem 'slack-ruby-client'
+
+group :test do
+  gem "minitest", "~> 5.11.1"
+  gem "rack-test", "~> 0.8.2"
+end

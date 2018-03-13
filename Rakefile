@@ -1,6 +1,17 @@
 require 'bundler'
 Bundler.require
 
+require "minitest"
+require "rake/testtask"
+
+Rake::TestTask.new(:test) do |t|
+  t.pattern = "spec/**/*_spec.rb"
+  t.warning = false
+end
+
+desc "Run Tests"
+task :default => :test
+
 # resolve path, ignoring symlinks
 require "pathname"
 %w(../lib ../app).each do |path|

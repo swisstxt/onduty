@@ -7,7 +7,10 @@ development: &default
       connect_timeout: 1
 
 test:
-  <<: *default
+  clients:
+    default:
+      uri: <%= ENV['MONGODB_URI'] || 'mongodb://localhost:27017/onduty_test' %>
+      connect_timeout: 1
 
 production:
   <<: *default

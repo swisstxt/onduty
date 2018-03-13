@@ -73,6 +73,8 @@ GEM
       rack
     rack-protection (2.0.1)
       rack
+    rack-test (0.8.3)
+      rack (>= 1.0, < 3)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
@@ -126,9 +128,11 @@ DEPENDENCIES
   kaminari-mongoid
   kaminari-sinatra
   mail (~> 2.7)
+  minitest (~> 5.11.1)
   mongoid (~> 6.1)
   puma
   rack-flash3
+  rack-test (~> 0.8.2)
   rake
   sinatra (~> 2.0)
   sinatra-contrib (~> 2.0)
