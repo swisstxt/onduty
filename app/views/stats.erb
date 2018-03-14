@@ -30,7 +30,7 @@
               <td><%= i + 1 %></td>
               <td>
                 <a href="/groups/<%= group["_id"] %>">
-                  <%= @groups.detect{|g| g.id == group["_id"] }.name %>
+                  <%= @groups.detect{|g| g.id == group["_id"] }&.name || "unknown" %>
                 </a>
               </td>
               <td>

@@ -7,7 +7,7 @@ module Onduty
     field :position, type: Integer, default: 0
 
     has_many :contacts
-    has_many :alerts
+    has_many :alerts, dependent: :destroy
 
     validates_presence_of :name
     validates_uniqueness_of :name
