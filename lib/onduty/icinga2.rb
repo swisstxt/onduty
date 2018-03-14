@@ -32,7 +32,9 @@ module Onduty
       )
 
       http = Net::HTTP.new(url.host, url.port)
-      http.set_debug_output($stdout)
+      unless ENV["APP_ENV"] == "production"
+        http.set_debug_output($stdout)
+      end
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       request = Net::HTTP::Post.new(url)

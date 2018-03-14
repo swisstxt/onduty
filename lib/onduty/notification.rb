@@ -59,17 +59,27 @@ module Onduty
 
     def initialize(alert, options = {})
       @alert = alert
-      @group = alert.group || Onduty::Group.all.asc(:position).first
       @duty_type = options[:duty_type] || 1
-      @contact = Onduty::Contact.where(
-        duty: @duty_type,
-        group: @group
-      ).first || Contact.new(
-        first_name: "Jon", last_name: "Doe", phone: "+412223344", email: "test@test.com"
-      )
       @options = options
       @settings = SETTINGS
       @logger = Onduty::Notification.logger
+      self.set_group_and_contact
+    end
+
+    # find group and contact
+    # if nobody from the alert-group is onduty try the next group (ordered by group position)
+    def set_group_and_contact
+      if @alert.group && @alert.group.contacts.where(duty: @duty_type).any?
+        @group = @alert.group
+        @contact = @alert.group.contacts.where(duty: @duty_type).first
+      else
+        Onduty::Group.asc(:position).all.detect do |group|
+           if group.contacts.where(duty: @duty_type).any?
+             @group = group
+             @contact = group.contacts.where(duty: @duty_type).first
+           end
+         end
+      end
     end
 
     def acknowledge_url(opts = {})

@@ -6,15 +6,9 @@ module Onduty
       "Onduty Mail Notification"
     end
 
-    def valid_configuration?
-      @contact.email
-    end
-
     def trigger
-      email = @contact.email
-      alert_id = @alert.id
       if @contact.email && @contact.alert_by_email == 1
-        from = @settings.email_sender ? @settings.email_sender : 'onduty@onduty'
+        from = @settings.email_sender || 'onduty@onduty'
         body_text = Erubis::Eruby.new(
           File.read(File.join(File.dirname(__FILE__), 'mail_notification.erb'))
         ).result(
@@ -29,8 +23,8 @@ module Onduty
         end
         Mail.deliver do
           from     from
-          to       email
-          subject  "[Alert #{alert_id}] Alert from onduty"
+          to        @contact.email
+          subject  "[Alert #{@alert.id}] Alert from onduty"
           body     body_text
         end
         logger.info "Sent alert email with ID #{@alert.id} to #{@contact.name} (#{@contact.group ? @contact.group.name : '-'})."

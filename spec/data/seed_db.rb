@@ -11,7 +11,7 @@ groups = [
 ]
 
 groups.each_with_index do |group, i|
-  groups[i][:id] = Onduty::Group.create(group)
+  groups[i][:id] = Onduty::Group.create!(group)
 end
 
 # Contacts
@@ -54,5 +54,5 @@ contacts = [
 ]
 
 contacts.each_with_index do |contact, i|
-  contacts[i][:id] = Onduty::Contact.create(contact)
+  contacts[i][:id] = Onduty::Contact.create!(contact)
 end

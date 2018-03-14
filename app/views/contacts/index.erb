@@ -19,12 +19,12 @@
 
     <% else %>
 
-      <% @contacts.group_by{|c| c.group.name rescue '-' }.each do |group_name, contacts| -%>
+      <% @contacts.group_by{|c| c.group rescue nil }.each do |group, contacts| -%>
       <h3>
-        <a href="/groups/<%= contacts.first.group_id %>">
+        <a href="/groups/<%= group.id if group %>">
           <span class="glyphicon glyphicon-folder-open"></span>
-        </a>
-        &nbsp;<%= group_name %>
+        </a>&nbsp;
+        <%= group ? group.name : "-" %>
       </h3>
       <table class="table table-striped">
         <thead>
@@ -45,14 +45,15 @@
                 <%= formated_phone(contact.phone) %>
               </td>
               <td>
-                <% if contact.duty == 1 -%>
-                  <button class="btn btn-xs btn-danger">on duty</button>
-                <% else -%>
-                  <form action="/duties/" method="post">
-                    <input type="hidden" name="contact_id" value="<%= contact.id %>" readonly />
-                    <button title="Set on duty" data-toggle="tooltip" data-placement="top" type="submit" name="id" value="1" class="btn btn-xs btn-default">off duty</button>
-                  </form>
-                <% end -%>
+                <form action="/duties/" method="post">
+                  <input type="hidden" name="contact_id" value="<%= contact.id %>" readonly />
+                  <button title="<%= contact.duty == 0 ? 'Set on duty' : 'Set off duty' %>"
+                    data-toggle="tooltip" data-placement="top" type="submit" name="id"
+                    value="<%= (contact.duty - 1).abs %>"
+                    class="btn btn-xs btn-<%= contact.duty == 0 ? 'default' : 'danger' -%>">
+                    <%= contact.duty == 0 ? "off duty" : "on duty" -%>
+                  </button>
+                </form>
               </td>
               <td>
                 <a href="/contacts/<%= contact.id %>" class="btn btn-xs btn-primary">Show</a>
@@ -65,7 +66,6 @@
       <hr>
       <% end %>
     <% end %>
-
 
     <p>
       <a type="button" class="btn btn-success" href="/contacts/new">

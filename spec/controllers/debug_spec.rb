@@ -13,7 +13,7 @@ describe "debug_controller" do
     default_login
     get '/debug'
     last_response.status.must_equal 200
-    last_response.body.must_include "<h1>Settings (Debug)</h1>"
+    last_response.body.must_include "<h1>Debug Information</h1>"
   end
 
 end

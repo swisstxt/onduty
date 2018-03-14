@@ -35,14 +35,15 @@
   <tr>
     <th>Status</th>
     <td>
-      <% if @contact.duty == 1 -%>
-        <button class="btn btn-xs btn-danger">on duty</button>
-      <% else -%>
-        <form action="/duties/" method="post">
-          <input type="hidden" name="contact_id" value="<%= @contact.id %>" readonly />
-          <button title="Set on duty" data-toggle="tooltip" data-placement="top" type="submit" name="id" value="1" class="btn btn-xs btn-default">off duty</button>
-        </form>
-      <% end -%>
+      <form action="/duties/" method="post">
+        <input type="hidden" name="contact_id" value="<%= @contact.id %>" readonly />
+        <button title="<%= @contact.duty == 0 ? 'Set on duty' : 'Set off duty' %>"
+          data-toggle="tooltip" data-placement="top" type="submit" name="id"
+          value="<%= (@contact.duty - 1).abs %>"
+          class="btn btn-xs btn-<%= @contact.duty == 0 ? 'default' : 'danger' -%>">
+          <%= @contact.duty == 0 ? "off duty" : "on duty" -%>
+        </button>
+      </form>
     </td>
   </tr>
 </table>

@@ -10,25 +10,35 @@ module Onduty
       @settings.zendesk_url && @settings.zendesk_username && @settings.zendesk_token
     end
 
+    def client
+      @client || ZendeskAPI::Client.new do |config|
+        config.url      = @settings.zendesk_url
+        config.username = @settings.zendesk_username
+        config.token    = @settings.zendesk_token
+      end
+    end
+
+    def assignee
+      client.users.search(query: @contact.email).first || client.current_user
+    end
+
+    def comment
+      Erubis::Eruby.new(
+        File.read(File.join(File.dirname(__FILE__), 'zendesk_notification.erb'))
+      ).result(
+        alert: @alert, contact: @contact,
+        acknowledge_url: acknowledge_url(html_link: true)
+      )
+    end
+
     def trigger
       # only trigger at first alert
       unless alert.last_alert_at
-        client = ZendeskAPI::Client.new do |config|
-          config.url      = @settings.zendesk_url
-          config.username = @settings.zendesk_username
-          config.token    = @settings.zendesk_token
-        end
-        comment = Erubis::Eruby.new(
-          File.read(File.join(File.dirname(__FILE__), 'zendesk_notification.erb'))
-        ).result(
-          alert: @alert, contact: @contact,
-          acknowledge_url: acknowledge_url(html_link: true)
-        )
         ticket = ZendeskAPI::Ticket.new(client,
           subject: "[Alert #{@alert.id}] Alert from onduty",
           comment: { value: comment },
           submitter_id: client.current_user.id,
-          assignee_email: @contact.email,
+          assignee_id: assignee.id,
           priority: "normal",
           tags: %w(onduty)
         )
@@ -42,7 +52,7 @@ module Onduty
       end
     rescue => e
       logger.error "Error creating Zendesk ticket: #{e.message}"
-      if ENV['APP_ENV'] == 'development'
+      unless ENV["APP_ENV"] == "production"
         logger.info "Backtrace: #{e.backtrace}"
       end
     end

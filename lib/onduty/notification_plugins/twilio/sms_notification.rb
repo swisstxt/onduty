@@ -1,7 +1,7 @@
 module Onduty
   class SmsNotification < Notification
     def name
-      "Onduty SMS Notification"
+      "Onduty Twilio SMS Notification"
     end
 
     def valid_configuration?

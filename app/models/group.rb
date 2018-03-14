@@ -10,6 +10,7 @@ module Onduty
     has_many :alerts
 
     validates_presence_of :name
+    validates_uniqueness_of :name
 
     def self.find_or_default(name)
       group = Onduty::Group.where(name: name).first

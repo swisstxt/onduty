@@ -16,6 +16,10 @@ module Onduty
     validates_presence_of :first_name
     validates_presence_of :last_name
 
+    # first_name + last_name combinations must be unique as well as emails
+    validates_uniqueness_of :last_name, scope: :first_name
+    validates_uniqueness_of :email
+
     before_save :strip_phone_number, if: :changed?
 
     validates :phone,

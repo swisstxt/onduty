@@ -20,10 +20,10 @@ get '/_health.json' do
   if settings.notification_plugins.size < 1
     status = 503
     messages << "No notification plugin enabled"
-    @status[:notification] = "ERROR"
+    @status[:notification_plugins] = "ERROR"
   else
     messages << "#{settings.notification_plugins.size} notification plugin(s) enabled"
-    @status[:notification] = "OK"
+    @status[:notification_plugins] = "OK"
   end
 
   # Add Twilio status information
@@ -32,6 +32,6 @@ get '/_health.json' do
   # ))
   # @status[:twilio] = (twilio && twilio["status"]) ? twilio["status"] : "N/A"
 
-  @status[:message] = messages.join("\n")
+  @status[:message] = messages.join("; ")
   { status: @status }.to_json
 end

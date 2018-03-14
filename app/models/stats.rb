@@ -38,9 +38,6 @@ module Onduty
             "day": { "$dateToString": {
               format: "%Y-%m-%d", date: "$created_at" }
             }
-            # "year": { "$year": "$created_at" },
-            # "month": { "$month": "$created_at" },
-            # "day": { "$dayOfMonth": "$created_at" }
           },
           "sum": { "$sum": 1 }
         }},

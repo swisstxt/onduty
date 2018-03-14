@@ -77,18 +77,25 @@ get '/alerts.?:format?' do
   @title = "Alerts"
 
   session[:filter_days] = params[:days]
-  time = params[:days] == 'all' ? 0 :
-    params[:days].to_i > 0 ? days_ago(params[:days]) : days_ago(7)
+  time = if params[:days] == "all"
+    0
+  elsif params[:days].to_i > 0
+    days_ago(params[:days])
+  else
+    days_ago(7)
+  end
 
   session[:group_id] = params[:group_id]
-  @alerts = params[:group_id] && params[:group_id] != 'all' ?
-    Onduty::Alert.where(group_id: params[:group_id]).created_after(time) :
+  @alerts = if params[:group_id] && params[:group_id] != "all"
+    Onduty::Alert.where(group_id: params[:group_id]).created_after(time)
+  else
     Onduty::Alert.created_after(time)
+  end
 
-  session[:filter_ack] = params[:ack]
-  @alerts = if params[:ack] == 'true'
+  @alerts = case session[:filter_ack] = params[:ack] || "true"
+  when "true"
     @alerts.acknowledged
-  elsif params[:ack] == 'false'
+  when "false"
     @alerts.unacknowledged
   else
     @alerts.order(created_at: :desc)

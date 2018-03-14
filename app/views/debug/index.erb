@@ -1,10 +1,26 @@
 <div class="row">
   <content class="col-md-9" role="main">
     <div class="page-header">
-      <h1>Settings (Debug)</h1>
+      <h1>Debug Information</h1>
     </div>
 
     <div class="col-md-6">
+      <h3>Sinatra</h3>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th><b>Environment</b></th>
+            <td><%= settings.environment %></td>
+          </tr>
+        </tbody>
+      </table>
+
       <h3>Onduty Settings</h3>
       <table class="table table-striped">
         <thead>
@@ -24,7 +40,6 @@
       </table>
 
       <h3>ENV</h3>
-
       <table class="table table-striped">
         <thead>
           <tr>
@@ -41,6 +56,25 @@
           <% end -%>
         </tbody>
       </table>
+
+      <h3>Mongoid</h3>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% Mongoid::Config.clients["default"].each do |k, v| -%>
+            <tr>
+              <th><b><%= k %></b></th>
+              <td><%= v %></td>
+            </tr>
+          <% end -%>
+        </tbody>
+      </table>
     </div>
+
   </content>
 </div>

@@ -11,7 +11,7 @@ describe "health_controller" do
     health = JSON.parse(last_response.body)
     assert_includes health.keys, "status"
     assert_includes health["status"].keys, "mongodb"
-    assert_includes health["status"].keys, "notification"
+    assert_includes health["status"].keys, "notification_plugins"
     assert_includes health["status"].keys, "message"
   end
 

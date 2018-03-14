@@ -28,14 +28,12 @@ module Onduty
         to:   number,
         body: message
       )
-    rescue Twilio::REST::RestError => e
-      puts e.message
     end
 
     private
 
     def client
-      @client ||= Twilio::REST::Client.new @account_sid, @auth_token
+      @client ||= Twilio::REST::Client.new(@account_sid, @auth_token)
     end
   end
 end

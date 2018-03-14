@@ -68,7 +68,7 @@ module Onduty
       s['zendesk_url'] = ENV['ONDUTY_ZENDESK_URL']
       s['zendesk_username'] = ENV['ONDUTY_ZENDESK_USERNAME']
       s['zendesk_token'] = ENV['ONDUTY_ZENDESK_TOKEN']
-      
+
       # Slack notifications
       s['slack_api_token'] = ENV['ONDUTY_SLACK_API_TOKEN']
       s['slack_channel'] = ENV['ONDUTY_SLACK_CHANNEL']

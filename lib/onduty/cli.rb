@@ -24,7 +24,7 @@ module Onduty
     class_option :env,
       aliases: '-e',
       desc: 'environment to use',
-      default: ENV['ONDUTY_ENV'] || 'production'
+      default: ENV['APP_ENV'] || 'production'
 
     # exit with return code 1 in case of a error
     def self.exit_on_failure?

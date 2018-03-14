@@ -15,7 +15,7 @@
     <br>
 
     <section class="col-md-6">
-      <h2>Alarms by Group (last 7 days)</h2>
+      <h3>Alarms by Group last 7 days</h3>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -30,7 +30,7 @@
               <td><%= i + 1 %></td>
               <td>
                 <a href="/groups/<%= group["_id"] %>">
-                  <%= @groups.detect{|group| group.id == group["_id"] }.name %>
+                  <%= @groups.detect{|g| g.id == group["_id"] }.name %>
                 </a>
               </td>
               <td>
@@ -43,7 +43,7 @@
     </section>
 
     <section class="col-md-6">
-      <h2>Alarms by Service (last 30 days)</h2>
+      <h3>Top Alarms last 30 days</h3>
       <table class="table table-striped">
         <thead>
           <tr>

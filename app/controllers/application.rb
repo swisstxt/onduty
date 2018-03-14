@@ -5,10 +5,10 @@ configure do
   set :session_secret, settings.session_secret
   use Rack::Flash, sweep: true
   register Sinatra::MultiRoute
-  Mongoid.load! Onduty::Config.new.mongoid_config
   set :environment,   (ENV["APP_ENV"] || :development).to_sym
   set :root,          File.join(File.dirname(__FILE__), '../../', 'app')
   set :public_folder, File.join(File.dirname(__FILE__), '../../', 'public')
+  Mongoid.load! Onduty::Config.new.mongoid_config
 end
 
 get '/' do
