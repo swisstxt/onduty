@@ -57,6 +57,7 @@
         </tbody>
       </table>
 
+      <% unless ENV["APP_ENV"] == "production" -%>
       <h3>Mongoid</h3>
       <table class="table table-striped">
         <thead>
@@ -75,6 +76,7 @@
         </tbody>
       </table>
     </div>
+    <% end -%>
 
   </content>
 </div>

@@ -39,9 +39,10 @@ module Onduty
               format: "%Y-%m-%d", date: "$created_at" }
             }
           },
+          "date": { "$first": "$created_at" },
           "sum": { "$sum": 1 }
         }},
-        { "$sort": { "_id":  -1 } }
+        { "$sort": { "date":  -1 } }
       ]
       if opts[:group_id]
         aggr[0][:"$match"][:"group_id"] = BSON::ObjectId(opts[:group_id])
