@@ -4,18 +4,32 @@
       <h1>Alarm Statistics</h1>
     </div>
 
+    <ul class="nav nav-tabs">
+      <li role="presentation"<%= ' class="active"' if params[:days] == "7" %>>
+        <a href="/?days=7">7 days</a>
+      </li>
+      <li role="presentation"<%= ' class="active"' if params[:days] == "14" %>>
+        <a href="/?days=14">2 weeks</a>
+      </li>
+      <li role="presentation"<%= ' class="active"' if params[:days] == "30" || params[:days] == nil  %>>
+        <a href="/?days=30">1 month</a>
+      </li>
+      <li role="presentation"<%= ' class="active"' if params[:days] == "60" %>>
+        <a href="/?days=60">2 month</a>
+      </li>
+    </ul>
+
+    <br>
     <script src="/javascript/chartkick.js"></script>
     <%= column_chart @groups.map { |group| {
         name: group.name,
-        data: @stats.alerts_by_group_and_day(group_id: group.id, since_days: 60).map { |day|
-          [day['_id']['day'], day["sum"]]
-        }.reverse
-      }},
-     defer: true %>
+        data: @stats.alerts_by_group_and_day(group_id: group.id, since_days: params[:days] ? params[:days].to_i : 30).map { |day|
+          [ day['_id']['day'], day["sum"] ]
+        }}}, defer: true %>
     <br>
 
     <section class="col-md-6">
-      <h3>Alarms by Group last 7 days</h3>
+      <h3>Alarms by Group</h3>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -25,7 +39,7 @@
           </tr>
         </thead>
         <tbody>
-          <% @stats.alerts_by_group.each_with_index do |group, i| %>
+          <% @stats.alerts_by_group(since_days: params[:days] ? params[:days].to_i : 30).each_with_index do |group, i| %>
             <tr>
               <td><%= i + 1 %></td>
               <td>
@@ -43,7 +57,7 @@
     </section>
 
     <section class="col-md-6">
-      <h3>Top Alarms last 30 days</h3>
+      <h3>Top Alarms</h3>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -53,7 +67,7 @@
           </tr>
         </thead>
         <tbody>
-          <% @stats.alerts_by_service.each_with_index do |service, i| %>
+          <% @stats.alerts_by_service(since_days: params[:days] ? params[:days].to_i : 30).each_with_index do |service, i| %>
             <tr>
               <td><%= i + 1 %></td>
               <td>

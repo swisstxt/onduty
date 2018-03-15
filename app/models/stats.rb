@@ -39,17 +39,26 @@ module Onduty
               format: "%Y-%m-%d", date: "$created_at" }
             }
           },
-          "date": { "$first": "$created_at" },
           "sum": { "$sum": 1 }
         }},
-        { "$sort": { "date":  -1 } }
+        { "$sort": { "date":  1 } }
       ]
       if opts[:group_id]
         aggr[0][:"$match"][:"group_id"] = BSON::ObjectId(opts[:group_id])
       else
         aggr[1][:"$group"][:"_id"].merge! "group_id": "$group_id"
       end
-      Onduty::Alert.collection.aggregate(aggr)
+      stats = Onduty::Alert.collection.aggregate(aggr).entries.to_a
+      (opts[:since_days] || 30).downto(0).each do |ago|
+        date = (Time.now - ago.days)
+        unless stats.find {|entry| entry["_id"]["day"] == date.strftime("%Y-%m-%d") }
+          stats << {
+            "_id" => { "day" => date.utc.strftime("%Y-%m-%d") },
+            "sum" => 0
+          }
+        end
+      end
+      stats.sort_by {|day| day["_id"]["day"].split("-") }
     end
 
     def alerts_by_service(opts = {})
