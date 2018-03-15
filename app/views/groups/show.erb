@@ -7,7 +7,7 @@
 <script src="/javascript/chartkick.js"></script>
 <%= column_chart @stats.map {|day| [
     day['_id']['day'], day["sum"
-  ]]}.reverse, defer: true %>
+  ]]}, defer: true %>
 <br>
 
 <hr>

@@ -9,7 +9,7 @@ module Onduty
       aggr = [
         { "$match": {
           "created_at": {
-            "$gt": Time.now - (opts[:since_days] || 7).days
+            "$gt": Time.now - (opts[:since_days] || 30).days
           },
           "count": { "$gt": @alert_limit }
         }},
