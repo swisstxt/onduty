@@ -20,6 +20,7 @@ module Onduty
     validates_presence_of :name
 
     scope :created_after, ->(time) { where(:created_at.gt => time) }
+    scope :created_before, ->(time) { where(:created_at.lt => time) }
     scope :acknowledged, ->{ where(:acknowledged_at.ne => nil) }
     scope :unacknowledged, ->{ where(acknowledged_at: nil) }
 

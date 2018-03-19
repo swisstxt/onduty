@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rake'
 gem 'thor'
-gem "mongoid", "~> 6.1"
+gem "mongoid", "~> 6.4"
 gem 'erubis', '~> 2.7.0'
 gem 'puma'
 gem 'sinatra', '~> 2.0'

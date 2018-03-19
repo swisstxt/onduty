@@ -2,15 +2,6 @@
   <h1>Group: <%= @group.name %></h1>
 </div>
 
-<h3>Alarms</h3>
-
-<script src="/javascript/chartkick.js"></script>
-<%= column_chart @stats.map {|day| [
-    day['_id']['day'], day["sum"
-  ]]}, defer: true %>
-<br>
-
-<hr>
 <a href="/groups" class="btn btn-default">Back</a>
 <a href="/groups/<%= @group.id %>/edit" class="btn btn-success">Edit</a>
 <a href="/groups/<%= @group.id %>/delete" class="btn btn-danger">Delete</a>

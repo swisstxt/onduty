@@ -4,28 +4,43 @@
       <h1>Alarm Statistics</h1>
     </div>
 
+    <div class="pull-right">
+      <b>Alert Count:</b>
+      <a type="button"
+        class="btn btn-default btn-xs<%= " active" if @alert_count_limit == 0 %>"
+        href="/?<%= merge_query_string(alert_count: 0) %>">
+        1
+      </a>
+      <a type="button"
+        class="btn btn-default btn-xs<%= " active" if @alert_count_limit == 1 %>"
+        href="/?<%= merge_query_string(alert_count: 1) %>">
+        > 1
+      </a>
+    </div>
+
     <ul class="nav nav-tabs">
-      <li role="presentation"<%= ' class="active"' if params[:days] == "7" %>>
-        <a href="/?days=7">7 days</a>
+      <li role="presentation"<%= ' class="active"' if @since_days == 7 %>>
+        <a href="/?<%= merge_query_string(days: 7) %>">7 days</a>
       </li>
-      <li role="presentation"<%= ' class="active"' if params[:days] == "14" %>>
-        <a href="/?days=14">2 weeks</a>
+      <li role="presentation"<%= ' class="active"' if @since_days == 14 %>>
+        <a href="/?<%= merge_query_string(days: 14) %>">2 weeks</a>
       </li>
-      <li role="presentation"<%= ' class="active"' if params[:days] == "30" || params[:days] == nil  %>>
-        <a href="/?days=30">1 month</a>
+      <li role="presentation"<%= ' class="active"' if @since_days == 30 || params[:days] == nil  %>>
+        <a href="/?<%= merge_query_string(days: 30) %>">1 month</a>
       </li>
-      <li role="presentation"<%= ' class="active"' if params[:days] == "60" %>>
-        <a href="/?days=60">2 month</a>
+      <li role="presentation"<%= ' class="active"' if @since_days == 60 %>>
+        <a href="/?<%= merge_query_string(days: 60) %>">2 month</a>
       </li>
     </ul>
 
     <br>
     <script src="/javascript/chartkick.js"></script>
-    <%= column_chart @groups.map { |group| {
-        name: group.name,
-        data: @stats.alerts_by_group_and_day(group_id: group.id, since_days: params[:days] ? params[:days].to_i : 30).map { |day|
-          [ day['_id']['day'], day["sum"] ]
-        }}}, defer: true %>
+    <%= column_chart @stats.alerts_by_group_and_day.group_by {|stat|
+            stat["_id"]['group_id'] }.map { |group_id, data| {
+              name: @groups.detect{|g| g.id == group_id }&.name,
+              data: data.map { |day| [ day["_id"]["day"], day["sum"] ] }
+            }
+        }, defer: true  %>
     <br>
 
     <section class="col-md-6">
@@ -33,15 +48,13 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Pos.</th>
             <th>Group</th>
             <th># Alerts</th>
           </tr>
         </thead>
         <tbody>
-          <% @stats.alerts_by_group(since_days: params[:days] ? params[:days].to_i : 30).each_with_index do |group, i| %>
+          <% @stats.alerts_by_group.each do |group| %>
             <tr>
-              <td><%= i + 1 %></td>
               <td>
                 <a href="/groups/<%= group["_id"] %>">
                   <%= @groups.detect{|g| g.id == group["_id"] }&.name || "unknown" %>
@@ -61,15 +74,13 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Pos.</th>
             <th>Service</th>
             <th># Alerts</th>
           </tr>
         </thead>
         <tbody>
-          <% @stats.alerts_by_service(since_days: params[:days] ? params[:days].to_i : 30).each_with_index do |service, i| %>
+          <% @stats.alerts_by_service.each do |service| %>
             <tr>
-              <td><%= i + 1 %></td>
               <td>
                 <%= service["_id"] %>
               </td>

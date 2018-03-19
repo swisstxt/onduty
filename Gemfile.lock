@@ -129,7 +129,7 @@ DEPENDENCIES
   kaminari-sinatra
   mail (~> 2.7)
   minitest (~> 5.11.1)
-  mongoid (~> 6.1)
+  mongoid (~> 6.4)
   puma
   rack-flash3
   rack-test (~> 0.8.2)

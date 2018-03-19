@@ -86,7 +86,6 @@
 
   <hr>
   <a href="/alerts<%= alerts_link_filter %>" class="btn btn-default">Back</a>
-  <a href="/alerts/<%= @alert.id %>/delete" class="btn btn-danger">Delete</a>
 
   <% unless @alert.acknowledged_at -%>
   <form action="/alerts/<%= @alert.id %>/acknowledge?uid=<%= @alert.uid %>" method="post" style="display: inline-block">

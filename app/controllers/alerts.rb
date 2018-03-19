@@ -1,5 +1,14 @@
 # Alerts Controller
 
+post '/alerts/acknowledge-old' do
+  protected!
+  Onduty::Alert.unacknowledged.created_before(
+    Time.now - 24.hours
+  ).update_all(acknowledged_at: Time.now)
+  flash[:success] = "Alerts older than 24 hours have been acknowledged"
+  redirect back
+end
+
 # Acknowledge alert (format: twiml & html)
 route :get, :post, '/alerts/:id/acknowledge.?:format?' do
   @alert = Onduty::Alert.find(params[:id])
@@ -87,18 +96,16 @@ get '/alerts.?:format?' do
 
   session[:group_id] = params[:group_id]
   @alerts = if params[:group_id] && params[:group_id] != "all"
-    Onduty::Alert.where(group_id: params[:group_id]).created_after(time)
+    Onduty::Alert.where(group_id: params[:group_id]).created_after(time).order(created_at: :desc)
   else
-    Onduty::Alert.created_after(time)
+    Onduty::Alert.created_after(time).order(created_at: :desc)
   end
 
-  @alerts = case session[:filter_ack] = params[:ack] || "true"
+  case session[:filter_ack] = params[:ack] || "true"
   when "true"
     @alerts.acknowledged
   when "false"
     @alerts.unacknowledged
-  else
-    @alerts.order(created_at: :desc)
   end
 
   if params[:format] == "json"
