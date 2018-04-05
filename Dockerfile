@@ -1,4 +1,4 @@
-FROM ruby:2.5.0-alpine3.7
+FROM ruby:2.5.1-alpine3.7
 ADD Gemfile /app/
 ADD Gemfile.lock /app/
 RUN apk --update add --virtual build-dependencies ruby-dev build-base && \
