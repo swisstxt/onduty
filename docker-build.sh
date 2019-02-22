@@ -35,7 +35,9 @@ then
     exit 3
 fi
 
-docker build -f Dockerfile -t $IMAGE:v$VERSION .
+# intentionally not using the '--pull' flag here
+docker build --force-rm --no-cache --compress -t $IMAGE:v$VERSION .
+
 docker tag $IMAGE:v$VERSION $IMAGE:latest
 docker tag $IMAGE:v$VERSION $REGISTRY/$IMAGE:v$VERSION
 docker tag $IMAGE:v$VERSION $REGISTRY/$IMAGE:latest
