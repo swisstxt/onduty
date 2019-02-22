@@ -1,6 +1,6 @@
-onduty-config.yml
-onduty-config.env
-cache
+onduty-config*
+/db
+/.bundle
 log/*
 tmp/*
 .DS_Store

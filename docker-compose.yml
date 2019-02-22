@@ -1,7 +1,11 @@
-version: '2'
+version: '3'
+
 services:
+
   onduty:
     build: .
+    volumes:
+      - .:/app
     command: bundle exec puma -p 3000 -t 2:2
     env_file:
       - onduty-config.env
@@ -11,7 +15,10 @@ services:
       - mongodb:mongodbserver
     depends_on:
       - mongodb
+
   mongodb:
-    image: mongo:3.6.1
+    image: mongo:4.0
     container_name: "mongodb"
     command: mongod --smallfiles --quiet
+    ports:
+      - 27017:27017
