@@ -12,7 +12,7 @@
         </button>
         No alerts found! <strong>:-)</strong>
         <% unless params[:days] == 'all' %>
-          <a href="/alerts?days=all" class="alert-link">Show all alerts.</a>
+          <a href="/alerts?days=all" class="alert-link">Show all alerts?</a>
         <% end %>
       </div>
     <% else %>
@@ -20,7 +20,7 @@
         <thead>
           <tr>
             <th>Name</th>
-            <th>Alert-Count</th>
+            <th>Count</th>
             <th>Group</th>
             <th>Created At</th>
             <% unless params[:ack] == 'true' -%>
@@ -57,17 +57,13 @@
 
       <nav aria-label="pagination">
         <ul class="pager">
-          <% if @alerts.first_page? -%>
-            <li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Newer</a></li>
-          <% else -%>
+          <% if not @alerts.first_page? -%>
             <li class="previous">
               <a href="/alerts?<%= merge_query_string(page: @alerts.prev_page) %>">
                 <span aria-hidden="true">&larr;</span> Newer</a>
             </li>
           <% end -%>
-          <% if @alerts.last_page? -%>
-            <li class="next"><a href="#">Older <span aria-hidden="true">&rarr;</span></a></li>
-          <% else -%>
+          <% if not @alerts.last_page? -%>
             <li class="next"><a href="/alerts?<%= merge_query_string(page: @alerts.next_page) %>">
               Older <span aria-hidden="true">&rarr;</span></a>
             </li>
@@ -97,22 +93,6 @@
       <div class="page-header">
         <h3>Filters</h3>
       </div>
-      <h4>Time</h4>
-      <ul class="nav nav-pills nav-stacked">
-        <li <% if params[:days] == 'all' %>class="active"<% end %>>
-          <a href="/alerts?<%= merge_query_string(days: "all") %>">All</a>
-        </li>
-        <li <% if params[:days] == '1' || params[:days] == nil %>class="active"<% end %>>
-          <a href="/alerts?<%= merge_query_string(days: "1") %>">Today</a>
-        </li>
-        <li <% if params[:days] == '7' || params[:days] == nil %>class="active"<% end %>>
-          <a href="/alerts?<%= merge_query_string(days: "7") %>">Last week</a>
-        </li>
-        <li <% if params[:days] == '30' %>class="active"<% end %>>
-          <a href="/alerts?<%= merge_query_string(days: "30") %>">Last 4 weeks</a>
-        </li>
-      </ul>
-      <hr>
 
       <h4>Acknowledged</h4>
       <ul class="nav nav-pills nav-stacked">
@@ -139,6 +119,24 @@
           </li>
         <% end %>
       </ul>
+
+      <h4>Time</h4>
+      <ul class="nav nav-pills nav-stacked">
+        <li <% if params[:days] == 'all' %>class="active"<% end %>>
+          <a href="/alerts?<%= merge_query_string(days: "all") %>">All</a>
+        </li>
+        <li <% if params[:days] == '1'  %>class="active"<% end %>>
+          <a href="/alerts?<%= merge_query_string(days: "1") %>">Today</a>
+        </li>
+        <li <% if params[:days] == '7' || params[:days] == nil %>class="active"<% end %>>
+          <a href="/alerts?<%= merge_query_string(days: "7") %>">Last week</a>
+        </li>
+        <li <% if params[:days] == '30' %>class="active"<% end %>>
+          <a href="/alerts?<%= merge_query_string(days: "30") %>">Last 4 weeks</a>
+        </li>
+      </ul>
+      <hr>
+
     </menu>
   </sidebar>
 </div>

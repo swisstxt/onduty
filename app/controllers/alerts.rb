@@ -101,11 +101,11 @@ get '/alerts.?:format?' do
     Onduty::Alert.created_after(time).order(created_at: :desc)
   end
 
-  case session[:filter_ack] = params[:ack] || "true"
+  case (session[:filter_ack] = params[:ack])
   when "true"
-    @alerts.acknowledged
+    @alerts = @alerts.acknowledged
   when "false"
-    @alerts.unacknowledged
+    @alerts = @alerts.unacknowledged
   end
 
   if params[:format] == "json"
