@@ -8,28 +8,28 @@
       <b>Alert Count:</b>
       <a type="button"
         class="btn btn-default btn-xs<%= " active" if @alert_count_limit == 0 %>"
-        href="/?<%= merge_query_string(alert_count: 0) %>">
+        href="/stats?<%= merge_query_string(alert_count: 0) %>">
         1
       </a>
       <a type="button"
         class="btn btn-default btn-xs<%= " active" if @alert_count_limit == 1 %>"
-        href="/?<%= merge_query_string(alert_count: 1) %>">
+        href="/stats?<%= merge_query_string(alert_count: 1) %>">
         > 1
       </a>
     </div>
 
     <ul class="nav nav-tabs">
       <li role="presentation"<%= ' class="active"' if @since_days == 7 %>>
-        <a href="/?<%= merge_query_string(days: 7) %>">7 days</a>
+        <a href="/stats?<%= merge_query_string(days: 7) %>">7 days</a>
       </li>
       <li role="presentation"<%= ' class="active"' if @since_days == 14 %>>
-        <a href="/?<%= merge_query_string(days: 14) %>">2 weeks</a>
+        <a href="/stats?<%= merge_query_string(days: 14) %>">2 weeks</a>
       </li>
       <li role="presentation"<%= ' class="active"' if @since_days == 30 || params[:days] == nil  %>>
-        <a href="/?<%= merge_query_string(days: 30) %>">1 month</a>
+        <a href="/stats?<%= merge_query_string(days: 30) %>">1 month</a>
       </li>
       <li role="presentation"<%= ' class="active"' if @since_days == 60 %>>
-        <a href="/?<%= merge_query_string(days: 60) %>">2 month</a>
+        <a href="/stats?<%= merge_query_string(days: 60) %>">2 month</a>
       </li>
     </ul>
 
