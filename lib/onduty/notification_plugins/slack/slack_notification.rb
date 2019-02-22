@@ -12,18 +12,46 @@ module Onduty
     end
 
     def trigger
-      message = Erubis::Eruby.new(
-        File.read(File.join(File.dirname(__FILE__), 'slack_notification.erb'))
-      ).result(
-        alert: @alert,
-        contact: @contact,
-        acknowledge_url: acknowledge_url(html_link: true)
-      )
+      message = ":lightning: *"
+      message += "#{@alert.group.name} " if @alert.group
+      message += "Alert*"
+
+      alert_text = @alert.name
+      if @settings.slack_alert_shortener_regex
+        shorter_text = @alert.name.scan(/#{@settings.slack_alert_shortener_regex}/).last
+        alert_text = shorter_text.first if shorter_text
+      end
+
+      attachments = [
+        {
+          "text": alert_text,
+          "color": "danger",
+          "attachment_type": "default",
+          "actions": [
+            {
+              "text": "Acknowledge",
+              "type": "button",
+              "url": acknowledge_url(html_link: true),
+              "style": "primary",
+            },
+            {
+              "text": "Details",
+              "type": "button",
+              "url": detail_url,
+              "style": "default",
+            },
+          ]
+        }
+      ]
+      attachments[0][:actions].shift if @alert.acknowledged?
+
       Onduty::SlackHelper.post_message(
-        message,
         @settings.slack_channel,
-        @settings.slack_api_token
+        @settings.slack_api_token,
+        message,
+        attachments
       )
+
       logger.info "Succesfully sent Slack message for alert with ID #{@alert.id}."
     rescue => e
       logger.error "Error creating Slack message: #{e.message}"

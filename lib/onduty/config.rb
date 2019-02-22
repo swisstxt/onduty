@@ -72,6 +72,8 @@ module Onduty
       # Slack notifications
       s['slack_api_token'] = ENV['ONDUTY_SLACK_API_TOKEN']
       s['slack_channel'] = ENV['ONDUTY_SLACK_CHANNEL']
+      s['slack_alert_shortener_regex'] = ENV.fetch('ONDUTY_SLACK_ALERT_SHORTENER_REGEX', nil)
+
       s
     end
 

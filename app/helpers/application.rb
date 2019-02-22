@@ -9,19 +9,20 @@ helpers do
     halt 401, "Not authorized\n"
   end
 
-  def post_slack_message(message)
+  def post_slack_message(message, attachments: nil)
     if settings.slack_api_token && settings.slack_channel
       begin
         Onduty::SlackHelper.post_message(
-          message,
           settings.slack_channel,
-          settings.slack_api_token
+          settings.slack_api_token,
+          message,
+          attachments
         )
       rescue => e
         puts "ERROR: Can't create Slack message - #{e.message}"
       end
     else
-      puts "WARNING: Unsuficient credentials for posting Slack message."
+      puts "WARNING: Insufficient credentials for posting Slack message."
     end
   end
 

@@ -90,6 +90,10 @@ module Onduty
       ).to_s
     end
 
+    def detail_url
+      URI::join(SETTINGS.base_url, "/alerts/#{@alert.id}").to_s
+    end
+
     def name
       "Onduty Generic Notification"
     end
