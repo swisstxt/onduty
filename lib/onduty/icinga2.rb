@@ -67,7 +67,7 @@ module Onduty
         puts e.backtrace
         {
           acknowledged: 2,
-          message: "ERROR: Unable to contact the Icinga2 API (#{e.message})",
+          message: "Icinga2 API returned the following error: #{e.message}",
           debug: e.backtrace
         }
       end
