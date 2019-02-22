@@ -1,16 +1,12 @@
 <% if authorized? -%>
   <div class="page-header">
-    <h1>Alert details</h1>
+    <h1>Alert Details</h1>
   </div>
 
   <table class="table table-striped" style="width: 65%;">
     <tr>
-      <th>Name</th>
+      <th><%= @alert.notification_type %></th>
       <td><%= @alert.name %></td>
-    </tr>
-    <tr>
-      <th>Message</th>
-      <td><%= @alert.message %></td>
     </tr>
     <tr>
       <th>Group</th>
@@ -48,35 +44,36 @@
       </td>
     </tr>
     <tr>
-      <th>Alert-Count</th>
+      <th>Count</th>
       <td>
         <span class="badge"><%= @alert.count %></span>
       </td>
     </tr>
     <tr>
-      <th>Created at</th>
-      <td><%= @alert.created_at %></td>
-    </tr>
-    <tr>
-      <th>Updated at</th>
-      <td><%= @alert.updated_at %></td>
-    </tr>
-    <tr>
-      <th>Acknowledged at</th>
+      <th>Acknowledged</th>
       <td>
         <% if @alert.acknowledged_at -%>
           <span class="glyphicon glyphicon-ok">&nbsp;</span>
-          <%= @alert.acknowledged_at %>
+          <br/>
+          <%= h_time(@alert.acknowledged_at) %>
         <% else %>
           <span class="glyphicon glyphicon-remove"></span>
         <% end %>
       </td>
     </tr>
     <tr>
-      <th>Last alerted at</th>
+      <th>Creation</th>
+      <td><%= h_time(@alert.created_at) %></td>
+    </tr>
+    <tr>
+      <th>Last Update</th>
+      <td><%= h_time(@alert.updated_at) %></td>
+    </tr>
+    <tr>
+      <th>Last Alert</th>
       <td>
         <% if @alert.last_alert_at -%>
-          <%= @alert.last_alert_at %>
+          <%= h_time(@alert.last_alert_at) %>
         <% else %>
           <span class="glyphicon glyphicon-remove"></span>
         <% end %>
