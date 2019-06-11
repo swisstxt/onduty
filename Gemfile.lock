@@ -17,7 +17,7 @@ GEM
     backports (3.15.0)
     bson (4.5.0)
     builder (3.2.3)
-    chartkick (3.1.0)
+    chartkick (3.2.0)
     concurrent-ruby (1.1.5)
     crass (1.0.4)
     erubi (1.8.0)
