@@ -17,8 +17,8 @@ services:
       - mongodb
 
   mongodb:
-    image: mongo:4.0
+    image: mongo:4
     container_name: "mongodb"
-    command: mongod --smallfiles --quiet
+    command: mongod --quiet
     ports:
       - 27017:27017
