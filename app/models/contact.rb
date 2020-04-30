@@ -24,8 +24,11 @@ module Onduty
 
     validates :phone,
       presence: true,
-      format: {
-        with: /\A[+]{1}[0-9]{2}\s?[0-9]{2}\s?[0-9]{3}\s?[0-9]{2}\s?[0-9]{2}\z/
+      phone: {
+        valid: true,
+        types: [:mobile],
+        countries: [:ch, :li],
+        message: "must be a valid <b>mobile</b> number in Switzerland or Liechtenstein",
       }
 
     def name
@@ -39,7 +42,7 @@ module Onduty
     protected
 
     def strip_phone_number
-      self.phone.gsub!(' ', '')
+      self.phone.gsub!(/[^\d\+]*/, '')
     end
 
   end

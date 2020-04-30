@@ -5,9 +5,10 @@ require 'sinatra/config_file'
 require 'rack-flash'
 require 'erubis'
 
-require "chartkick"
-
+require 'chartkick'
 require 'mongoid'
+require 'phonelib'
+
 require 'kaminari/core'
 require 'kaminari/mongoid'
 require 'kaminari/sinatra'

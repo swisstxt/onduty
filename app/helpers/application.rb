@@ -73,7 +73,11 @@ helpers do
   end
 
   def formated_phone(number)
-    "#{number[0..2]} #{number[3..4]} #{number[5..7]} #{number[8..9]} #{number[10..-1]}" rescue number
+    begin
+      Phonelib.parse(number).international
+    rescue
+      number
+    end
   end
 
   def form_error_message(model, options = {})

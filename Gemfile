@@ -12,6 +12,7 @@ gem 'kaminari-mongoid'
 gem 'kaminari-sinatra'
 gem 'rack-flash3'
 gem "chartkick", require: false
+gem 'phonelib'
 
 # Plugin dependencies
 gem 'mail', '~> 2.7'
