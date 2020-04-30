@@ -6,7 +6,7 @@ VERSION=`awk -F'"' '$0=$2' lib/onduty/version.rb`
 #
 # Ensure that the working copy is clean
 #
-if [ "$(git status --porcelain | wc -l) -ne 0" ];
+if [ "$(git status --porcelain | wc -l)" -ne 0 ];
 then
     echo "Please commit or stash your pending changes first! See below:"
     git status --porcelain
