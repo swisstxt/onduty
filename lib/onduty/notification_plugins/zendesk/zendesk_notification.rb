@@ -22,6 +22,18 @@ module Onduty
       client.users.search(query: @contact.email).first || client.current_user
     end
 
+    def assignee_is_member_of_default_group
+      assignee.group_memberships.any? { |u| u.user_id == assignee.id }
+    end
+
+    def ticket_group_id
+      if @settings.zendesk_group_id && assignee_is_member_of_default_group
+        @settings.zendesk_group_id
+      else
+        assignee.default_group_id
+      end
+    end
+
     def comment
       Erubis::Eruby.new(
         File.read(File.join(File.dirname(__FILE__), 'zendesk_notification.erb'))
@@ -34,18 +46,19 @@ module Onduty
     def trigger
       # only trigger at first alert
       unless alert.last_alert_at
-        ticket = ZendeskAPI::Ticket.new(client,
+        ticket = client.tickets.create(
           subject: "[Alert #{@alert.id}] Alert from onduty",
           comment: { value: comment },
           submitter_id: client.current_user.id,
           assignee_id: assignee.id,
+          group_id: ticket_group_id,
           priority: "normal",
           tags: %w(onduty)
         )
         if ticket.save
           logger.info "Created Zendesk ticket for alert with ID #{@alert.id}."
         else
-          logger.error "Zendeks ticket can't be saved: #{ticket.errors}"
+          logger.error "Zendesk ticket can't be saved: #{ticket.errors}"
         end
       else
         logger.info "Skipping Zendesk ticket for alert with ID #{@alert.id} because the alert is not new."
