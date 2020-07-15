@@ -38,12 +38,24 @@ module Onduty
       @ticket_group ||= client.groups.find(id: ticket_group_id)
     end
 
-    def comment
+    def ticket_subject
+      subject = "Business Process Alert"
+      if alert.group
+        "[Onduty - #{alert.group.name}] " + subject
+      else
+        "[Onduty] " + subject
+      end
+    end
+
+    def ticket_html_description
       Erubis::Eruby.new(
         File.read(File.join(File.dirname(__FILE__), 'zendesk_notification.erb'))
       ).result(
-        alert: @alert, contact: @contact,
-        acknowledge_url: acknowledge_url(html_link: true)
+        alert: @alert,
+        contact: @contact,
+        acknowledge_url: acknowledge_url(html_link: true),
+        alert_url: detail_url,
+        monitoring_base_url: @settings.icinga2_web_path,
       )
     end
 
@@ -51,12 +63,12 @@ module Onduty
       # only trigger at first alert
       unless alert.last_alert_at
         ticket = client.tickets.create(
-          subject: "[Alert #{@alert.id}] Alert from onduty",
-          comment: { value: comment },
+          subject: ticket_subject,
+          comment: { html_body: ticket_html_description },
           submitter_id: client.current_user.id,
           assignee_id: assignee.id,
           group_id: ticket_group_id,
-          priority: "normal",
+          priority: "urgent",
           tags: %w(onduty)
         )
         if ticket.save

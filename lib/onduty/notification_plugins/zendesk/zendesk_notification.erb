@@ -1,16 +1,28 @@
-Dear <%= contact.first_name %>,
+<p>
+    Dear <%= contact.first_name %>,
+    <br/>
+    Please take notice of the following alert, that could possibly lead to an SLA breach.
+</p>
 
-Please take notice of the following alert:
+<h4><%= alert.message %></h4>
 
-Message: <%= alert.message %>
-Group: <%= alert.group ? alert.group.name : '-' %>
-Services:
-<% alert.services.each do |service| -%>
-  - <%= service.full_name %>
-<% end -%>
+<p>
+    <a href="<%= alert_url %>">Open Onduty: <%= alert.group ? "#{alert.group.name} - " : '' %><%= alert.id %></a>
+</p>
 
-In order to acknowledge the alert, please follow the URL below:
-<%= acknowledge_url %>
+<h5>Affected Services:</h5>
 
-Your faithful alert servant,
-Onduty
+<ul>
+    <% alert.services.each do |service| -%>
+    <li><a href="<%= service.icinga2_host_link(monitoring_base_url) %>"><%= service.full_name %></a></li>
+    <% end -%>
+</ul>
+
+<p>
+    In order to acknowledge this alert, please use this <a href="<%= acknowledge_url %>">link</a>.
+</p>
+<p>
+    Your faithful alert servant,
+    <br/>
+    Onduty
+</p>
