@@ -163,7 +163,10 @@ ONDUTY_SLACK_CHANNEL=#onduty-test
 ONDUTY_ZENDESK_URL=https://onduty.zendesk.com/api/v2
 ONDUTY_ZENDESK_USERNAME=onduty@onduty.local
 ONDUTY_ZENDESK_TOKEN=<zendesk-token>
+ONDUTY_ZENDESK_GROUP_ID=<zendesk-group-id>
 ```
+
+When `ONDUTY_ZENDESK_GROUP_ID` is not defined, the assignee's default group id will be used.
 
 # Trigger alerts from external sources
 
