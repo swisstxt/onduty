@@ -52,7 +52,7 @@ post '/alerts/:id.twiml' do
   halt 403 unless @alert.uid = params[:uid]
   content_type 'text/xml'
   Twilio::TwiML::VoiceResponse.new do |r|
-    r.say(@alert.message, voice: "woman", loop: 2)
+    r.say("SWISS TEXT Business Process Alert.", voice: "woman", loop: 2)
     r.gather(
       numDigits: 1,
       action: "/alerts/#{@alert.id}/acknowledge.twiml?uid=#{@alert.uid}"
