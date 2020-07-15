@@ -68,7 +68,7 @@ module Onduty
           submitter_id: client.current_user.id,
           assignee_id: assignee.id,
           group_id: ticket_group_id,
-          priority: "normal",
+          priority: "urgent",
           tags: %w(onduty)
         )
         if ticket.save
