@@ -34,6 +34,10 @@ module Onduty
       end
     end
 
+    def ticket_group
+      @ticket_group ||= client.groups.find(id: ticket_group_id)
+    end
+
     def comment
       Erubis::Eruby.new(
         File.read(File.join(File.dirname(__FILE__), 'zendesk_notification.erb'))
@@ -56,7 +60,7 @@ module Onduty
           tags: %w(onduty)
         )
         if ticket.save
-          logger.info "Created Zendesk ticket for alert with ID #{@alert.id}."
+          logger.info "Created Zendesk ticket for alert with ID #{@alert.id}, assigned to '#{ticket_group.name}/#{assignee.name}'."
         else
           logger.error "Zendesk ticket can't be saved: #{ticket.errors}"
         end
