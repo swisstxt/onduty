@@ -160,7 +160,7 @@ ONDUTY_SLACK_CHANNEL=#onduty-test
 #### ZendeskNotification
 
 ```bash
-ONDUTY_ZENDESK_URL=https://onduty.zendesk.com/api/v2
+ONDUTY_ZENDESK_URL=https://<your-workspace>.zendesk.com/api/v2
 ONDUTY_ZENDESK_USERNAME=onduty@onduty.local
 ONDUTY_ZENDESK_TOKEN=<zendesk-token>
 ONDUTY_ZENDESK_GROUP_ID=<zendesk-group-id>
