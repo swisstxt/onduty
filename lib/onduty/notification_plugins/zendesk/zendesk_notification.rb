@@ -11,7 +11,7 @@ module Onduty
     end
 
     def client
-      @client || ZendeskAPI::Client.new do |config|
+      @client ||= ZendeskAPI::Client.new do |config|
         config.url      = @settings.zendesk_url
         config.username = @settings.zendesk_username
         config.token    = @settings.zendesk_token
@@ -19,7 +19,7 @@ module Onduty
     end
 
     def assignee
-      client.users.search(query: @contact.email).first || client.current_user
+      @assignee ||= (client.users.search(query: @contact.email).first || client.current_user)
     end
 
     def assignee_is_member_of_default_group
