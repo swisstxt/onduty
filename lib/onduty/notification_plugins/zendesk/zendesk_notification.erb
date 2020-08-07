@@ -7,7 +7,7 @@
 <h4><%= alert.message %></h4>
 
 <p>
-    <a href="<%= alert_url %>">Open Onduty: <%= alert.group ? "#{alert.group.name} - " : '' %><%= alert.id %></a>
+    Alert Details: <a href="<%= alert_url %>"><%= alert.group ? "#{alert.group.name} - " : '' %><%= alert.id %></a>
 </p>
 
 <h5>Affected Services:</h5>
@@ -19,7 +19,7 @@
 </ul>
 
 <p>
-    In order to acknowledge this alert, please use this <a href="<%= acknowledge_url %>">link</a>.
+    In order to directly acknowledge this alert, please use this <a href="<%= acknowledge_url %>">link</a>.
 </p>
 <p>
     Your faithful alert servant,

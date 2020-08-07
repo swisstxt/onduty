@@ -39,11 +39,10 @@ module Onduty
     end
 
     def ticket_subject
-      subject = "Business Process Alert"
       if alert.group
-        "[Onduty - #{alert.group.name}] " + subject
+        "[Onduty - #{alert.group.name}] #{alert.name}"
       else
-        "[Onduty] " + subject
+        "[Onduty] #{alert.name}"
       end
     end
 
@@ -69,7 +68,7 @@ module Onduty
           assignee_id: assignee.id,
           group_id: ticket_group_id,
           priority: "urgent",
-          tags: %w(onduty)
+          tags: %w(onduty),
         )
         if ticket.save
           logger.info "Created Zendesk ticket for alert with ID #{@alert.id}, assigned to '#{ticket_group.name}/#{assignee.name}'."
