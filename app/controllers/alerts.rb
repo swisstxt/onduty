@@ -14,14 +14,11 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
   @alert = Onduty::Alert.find(params[:id])
   halt 403 unless @alert.uid == params[:uid]
 
-  ack = settings.icinga2_api_path ? Onduty::Icinga2.new(
-    api_path: settings.icinga2_api_path,
-    user: settings.icinga2_user,
-    password: settings.icinga2_password
-  ).acknowledge_services(@alert.services) : {
+  ack = settings.icinga2_api_path ? Onduty::Icinga2.instance.acknowledge_services(@alert.services) : {
     acknowledged: 1,
     message: "The alert has been successfully acknowledeged."
   }
+
   if ack[:acknowledged] == 1
     @alert.acknowledge!
   end
@@ -184,6 +181,7 @@ get '/alerts/:id' do
   protected!
   begin
     @alert = Onduty::Alert.find(params[:id])
+    @icinga = Onduty::Icinga2.instance
   rescue Mongoid::Errors::DocumentNotFound
     halt 404
   end

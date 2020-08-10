@@ -29,10 +29,8 @@
         <% @alert.services.each do |service| -%>
           <li>
             <% if settings.icinga2_web_path -%>
-            <a href="<%= service.icinga2_host_link(settings.icinga2_web_path) %>" target="blank">
-              <%= service.host %>
-            </a> -
-            <a href="<%= service.icinga2_service_link(settings.icinga2_web_path) %>" target="blank">
+            <a href="<%= @icinga.url_to_host(service) %>" target="blank"><%= service.host %></a> :
+            <a href="<%= @icinga.url_to_service(service) %>" target="blank">
               <%= service.name %>
             </a>
             <% else %>

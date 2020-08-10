@@ -52,9 +52,9 @@ module Onduty
       ).result(
         alert: @alert,
         contact: @contact,
+        icinga: Onduty::Icinga2.instance,
         acknowledge_url: acknowledge_url(html_link: true),
         alert_url: detail_url,
-        monitoring_base_url: @settings.icinga2_web_path,
       )
     end
 
