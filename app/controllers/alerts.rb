@@ -67,18 +67,20 @@ post '/alerts/:id.twiml' do
 
   content_type 'text/xml'
   Twilio::TwiML::VoiceResponse.new do |r|
-    r.say("Hello! Onduty here.", voice: "woman")
+    r.say("Hello! Onduty here to alert.", voice: "woman")
     r.say(alert_message, voice: "woman", loop: 2)
-    r.gather(
-      numDigits: 1,
-      action: "/alerts/#{@alert.id}/acknowledge.twiml?uid=#{@alert.uid}"
-    ) do |g|
-      g.say "Please enter any key to acknowledge the message.", voice: "woman"
+    unless @alert.acknowledged?
+      r.gather(
+        numDigits: 1,
+        action: "/alerts/#{@alert.id}/acknowledge.twiml?uid=#{@alert.uid}"
+      ) do |g|
+        g.say "Please enter any key to acknowledge the message.", voice: "woman"
+      end
+      r.say(
+        "We didn't receive any input. We will call you again. Goodbye!",
+        voice: "woman"
+      )
     end
-    r.say(
-      "We didn't receive any input. We will call you again. Goodbye!",
-      voice: "woman"
-    )
   end.to_s
 end
 
