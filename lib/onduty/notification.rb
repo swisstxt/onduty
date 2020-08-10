@@ -10,7 +10,7 @@ module Onduty
       class_name =~ /.*Notification/ ? class_name : nil
     end.compact
 
-    DEFAULT_PLUGINS = %w(VoiceNotification MailNotification)
+    DEFAULT_PLUGINS = %w(VoiceNotification)
 
     SETTINGS = OpenStruct.new(Onduty::Config.new.settings)
 

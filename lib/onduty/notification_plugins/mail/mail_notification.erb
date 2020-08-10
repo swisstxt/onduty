@@ -8,7 +8,7 @@ Group: <%= alert.group.name %>
 <% end -%>
 Service:
 <% alert.services.each do |service| -%>
-  - <%= service.full_name %>
+  - <%= "#{service.host} : #{service.name}" %>
 <% end -%>
 
 In order to acknowledge the alert, please follow the URL below:
