@@ -26,10 +26,7 @@ module Onduty
 
     def acknowledge_service(service, options = {})
       comment = options[:comment] || "Acknowledged by Onduty"
-      url = URI(
-        @api_path +
-        "/actions/acknowledge-problem?service=#{URI.escape(service.full_name)}"
-      )
+      url = URI(service.icinga2_acknowledge_url(@api_path))
 
       http = Net::HTTP.new(url.host, url.port)
       unless ENV["APP_ENV"] == "production"

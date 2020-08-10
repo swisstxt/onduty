@@ -14,7 +14,7 @@
 
 <ul>
     <% alert.services.each do |service| -%>
-    <li><a href="<%= service.icinga2_host_link(monitoring_base_url) %>"><%= service.full_name %></a></li>
+    <li><a href="<%= service.icinga2_host_link(monitoring_base_url) %>"><%= "#{service.host} : #{service.name}" %></a></li>
     <% end -%>
 </ul>
 
