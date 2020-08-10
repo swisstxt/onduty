@@ -4,10 +4,21 @@ module Onduty
     require 'net/http'
     require 'openssl'
 
-    def initialize(options = {})
-      @api_path = options[:api_path] || "https://localhost:5665/v1"
-      @user     = options[:user] || "admin"
-      @password = options[:password] || "icinga"
+    private_class_method :new
+
+    def self.instance()
+      return @instance if @instance
+
+      @instance_mutex.synchronize do
+        @instance ||= new(
+          api_path: SETTINGS.icinga2_api_path,
+          web_path: SETTINGS.icinga2_web_path,
+          user: SETTINGS.icinga2_user,
+          password: SETTINGS.icinga2_password,
+        )
+      end
+
+      @instance
     end
 
     def acknowledge_services(services, options = {})
@@ -26,7 +37,7 @@ module Onduty
 
     def acknowledge_service(service, options = {})
       comment = options[:comment] || "Acknowledged by Onduty"
-      url = URI(service.icinga2_acknowledge_url(@api_path))
+      url = URI(url_to_acknowledge(service))
 
       http = Net::HTTP.new(url.host, url.port)
       unless ENV["APP_ENV"] == "production"
@@ -68,6 +79,34 @@ module Onduty
           debug: e.backtrace
         }
       end
+    end
+
+    def url_to_host(service)
+      "#{@web_path}/monitoring/host/show?host=#{URI.escape(service.host)}"
+    end
+
+    def url_to_service(service)
+      "#{@web_path}/monitoring/service/show?host=#{URI.escape(service.host)}&service=#{URI.escape(service.name)}"
+    end
+
+    private
+
+    SETTINGS = OpenStruct.new(Onduty::Config.new.settings)
+    @instance_mutex = Mutex.new
+
+    def initialize(options = {})
+      @api_path = options[:api_path] || "https://localhost:5665/v1"
+      @web_path = options[:web_path] || "https://localhost:8080/icinga2web"
+      @user     = options[:user] || "admin"
+      @password = options[:password] || "icinga"
+    end
+
+    def url_to_acknowledge(service)
+      "#{@api_path}/actions/acknowledge-problem?service=#{URI.escape(service_full_name(service))}"
+    end
+
+    def service_full_name(service)
+      "#{service.host}!#{service.name}"
     end
 
   end
