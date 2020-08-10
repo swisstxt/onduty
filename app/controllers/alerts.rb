@@ -14,32 +14,47 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
   @alert = Onduty::Alert.find(params[:id])
   halt 403 unless @alert.uid == params[:uid]
 
-  ack = settings.icinga2_api_path ? Onduty::Icinga2.instance.acknowledge_services(@alert.services) : {
-    acknowledged: 1,
-    message: "The alert has been successfully acknowledeged."
-  }
+  ack = nil
 
-  if ack[:acknowledged] == 1
-    @alert.acknowledge!
-  end
-
-  if params[:format] =~ /^(twiml|xml)$/
-    content_type 'text/xml'
-    Twilio::TwiML::VoiceResponse.new do |r|
-      r.say ack[:message], voice: "woman"
-      if @alert.acknowledged?
+  if @alert.acknowledged?
+    if params[:format] =~ /^(twiml|xml)$/
+      content_type 'text/xml'
+      Twilio::TwiML::VoiceResponse.new do |r|
+        r.say "This alert was already acknowledged.", voice: "woman"
         r.say "Thank you and Goodbye!", voice: "woman"
-      else
-        r.say "Sorry, we are unable to acknowledge the issue.", voice: "alice"
-      end
-    end.to_s
-  else
-    if @alert.acknowledged?
-      flash[:success] = ack[:message]
+      end.to_s
     else
-      flash[:danger] = ack[:message]
+      flash[:success] = "This alert was already acknowledged."
+      redirect "/alerts/#{@alert.id}"
     end
-    redirect back
+  else
+    if settings.icinga2_api_path
+      ack = Onduty::Icinga2.instance.acknowledge_services(@alert.services)
+    else
+      ack = {
+        acknowledged: 1,
+        message: "The alert has been successfully acknowledeged."
+      }
+    end
+
+    if ack[:acknowledged] == 1
+      @alert.acknowledge!
+    end
+
+    if params[:format] =~ /^(twiml|xml)$/
+      content_type 'text/xml'
+      Twilio::TwiML::VoiceResponse.new do |r|
+        r.say ack[:message], voice: "woman"
+        r.say "Thank you and Goodbye!", voice: "woman"
+      end.to_s
+    else
+      if ack[:acknowledged] == 1
+        flash[:success] = ack[:message]
+      else
+        flash[:danger] = ack[:message]
+      end
+      redirect "/alerts/#{@alert.id}"
+    end
   end
 end
 
@@ -54,7 +69,7 @@ post '/alerts/:id.twiml' do
       numDigits: 1,
       action: "/alerts/#{@alert.id}/acknowledge.twiml?uid=#{@alert.uid}"
     ) do |g|
-      g.say "Please enter any key to acknowledge the message.", voice: "alice"
+      g.say "Please enter any key to acknowledge the message.", voice: "woman"
     end
     r.say(
       "We didn't receive any input. We will call you again. Goodbye!",
