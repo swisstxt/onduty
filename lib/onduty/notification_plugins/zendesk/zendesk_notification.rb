@@ -40,9 +40,9 @@ module Onduty
 
     def ticket_subject
       if alert.group
-        "[Onduty - #{alert.group.name}] #{alert.name}"
+        "[Onduty - #{alert.group.name}] #{alert.shortened_name(@settings.alert_shortener_regex)}"
       else
-        "[Onduty] #{alert.name}"
+        "[Onduty] #{alert.shortened_name(@settings.alert_shortener_regex)}"
       end
     end
 

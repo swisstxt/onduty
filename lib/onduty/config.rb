@@ -38,6 +38,10 @@ module Onduty
       # when the time is below this value the count of an alert goes up
       s['alert_threshold'] = ENV.fetch('ONDUTY_ALERT_THRESHOLD', 7200).to_i
 
+      # If defined, this regular expression will be used to fetch a shorter
+      # alert name from the original value (e.g. useful ro keep voice calls short)
+      s['alert_shortener_regex'] = ENV.fetch('ONDUTY_ALERT_SHORTENER_REGEX', nil)
+
       # Rack session secret
       s['session_secret'] = ENV.fetch('ONDUTY_SESSION_SECRET', SecureRandom.hex(64))
 
@@ -73,7 +77,6 @@ module Onduty
       # Slack notifications
       s['slack_api_token'] = ENV['ONDUTY_SLACK_API_TOKEN']
       s['slack_channel'] = ENV['ONDUTY_SLACK_CHANNEL']
-      s['slack_alert_shortener_regex'] = ENV.fetch('ONDUTY_SLACK_ALERT_SHORTENER_REGEX', nil)
 
       s
     end

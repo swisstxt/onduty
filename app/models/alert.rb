@@ -52,5 +52,16 @@ module Onduty
       [notification_type, name].join(' - ')
     end
 
+    def shortened_name(shorten_regex)
+      result = name
+
+      if shorten_regex
+        shorter_text = name.scan(/#{shorten_regex}/).last
+        result = shorter_text.first if shorter_text
+      end
+
+      result
+    end
+
   end
 end

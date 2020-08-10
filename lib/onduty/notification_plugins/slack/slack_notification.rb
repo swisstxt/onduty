@@ -16,11 +16,7 @@ module Onduty
       message += "#{@alert.group.name} " if @alert.group
       message += "Alert*"
 
-      alert_text = @alert.name
-      if @settings.slack_alert_shortener_regex
-        shorter_text = @alert.name.scan(/#{@settings.slack_alert_shortener_regex}/).last
-        alert_text = shorter_text.first if shorter_text
-      end
+      alert_text = @alert.shortened_name(@settings.alert_shortener_regex)
 
       attachments = [
         {

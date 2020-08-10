@@ -38,10 +38,10 @@ module Onduty
     end
 
     def mail_subject
-      if @alert.group
-        "[Onduty - #{@alert.group.name}] #{@alert.name}"
+      if alert.group
+        "[Onduty - #{alert.group.name}] #{alert.shortened_name(@settings.alert_shortener_regex)}"
       else
-        "[Onduty] #{@alert.name}"
+        "[Onduty] #{alert.shortened_name(@settings.alert_shortener_regex)}"
       end
     end
 

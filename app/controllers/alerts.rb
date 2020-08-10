@@ -62,9 +62,13 @@ end
 post '/alerts/:id.twiml' do
   @alert = Onduty::Alert.find(params[:id])
   halt 403 unless @alert.uid = params[:uid]
+
+  alert_message = @alert.shortened_name(settings.alert_shortener_regex)
+
   content_type 'text/xml'
   Twilio::TwiML::VoiceResponse.new do |r|
-    r.say(@alert.message, voice: "woman", loop: 2)
+    r.say("Hello! Onduty here.", voice: "woman")
+    r.say(alert_message, voice: "woman", loop: 2)
     r.gather(
       numDigits: 1,
       action: "/alerts/#{@alert.id}/acknowledge.twiml?uid=#{@alert.uid}"
