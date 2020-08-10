@@ -82,11 +82,11 @@ module Onduty
     end
 
     def url_to_host(service)
-      "#{@web_path}/monitoring/host/show?host=#{URI.escape(service.host)}"
+      "#{@web_path}/monitoring/host/show?#{URI.encode_www_form(host: service.host)}"
     end
 
     def url_to_service(service)
-      "#{@web_path}/monitoring/service/show?host=#{URI.escape(service.host)}&service=#{URI.escape(service.name)}"
+      "#{@web_path}/monitoring/service/show?#{URI.encode_www_form(host: service.host, service: service.name)}"
     end
 
     private
@@ -102,7 +102,7 @@ module Onduty
     end
 
     def url_to_acknowledge(service)
-      "#{@api_path}/actions/acknowledge-problem?service=#{URI.escape(service_full_name(service))}"
+      "#{@api_path}/actions/acknowledge-problem?#{URI.encode_www_form(service: service_full_name(service))}"
     end
 
     def service_full_name(service)
