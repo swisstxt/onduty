@@ -53,7 +53,11 @@ route :get, :post, '/alerts/:id/acknowledge.?:format?' do
       else
         flash[:danger] = ack[:message]
       end
-      redirect "/alerts/#{@alert.id}"
+      if request.referrer
+        redirect back
+      else
+        redirect "/alerts/#{@alert.id}"
+      end
     end
   end
 end
