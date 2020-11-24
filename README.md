@@ -33,6 +33,12 @@ ONDUTY_ALERT_LIMIT=2
 # When to consider an existing alert as new (in seconds)
 # when the time is below this value the count of an alert goes up
 ONDUTY_ALERT_THRESHOLD=7200
+
+# Optionally set some constraints to the phone numbers of the Onduty Contacts,
+# with comma separated (wihout spaces) code countries and phone types
+# (see https://github.com/daddyz/phonelib#getting-started for more details)
+# ONDUTY_PHONE_COUNTRIES=ch
+# ONDUTY_PHONE_TYPES=fixed_line,mobile
 ```
 
 ### Build & Run with Docker
@@ -163,10 +169,13 @@ ONDUTY_SLACK_CHANNEL=#onduty-test
 ONDUTY_ZENDESK_URL=https://<your-workspace>.zendesk.com/api/v2
 ONDUTY_ZENDESK_USERNAME=onduty@onduty.local
 ONDUTY_ZENDESK_TOKEN=<zendesk-token>
-ONDUTY_ZENDESK_GROUP_ID=<zendesk-group-id>
+# ONDUTY_ZENDESK_GROUP_ID=<zendesk-group-id>
+# ONDUTY_ZENDESK_SKIPPED_GROUPS=RedTeam,BlueTeam
 ```
 
 When `ONDUTY_ZENDESK_GROUP_ID` is not defined, the assignee's default group id will be used.
+
+When `ONDUTY_ZENDESK_SKIPPED_GROUPS` is defined (with _existing_ group names as comma-separated list), no Zendesk tickets will be created for alerts of these groups.
 
 # Trigger alerts from external sources
 
