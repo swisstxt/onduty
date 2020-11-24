@@ -3,6 +3,26 @@ module Onduty
     include Mongoid::Document
     include Mongoid::Timestamps
 
+    def self.phone_validation_error_message
+
+      if Onduty::SETTINGS.contacts_phone_countries
+        countries = Onduty::SETTINGS.contacts_phone_countries.map(&:upcase).sort.join(', ')
+        countries.sub!(/.*\K,/, ' or')
+      end
+
+      if Onduty::SETTINGS.contacts_phone_types
+        phone_types = Onduty::SETTINGS.contacts_phone_types.sort.join(', ')
+        phone_types.sub!(/.*\K,/, ' or')
+        phone_types.sub!('_', '-')
+      end
+
+      msg = "must be a valid number"
+      msg += " (#{phone_types} only)" if phone_types
+      msg += " in #{countries}" if countries
+
+      return msg
+    end
+
     field :first_name, type: String
     field :last_name, type: String
     field :phone, type: String
@@ -26,9 +46,9 @@ module Onduty
       presence: true,
       phone: {
         valid: true,
-        types: [:mobile],
-        countries: [:ch, :li],
-        message: "must be a valid <b>mobile</b> number in Switzerland or Liechtenstein",
+        types: Onduty::SETTINGS.contacts_phone_types, # e.g. [:fixed_line, :mobile]
+        countries: Onduty::SETTINGS.contacts_phone_countries,  # e.g. [:ch]
+        message: self.phone_validation_error_message
       }
 
     def name

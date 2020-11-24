@@ -43,6 +43,15 @@ module Onduty
       # alert name from the original value (e.g. useful ro keep voice calls short)
       s['alert_shortener_regex'] = ENV.fetch('ONDUTY_ALERT_SHORTENER_REGEX', nil)
 
+      # If defined, the contact form validator will only accept phone numbers
+      # that match given criteria. Values must be formatted as described in
+      # https://github.com/daddyz/phonelib#getting-started
+      # for example: ['ch'] and ['mobile', 'fixed_line']
+      s['contacts_phone_countries'] = ENV['ONDUTY_PHONE_COUNTRIES'] ?
+        ENV['ONDUTY_PHONE_COUNTRIES'].split(",") : nil
+      s['contacts_phone_types'] = ENV['ONDUTY_PHONE_TYPES'] ?
+        ENV['ONDUTY_PHONE_TYPES'].split(",") : nil
+
       # Rack session secret
       s['session_secret'] = ENV.fetch('ONDUTY_SESSION_SECRET', SecureRandom.hex(64))
 
