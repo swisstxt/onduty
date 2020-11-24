@@ -1,6 +1,6 @@
 require 'onduty/server_base'
 
-set Onduty::Config.new.settings
+set Onduty::Config.instance.settings
 
 module Onduty
   class Server < Sinatra::Base

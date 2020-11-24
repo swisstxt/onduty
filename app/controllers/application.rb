@@ -8,7 +8,7 @@ configure do
   set :environment,   (ENV["APP_ENV"] || :development).to_sym
   set :root,          File.join(File.dirname(__FILE__), '../../', 'app')
   set :public_folder, File.join(File.dirname(__FILE__), '../../', 'public')
-  Mongoid.load! Onduty::Config.new.mongoid_config
+  Mongoid.load! Onduty::Config.instance.mongoid_config
 end
 
 get '/' do

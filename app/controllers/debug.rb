@@ -12,7 +12,7 @@ get '/debug' do
     end
   end
   @settings = {}
-  Onduty::Config.new.settings.map do |k, v|
+  Onduty::Config.instance.settings.map do |k, v|
     if k.to_s.match(/(secret|password)/)
       @settings[k] = v == '' ? '' : '******'
     else

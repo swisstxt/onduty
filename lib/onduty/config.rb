@@ -3,6 +3,7 @@ require 'erb'
 
 module Onduty
   class Config
+    include Singleton
 
     def settings
       @settings ||= load_settings
@@ -84,4 +85,7 @@ module Onduty
     end
 
   end
+
+  SETTINGS ||= OpenStruct.new(Config.instance.settings)
+
 end

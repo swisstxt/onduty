@@ -91,7 +91,7 @@ module Onduty
 
     private
 
-    SETTINGS = OpenStruct.new(Onduty::Config.new.settings)
+    SETTINGS = Onduty::SETTINGS
     @instance_mutex = Mutex.new
 
     def initialize(options = {})
