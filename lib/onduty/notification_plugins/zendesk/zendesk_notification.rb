@@ -59,6 +59,11 @@ module Onduty
     end
 
     def trigger
+      if @settings.zendesk_skipped_groups.include?(alert.group.name)
+        logger.info "No Zendesk ticket to be created for the '#{@alert.group.name}' group."
+        return
+      end
+
       # only trigger at first alert
       unless alert.last_alert_at
         ticket = client.tickets.create(

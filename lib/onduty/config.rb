@@ -73,6 +73,8 @@ module Onduty
       s['zendesk_username'] = ENV['ONDUTY_ZENDESK_USERNAME']
       s['zendesk_token'] = ENV['ONDUTY_ZENDESK_TOKEN']
       s['zendesk_group_id'] = ENV.fetch('ONDUTY_ZENDESK_GROUP_ID', nil)
+      s['zendesk_skipped_groups'] = ENV['ONDUTY_ZENDESK_SKIPPED_GROUPS'] ?
+        ENV['ONDUTY_ZENDESK_SKIPPED_GROUPS'].split(",") : []
 
       # Slack notifications
       s['slack_api_token'] = ENV['ONDUTY_SLACK_API_TOKEN']
