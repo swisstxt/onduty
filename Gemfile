@@ -5,7 +5,7 @@ gem 'thor'
 gem "mongoid", "~> 6.4"
 gem 'erubis', '~> 2.7.0'
 gem 'puma'
-gem 'sinatra', '~> 2.0'
+gem 'sinatra', '~> 2.2'
 gem 'sinatra-contrib', '~> 2.0'
 gem 'padrino-helpers', '>= 0.10.3'
 gem 'kaminari-mongoid'
