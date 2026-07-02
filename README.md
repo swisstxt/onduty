@@ -1,3 +1,10 @@
+> [!IMPORTANT]
+> **This repository has been archived and is no longer maintained.**
+>
+> It remains available for historical reference.
+> No new features, bug fixes, or pull requests will be accepted.
+
+
 # OnDuty
 
 ![OnDuty](public/images/onduty.png)
